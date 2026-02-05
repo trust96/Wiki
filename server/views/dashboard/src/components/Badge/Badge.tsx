@@ -19,7 +19,7 @@ const Badge = (props: TBadgeProps) => {
       color={color}
       size={size}
       radius={radius}
-      className={`${styles.badge} ${className || ''}`}
+      className={[styles.badge, className].filter(Boolean).join(' ')}
       {...rest}
     >
       {children}

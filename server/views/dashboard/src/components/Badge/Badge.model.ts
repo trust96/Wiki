@@ -8,4 +8,4 @@ export type TBadgeProps = {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
-} & Omit<BadgeProps, 'children'>;
+} & Omit<BadgeProps, 'children' | 'variant' | 'color' | 'size' | 'radius' | 'className'>;
