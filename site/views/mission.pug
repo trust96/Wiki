@@ -15,7 +15,26 @@ block content
     +sectionTitle('Our team')
     .container
       .section-content
-        .section-paragraph
-          | We all know that dancing is more than techinque,
-          | it is culture, identity and legacy,
-          | #{APP_NAME} helps you carry that legacy forward.
+        .team
+          .team__grid
+            .team__member
+              .team__avatar
+                img(src="/images/team/member1.svg" alt="Maria Santos")
+              .team__info
+                h3.team__name Maria Santos
+                p.team__role Founder & Lead Choreographer
+                p.team__bio Passionate about preserving traditional dance forms while embracing modern expression.
+            .team__member
+              .team__avatar
+                img(src="/images/team/member2.svg" alt="James Chen")
+              .team__info
+                h3.team__name James Chen
+                p.team__role Community Manager
+                p.team__bio Connecting dancers worldwide and fostering a supportive learning environment.
+            .team__member
+              .team__avatar
+                img(src="/images/team/member3.svg" alt="Aisha Johnson")
+              .team__info
+                h3.team__name Aisha Johnson
+                p.team__role Content Director
+                p.team__bio Curating educational resources to help dancers grow their skills and knowledge.
