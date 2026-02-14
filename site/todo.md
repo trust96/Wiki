@@ -39,15 +39,15 @@
       - Branch: "chores/homepage_blog_section"
       - Message: "[website] [chores] Uniform the blog section with the rest of the ui"
 
-- [ ] Recreate the search input
+- [x] Recreate the search input
   - Steps:
-    - [ ] Create the input component
+    - [x] Create the input component
       - Branch: "feature/input"
       - Message: "[general] [feature] Create input component"
       - Details:
         - The input component should be a simple input with a label and an icon (optional)
         - Variants: number, text, search, email
-    - [ ] Add the search button (in small screens it shall be wide as the input)
+    - [x] Add the search button (in small screens it shall be wide as the input)
       - Branch: "chores/homepage_search_input"
       - Message: "[website] [feature] Add search input to the homepage"
 
