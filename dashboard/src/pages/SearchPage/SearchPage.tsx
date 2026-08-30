@@ -1,7 +1,6 @@
 import { SearchComponent } from "@/components/HeroSection/SearchComponent";
-import GemmaList from "@/components/List/List";
-import GemmaListItem from "@/components/List/ListItem";
-import { usePage } from "@/hooks/usePage";
+import WikiList from "@/components/List/List";
+import WikiListItem from "@/components/List/ListItem";
 import { Divider, Stack, Text, Title } from "@mantine/core";
 import { useState } from "react";
 
@@ -9,9 +8,8 @@ import { useRouter } from "@/hooks/useRouter";
 export const SearchPage = () => {
   const { push } = useRouter();
   const [searchString, setSearchString] = useState("");
-  const { data: pages } = usePage();
-  console.log(pages);
-  const filteredPages = (pages?.data ?? [])?.filter((page) => {
+  const pages = [];
+  const filteredPages = pages?.filter((page) => {
     return page.name.includes(searchString);
   });
 
@@ -24,13 +22,13 @@ export const SearchPage = () => {
       <Title mb={"md"}>Search the community</Title>
       <SearchComponent onChange={handleChange} />
       <Divider label="Results" my={"md"} />
-      <GemmaList isHoverable>
+      <WikiList isHoverable>
         {filteredPages?.map((page) => {
           const handleClick = () => {
             push(`/page/${page?.documentId}`);
           };
           return (
-            <GemmaListItem key={page?.id} handleClick={handleClick}>
+            <WikiListItem key={page?.id} handleClick={handleClick}>
               <Stack gap={4}>
                 <Text size="md" c={"violet.5"} fw={"bolder"}>
                   {page?.name}
@@ -39,10 +37,10 @@ export const SearchPage = () => {
                   {page?.description}
                 </Text>
               </Stack>
-            </GemmaListItem>
+            </WikiListItem>
           );
         })}
-      </GemmaList>
+      </WikiList>
     </>
   );
 };

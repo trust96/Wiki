@@ -1,10 +1,5 @@
 import type { TBaseQueryFn } from "@/model/baseQuery.model";
-import {
-  baseUrl,
-  HttpType,
-  imageCompressionOptions,
-  tokenKey,
-} from "./constants";
+import { baseUrl, HttpType, imageCompressionOptions } from "./constants";
 import { addApiError } from "@/state/apiErrorSlice/apiErrorSlice";
 import { addLoader, removeLoader } from "@/state/uiSlice/uiSlice";
 import { toFormData } from "./toFormData";
@@ -17,7 +12,7 @@ export const normalizeBaseQuery: TBaseQueryFn = async (args, { dispatch }) => {
 
     let body;
     if (type === HttpType.File) {
-      const { files, ...rest } = payload;
+      const { files, ...rest } = payload as any;
       const compressedFiles = await imageCompression(
         files,
         imageCompressionOptions,
@@ -31,12 +26,7 @@ export const normalizeBaseQuery: TBaseQueryFn = async (args, { dispatch }) => {
       body = JSON.stringify(payload);
     }
 
-    const auth = localStorage.getItem(tokenKey);
     let headers = new Headers();
-
-    if (auth) {
-      headers.append("Authorization", `Bearer ${auth}`);
-    }
 
     if (!type) {
       headers.append("Content-type", "application/json; charset=UTF-8");

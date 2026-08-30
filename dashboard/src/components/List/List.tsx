@@ -2,7 +2,7 @@ import { type TListProps, type TListSharedProps } from "./List.model";
 import styles from "./List.module.css";
 import ListProvider from "./ListProvider";
 
-const GemmaList = (props: TListProps) => {
+const WikiList = (props: TListProps) => {
   const listProps: TListSharedProps = {
     isHoverable: props.isHoverable,
   };
@@ -13,4 +13,4 @@ const GemmaList = (props: TListProps) => {
   );
 };
 
-export default GemmaList;
+export default WikiList;

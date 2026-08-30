@@ -4,24 +4,7 @@ import { normalizeBaseQuery } from "@/helper/normalizeBaseQuery";
 export const pageApi = createApi({
   reducerPath: "pageApi",
   baseQuery: normalizeBaseQuery,
-  endpoints: (builder) => ({
-    pages: builder.query({
-      query: () => {
-        return {
-          url: "/event-pages?populate=*",
-          method: "GET",
-        };
-      },
-    }),
-    singlePage: builder.query({
-      query: ({ id }) => {
-        return {
-          url: `/event-pages/${id}?populate=*`,
-          method: "GET",
-        };
-      },
-    }),
-  }),
+  endpoints: () => ({}),
 });
 
-export const { usePagesQuery, useSinglePageQuery } = pageApi;
+export const {} = pageApi;

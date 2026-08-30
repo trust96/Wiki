@@ -1,31 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { normalizeBaseQuery } from "@/helper/normalizeBaseQuery";
-import { HttpType } from "@/helper/constants";
 
 export const fileApi = createApi({
   reducerPath: "fileApi",
   baseQuery: normalizeBaseQuery,
-  endpoints: (builder) => ({
-    currentUser: builder.query({
-      query: () => {
-        return {
-          url: "/users/me",
-          method: "GET",
-          type: HttpType.File,
-        };
-      },
-    }),
-    upload: builder.mutation<any, any>({
-      query: (payload) => {
-        return {
-          url: `/upload`,
-          method: "POST",
-          payload,
-          type: HttpType.File,
-        };
-      },
-    }),
-  }),
+  endpoints: () => ({}),
 });
 
-export const { useUploadMutation } = fileApi;
+export const {} = fileApi;

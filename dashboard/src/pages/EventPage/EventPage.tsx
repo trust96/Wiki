@@ -1,14 +1,9 @@
 import { WikiFull } from "@/components/Full";
-import { useSinglePage } from "@/hooks/useSinglePage";
-import { useParams } from "react-router";
 import { Stack, Text, Title } from "@mantine/core";
 import { TableOfContents } from "@/components/TableOfContent/TableOfContent";
 
 export const EventPage = () => {
-  const { id } = useParams();
-  const { data: page } = useSinglePage(Number(id));
-  const currentPage = page?.data;
-  console.log(currentPage);
+  const currentPage = null;
   const links = [...(currentPage?.sections ?? [])].map((sec, i) => ({
     label: sec?.title,
     link: `#${i}`,

@@ -4,7 +4,7 @@ export const CopyRight = () => {
   return (
     <div className={styles.copy}>
       <Text c="dimmed" size="sm">
-        © {new Date().getFullYear()} Gemma. All rights reserved.
+        © {new Date().getFullYear()} Wiki Dance. All rights reserved.
       </Text>
     </div>
   );

@@ -2,16 +2,12 @@ import { Button, Menu } from "@mantine/core";
 import Icon from "../Icon/Icon";
 import { tokenKey } from "@/helper/constants";
 import { useRouter } from "@/hooks/useRouter";
-import { removeToken } from "@/state/uiSlice/uiSlice";
-import { useDispatch } from "react-redux";
 
 const NavigationMenu = () => {
   const { push } = useRouter();
-  const dispatch = useDispatch();
 
   const handleLogout = () => {
     localStorage.removeItem(tokenKey);
-    dispatch(removeToken());
     push("/auth/login");
   };
 

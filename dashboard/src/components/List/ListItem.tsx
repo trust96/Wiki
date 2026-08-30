@@ -3,7 +3,7 @@ import { type TListItemProps } from "./List.model";
 import styles from "./List.module.css";
 import { listContext } from "./ListProvider";
 
-const GemmaListItem = (props: TListItemProps) => {
+const WikiListItem = (props: TListItemProps) => {
   const { handleClick, isActive, children, rightSection, leftSection } = props;
   const { isHoverable } = useContext(listContext);
   const hoverClass = isHoverable ? styles.hover : "";
@@ -21,4 +21,4 @@ const GemmaListItem = (props: TListItemProps) => {
   );
 };
 
-export default GemmaListItem;
+export default WikiListItem;
