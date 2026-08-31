@@ -1,0 +1,10 @@
+export { WikiIcon } from "./Icon";
+export type { TWikiIconProps } from "./Icon";
+export { WikiLink } from "./Link";
+export type { TWikiLinkProps } from "./Link";
+export { WikiList, WikiListItem } from "./List";
+export type { TWikiListProps, TWikiListItemProps } from "./List";
+export { WikiLogo } from "./Logo";
+export type { TWikiLogoProps } from "./Logo";
+export { WikiModal } from "./Modal";
+export type { TWikiModalProps } from "./Modal";

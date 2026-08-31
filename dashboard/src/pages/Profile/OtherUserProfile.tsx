@@ -1,8 +1,8 @@
-import { WikiIcon } from "@/components/Icon";
+import { WikiIcon } from "@/components/primitive";
 import { Group, Button } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import type { TOtherUserProfileProps } from "./Profile.model";
-import { ShareButton } from "@/components/ShareButton/ShareButton";
+import { ShareButton } from "@/components/button";
 import { appName } from "@/helper/constants";
 
 export const OtherUserProfile = (props: TOtherUserProfileProps) => {

@@ -6,7 +6,6 @@ import {
   Spoiler,
   Stack,
   Text,
-  Typography,
 } from "@mantine/core";
 import { useUser } from "@/hooks/useUser";
 import { useTranslation } from "react-i18next";

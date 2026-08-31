@@ -1,5 +1,5 @@
 import { Stack, Title, Button, TextInput, Text } from "@mantine/core";
-import { PageComponent } from "@/components/PageComponent/PageComponent";
+import { PageComponent } from "@/components/layout";
 import { useTranslation } from "react-i18next";
 import { useForgottenPassword } from "./useForgottenPassword";
 

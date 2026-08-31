@@ -1,48 +1,47 @@
-import { SearchComponent } from "@/components/HeroSection/SearchComponent";
-import GemmaList from "@/components/List/List";
-import GemmaListItem from "@/components/List/ListItem";
+import { SearchField } from "@/components/input";
+import { PageComponent } from "@/components/layout";
+import { WikiList, WikiListItem } from "@/components/primitive";
 import { usePage } from "@/hooks/usePage";
-import { Divider, Stack, Text, Title } from "@mantine/core";
-import { useState } from "react";
-
 import { useRouter } from "@/hooks/useRouter";
+import { Divider, Stack, Text, Title } from "@mantine/core";
+import { useState, type ChangeEvent } from "react";
+
 export const SearchPage = () => {
   const { push } = useRouter();
   const [searchString, setSearchString] = useState("");
   const { data: pages } = usePage();
-  console.log(pages);
   const filteredPages = (pages?.data ?? [])?.filter((page) => {
     return page.name.includes(searchString);
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchString(e.target.value);
   };
 
   return (
-    <>
-      <Title mb={"md"}>Search the community</Title>
-      <SearchComponent onChange={handleChange} />
-      <Divider label="Results" my={"md"} />
-      <GemmaList isHoverable>
+    <PageComponent.Dashboard title="Search" description="Search the community">
+      <Title mb="md">Search the community</Title>
+      <SearchField onChange={handleChange} />
+      <Divider label="Results" my="md" />
+      <WikiList isHoverable>
         {filteredPages?.map((page) => {
           const handleClick = () => {
             push(`/page/${page?.documentId}`);
           };
           return (
-            <GemmaListItem key={page?.id} handleClick={handleClick}>
+            <WikiListItem key={page?.id} onClick={handleClick}>
               <Stack gap={4}>
-                <Text size="md" c={"violet.5"} fw={"bolder"}>
+                <Text size="md" c="violet.5" fw="bolder">
                   {page?.name}
                 </Text>
-                <Text size="md" c={"violet.5"} fw={"bolder"}>
+                <Text size="md" c="violet.5" fw="bolder">
                   {page?.description}
                 </Text>
               </Stack>
-            </GemmaListItem>
+            </WikiListItem>
           );
         })}
-      </GemmaList>
-    </>
+      </WikiList>
+    </PageComponent.Dashboard>
   );
 };

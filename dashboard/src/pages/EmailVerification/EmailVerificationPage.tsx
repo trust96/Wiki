@@ -1,5 +1,5 @@
-import { WikiIcon } from "@/components/Icon";
-import { PageComponent } from "@/components/PageComponent/PageComponent";
+import { PageComponent } from "@/components/layout";
+import { WikiIcon } from "@/components/primitive";
 import { RESEND_EMAIL_DELAY } from "@/helper/constants";
 import {
   Button,

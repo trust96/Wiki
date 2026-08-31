@@ -1,8 +1,8 @@
-import { WikiFull } from "@/components/Full";
+import { WikiFull } from "@/components/layout";
+import { TableOfContents } from "@/components/feature/wiki";
 import { useSinglePage } from "@/hooks/useSinglePage";
 import { useParams } from "react-router";
 import { Stack, Text, Title } from "@mantine/core";
-import { TableOfContents } from "@/components/TableOfContent/TableOfContent";
 
 export const EventPage = () => {
   const { id } = useParams();

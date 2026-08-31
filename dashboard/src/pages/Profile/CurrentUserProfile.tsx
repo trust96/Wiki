@@ -1,7 +1,7 @@
 import { Group, Button } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import { WikiIcon } from "@/components/Icon";
+import { WikiIcon } from "@/components/primitive";
 import styles from "./Profile.module.css";
 
 export const CurrentUserProfile = () => {

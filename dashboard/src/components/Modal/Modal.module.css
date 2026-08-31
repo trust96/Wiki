@@ -1,9 +1,0 @@
-.footer {
-  background-color: var(--mantine-color-body);
-  position: sticky;
-  bottom: 0;
-  display: flex;
-  column-gap: var(--mantine-spacing-md);
-  justify-content: flex-end;
-  padding-top: var(--mantine-spacing-md);
-}

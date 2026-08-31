@@ -1,6 +1,5 @@
-import { WikiFull } from "../../components/Full";
-import type { TDirection } from "../../components/Full/Full.model";
-import { UserForm } from "../../components/UserForm/UserForm";
+import { WikiFull, type TDirection } from "@/components/layout";
+import { UserForm } from "@/components/feature/profile";
 
 const formId = "onboarding-form";
 

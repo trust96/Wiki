@@ -8,8 +8,8 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { GoogleButton } from "../../components/GoogleButton.tsx/GoogleButton";
-import { WikiLink } from "@/components/Link";
+import { GoogleButton } from "@/components/button";
+import { WikiLink } from "@/components/primitive";
 import { useSignup } from "./useSignup";
 import { useTranslation } from "react-i18next";
 
@@ -30,27 +30,23 @@ export const Signup = (_) => {
             label={t("email")}
             type="email"
             id="email"
-            size="md"
             autoComplete="email"
           />
           <TextInput
             {...getInputProps("username")}
             label={t("username")}
             id="username"
-            size="md"
           />
           <PasswordInput
             {...getInputProps("password")}
             autoComplete="current-password"
             label={t("password")}
             id="password"
-            size="md"
           />
           <PasswordInput
             {...getInputProps("confirmPassword")}
             label={t("confirm_password")}
             id="confirm_password"
-            size="md"
           />
           <Checkbox
             {...getInputProps("terms", { type: "checkbox" })}

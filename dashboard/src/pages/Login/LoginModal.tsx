@@ -1,9 +1,9 @@
-import { WikiModal } from "@/components/Modal";
+import { WikiModal } from "@/components/primitive";
 import { Login } from "./Login";
 import { useTranslation } from "react-i18next";
-import type { TLoginModalProps } from "./Login.model";
+import type { TLoginModal } from "./Login.model";
 
-export const LoginModal = (props: TLoginModalProps) => {
+export const LoginModal = (props: TLoginModal) => {
   const { t } = useTranslation("login");
   return (
     <WikiModal
