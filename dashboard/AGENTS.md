@@ -9,6 +9,7 @@ This file is the index. Conventions live in `guidelines/*.md`. Do not copy those
 Read every markdown file in `guidelines/`:
 
 - [`guidelines/react.md`](guidelines/react.md) — folders, components, pages, styling, state, i18n, tests
+- [`guidelines/storybook.md`](guidelines/storybook.md) — Storybook, colocated `*.stories.tsx`
 
 Then match the nearest existing file in the same layer. Prefer extending current patterns over introducing a new stack or folder shape.
 
@@ -19,12 +20,13 @@ Write simple functional React: short names a person can read aloud, no extra abs
 From the repo root:
 
 ```bash
-yarn workspace wiki_client dev      # Vite, port 3000
-yarn workspace wiki_client test     # Vitest browser (Chrome)
+yarn workspace wiki_client dev        # Vite, port 3000
+yarn workspace wiki_client test       # Vitest browser (Chrome)
+yarn workspace wiki_client storybook  # Storybook, port 6006
 yarn workspace wiki_client build
 ```
 
-From `dashboard/`: `yarn dev`, `yarn test`, `yarn build`.
+From `dashboard/`: `yarn dev`, `yarn test`, `yarn storybook`, `yarn build`.
 
 ## How it boots
 

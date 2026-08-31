@@ -42,3 +42,6 @@ next-env.d.ts
 # vitest
 .vitest-attachments
 **/__screnshoots__/**
+
+*storybook.log
+storybook-static
