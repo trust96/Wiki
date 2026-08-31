@@ -7,7 +7,6 @@
     "dev": "NODE_ENV=development nodemon",
     "build:client": "vite build",
     "build": "npm ci && npm run build:client && tsc -p ./tsconfig.json",
-    "email:dev": "email dev --dir=./src/emails --port=3005",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "serve": "node ./dist/server.js"
