@@ -1,11 +1,6 @@
 :root {
   --wiki-nav-height: 56px;
   --wiki-footer-height: 56px;
-  --mantine-spacing-xs: 4px;
-  --mantine-spacing-sm: 8px;
-  --mantine-spacing-md: 12px;
-  --mantine-spacing-lg: 16px;
-  --mantine-spacing-xl: 20px;
 }
 
 html,

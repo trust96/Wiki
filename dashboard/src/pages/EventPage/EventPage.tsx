@@ -1,8 +1,9 @@
-import { WikiFull } from "@/components/Full";
+import { WikiFull } from "@/components/layout";
+import { TableOfContents } from "@/components/feature/wiki";
 import { useSinglePage } from "@/hooks/useSinglePage";
+import { PRIMARY_COLOR } from "@/theme";
 import { useParams } from "react-router";
 import { Stack, Text, Title } from "@mantine/core";
-import { TableOfContents } from "@/components/TableOfContent/TableOfContent";
 
 export const EventPage = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ export const EventPage = () => {
     <WikiFull>
       <Stack gap={45}>
         <Stack>
-          <Title c="violet" order={2} mb={"md"}>
+          <Title c={PRIMARY_COLOR} order={2} mb={"md"}>
             {currentPage?.name}
           </Title>
           <TableOfContents links={links} />

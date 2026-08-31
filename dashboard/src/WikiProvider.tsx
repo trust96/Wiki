@@ -1,8 +1,9 @@
-import { createTheme, Button, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import type { PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router";
 import { store } from "./state/store";
+import { theme } from "./theme";
 
 const WikiProvider = (props: PropsWithChildren) => {
   return (
@@ -15,28 +16,5 @@ const WikiProvider = (props: PropsWithChildren) => {
     </Provider>
   );
 };
-
-const theme = createTheme({
-  fontFamily: '"IBM Plex Sans", sans-serif',
-  primaryColor: "violet",
-  defaultRadius: "md",
-  components: {
-    Button: Button.extend({
-      styles(theme, props, ctx) {
-        return {
-          root: {
-            borderRadius: props.variant === "transparent" ? 0 : undefined,
-            padding: props.variant === "transparent" ? 0 : undefined,
-            height: props.variant === "transparent" ? "auto" : undefined,
-          },
-        };
-      },
-      defaultProps: {
-        radius: "xl",
-        size: "lg",
-      },
-    }),
-  },
-});
 
 export default WikiProvider;

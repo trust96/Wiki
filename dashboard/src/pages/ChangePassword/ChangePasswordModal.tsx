@@ -1,4 +1,4 @@
-import { WikiModal } from "@/components/Modal";
+import { WikiModal } from "@/components/primitive";
 import { ChangePassword } from "./ChangePassword";
 
 export const ChangePasswordModal = () => {

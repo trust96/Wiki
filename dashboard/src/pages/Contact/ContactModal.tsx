@@ -1,4 +1,4 @@
-import { WikiModal } from "@/components/Modal";
+import { WikiModal } from "@/components/primitive";
 import { Contact } from "./Contact";
 
 export const ContactModal = () => {

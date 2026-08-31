@@ -1,0 +1,1 @@
+export { WikiLoader } from "./Loader";

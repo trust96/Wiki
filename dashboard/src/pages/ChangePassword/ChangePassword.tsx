@@ -21,19 +21,16 @@ export const ChangePassword = (_) => {
             w={"100%"}
             autoComplete="current-password"
             label={"Old password"}
-            size="md"
           />
           <PasswordInput
             {...getInputProps("password")}
             w={"100%"}
             label={"New password"}
-            size="md"
           />
           <PasswordInput
             {...getInputProps("confirmPassword")}
             w={"100%"}
             label={"Confirm new password"}
-            size="md"
           />
         </Stack>
       </form>

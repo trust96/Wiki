@@ -1,0 +1,4 @@
+.list[data-hoverable] li:hover {
+  background-color: var(--mantine-primary-color-light-hover);
+  cursor: pointer;
+}

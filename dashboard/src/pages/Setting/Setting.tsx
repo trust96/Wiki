@@ -1,6 +1,7 @@
 import { Button, Group, Stack, Switch, Text } from "@mantine/core";
-import { WikiFull } from "../../components/Full";
-import { WikiList, WikiListItem } from "../../components/List";
+import { WikiFull } from "@/components/layout";
+import { WikiList, WikiListItem } from "@/components/primitive";
+import { semanticColor } from "@/theme";
 
 export const Setting = () => {
   const handleDeleteAccount = () => {
@@ -35,7 +36,7 @@ export const Setting = () => {
 
                 <Button
                   variant="subtle"
-                  c={"red"}
+                  color={semanticColor.danger}
                   onClick={handleDeleteAccount}
                 >
                   Delete account

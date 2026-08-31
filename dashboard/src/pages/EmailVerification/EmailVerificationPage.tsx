@@ -1,21 +1,13 @@
-import { WikiIcon } from "@/components/Icon";
-import { PageComponent } from "@/components/PageComponent/PageComponent";
+import { PageComponent } from "@/components/layout";
+import { WikiIcon } from "@/components/primitive";
 import { RESEND_EMAIL_DELAY } from "@/helper/constants";
-import {
-  Button,
-  Group,
-  Stack,
-  Text,
-  Title,
-  useMantineTheme,
-} from "@mantine/core";
+import { PRIMARY_COLOR } from "@/theme";
+import { Button, Group, Stack, Text, Title } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { resendFormatTime } from "./EmailVerificationPage.util";
 
 const EmailVerificationPage = () => {
-  const { colors } = useMantineTheme();
-  const primaryColor = colors.violet[7];
   const RESEND_DELAY = RESEND_EMAIL_DELAY * 60;
   const [secondsLeft, setSecondsLeft] = useState(0);
   const { t } = useTranslation("email_verification");
@@ -50,7 +42,7 @@ const EmailVerificationPage = () => {
     >
       <Stack>
         <Group>
-          <WikiIcon name="check_circle" size={48} color={primaryColor} />
+          <WikiIcon name="check_circle" size={48} color={PRIMARY_COLOR} />
           <Title order={2} ta={"center"}>
             {t("title")}
           </Title>

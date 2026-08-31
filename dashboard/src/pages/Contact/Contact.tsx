@@ -36,17 +36,14 @@ export const Contact = (_) => {
             data={typeOptions}
             {...getInputProps("type")}
             label={"Type"}
-            size="md"
           />
           <TextInput
             {...getInputProps("subject")}
             label={"Subject"}
-            size="md"
           />
           <Textarea
             {...getInputProps("message")}
             label={"Message"}
-            size="md"
             rows={5}
           />
         </Stack>

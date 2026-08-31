@@ -1,4 +1,5 @@
 import { Badge, Button, Card, Group, Stack, Text } from "@mantine/core";
+import { semanticColor } from "@/theme";
 
 export const ContributionSection = () => {
   return (
@@ -26,7 +27,7 @@ export const ContributionSection = () => {
             <Text fw={"bold"} size="md" lh={1}>
               Salsa step
             </Text>
-            <Badge size="sm" variant="dot" color="green" lh={1}>
+            <Badge size="sm" variant="dot" color={semanticColor.success} lh={1}>
               approved
             </Badge>
           </Group>

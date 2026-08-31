@@ -31,7 +31,6 @@ export const ResetPassword = () => {
               autoComplete="current-password"
               error={errors.password}
               label={"Password"}
-              size="md"
             />
             <PasswordInput
               {...getInputProps("confirmPassword")}
@@ -39,7 +38,6 @@ export const ResetPassword = () => {
               autoComplete="current-password"
               error={errors.password}
               label={"Confirm password"}
-              size="md"
             />
             <Button fullWidth>Continue</Button>
           </Stack>

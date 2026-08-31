@@ -8,8 +8,8 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { WikiLink } from "../../components/Link";
-import { GoogleButton } from "../../components/GoogleButton.tsx/GoogleButton";
+import { WikiLink } from "@/components/primitive";
+import { GoogleButton } from "@/components/button";
 import { useTranslation } from "react-i18next";
 import { useLogin } from "./useLogin";
 
@@ -28,7 +28,6 @@ export const Login = () => {
           <TextInput
             {...getInputProps("identifier")}
             label={t("email")}
-            size="md"
             id="email"
           />
           <Flex
@@ -41,7 +40,6 @@ export const Login = () => {
               {...getInputProps("password")}
               autoComplete="current-password"
               label={t("password")}
-              size="md"
               id="password"
             />
             <WikiLink
