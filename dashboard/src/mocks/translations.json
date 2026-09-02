@@ -1,0 +1,66 @@
+[
+  { "key": "home.title", "value": "Wiki", "locale": "en" },
+  {
+    "key": "home.subtitle",
+    "value": "The dance encyclopedia",
+    "locale": "en"
+  },
+  { "key": "login.title", "value": "Welcome back", "locale": "en" },
+  { "key": "login.subtitle", "value": "Insert your credentials", "locale": "en" },
+  { "key": "login.email", "value": "Email or username", "locale": "en" },
+  { "key": "login.password", "value": "Password", "locale": "en" },
+  { "key": "login.login_button", "value": "Login", "locale": "en" },
+  { "key": "signup.title", "value": "Hi, register here", "locale": "en" },
+  { "key": "common.button.close", "value": "Close", "locale": "en" },
+  {
+    "key": "errors.wrong_credentials",
+    "value": "The username or password you entered doesn't match our records.",
+    "locale": "en"
+  },
+  {
+    "key": "forgotten_password.title",
+    "value": "Forgotten password",
+    "locale": "en"
+  },
+  {
+    "key": "email_verification.title",
+    "value": "Account created successfully",
+    "locale": "en"
+  },
+  { "key": "home.title", "value": "Wiki", "locale": "it" },
+  {
+    "key": "home.subtitle",
+    "value": "L'enciclopedia della danza",
+    "locale": "it"
+  },
+  {
+    "key": "login.title",
+    "value": "Bentornato/a",
+    "locale": "it"
+  },
+  {
+    "key": "login.subtitle",
+    "value": "Inserisci le tue credenziali",
+    "locale": "it"
+  },
+  { "key": "login.email", "value": "Email o nome utente", "locale": "it" },
+  { "key": "login.password", "value": "Password", "locale": "it" },
+  { "key": "login.login_button", "value": "Accedi", "locale": "it" },
+  { "key": "signup.title", "value": "Ciao, registrati qui", "locale": "it" },
+  { "key": "common.button.close", "value": "Chiudi", "locale": "it" },
+  {
+    "key": "errors.wrong_credentials",
+    "value": "Il nome utente o la password inseriti non corrispondono ai nostri dati.",
+    "locale": "it"
+  },
+  {
+    "key": "forgotten_password.title",
+    "value": "Password dimenticata",
+    "locale": "it"
+  },
+  {
+    "key": "email_verification.title",
+    "value": "Account creato con successo",
+    "locale": "it"
+  }
+]

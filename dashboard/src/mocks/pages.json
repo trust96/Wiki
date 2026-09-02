@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "Breaking",
+    "description": "Origins, culture and foundations of breaking as a dance and a sport.",
+    "updatedAt": "2026-01-12T10:30:00Z",
+    "sections": [
+      {
+        "id": 1,
+        "title": "History",
+        "content": "Breaking was born in the Bronx in the early 1970s, on the block parties where DJ Kool Herc isolated the percussive break and let dancers improvise over it. What started as a social dance between neighbourhood crews became a global movement carried by music, fashion and competition.",
+        "order": 1
+      },
+      {
+        "id": 2,
+        "title": "Elements",
+        "content": "The vocabulary is usually split into toprock, downrock, power moves and freezes. Toprock is the standing footwork that opens a set, downrock moves the dancer to the floor, power moves are the rotational acrobatic sequences, and freezes stop the body in a controlled pose on the beat.",
+        "order": 2
+      },
+      {
+        "id": 3,
+        "title": "Culture",
+        "content": "Ciphers, battles and jams are the social engine of the scene. Respect for pioneers, musicality and originality weigh more than raw trick count, and the cypher remains the space where a dancer is actually judged by peers.",
+        "order": 3
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "House Dance",
+    "description": "Footwork, jack and skating from the Chicago and New York house scenes.",
+    "updatedAt": "2026-02-03T18:05:00Z",
+    "sections": [
+      {
+        "id": 4,
+        "title": "Origins",
+        "content": "House dance grew inside clubs such as the Power Plant in Chicago and Paradise Garage in New York, where DJs stretched disco into a faster, drum-driven sound and dancers answered it with floor-filling footwork.",
+        "order": 1
+      },
+      {
+        "id": 5,
+        "title": "Technique",
+        "content": "The jack is the core groove: a ripple through the chest and hips that loosens everything else. Footwork, shuffling, skating and lofting are variations built on top of it, always kept light and on the beat.",
+        "order": 2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Waacking",
+    "description": "Arm lines, poses and musicality from the Los Angeles club scene.",
+    "updatedAt": "2026-03-21T09:15:00Z",
+    "sections": [
+      {
+        "id": 6,
+        "title": "History",
+        "content": "Waacking came out of late-1960s Los Angeles clubs, largely from Latino and Black queer communities, and was popularised by the TV show Soul Train. It is a dance of the arms, the face and the pose, tied to disco and to dramatic timing.",
+        "order": 1
+      },
+      {
+        "id": 7,
+        "title": "Musicality",
+        "content": "Rotations of the forearms, points and stops follow the hi-hat and the vocals. Dancers often hit a pose on an accent and hold it a beat longer than the music expects.",
+        "order": 2
+      }
+    ]
+  }
+]
