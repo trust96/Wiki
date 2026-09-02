@@ -6,15 +6,6 @@ export const fileApi = createApi({
   reducerPath: "fileApi",
   baseQuery: normalizeBaseQuery,
   endpoints: (builder) => ({
-    currentUser: builder.query({
-      query: () => {
-        return {
-          url: "/users/me",
-          method: "GET",
-          type: HttpType.File,
-        };
-      },
-    }),
     upload: builder.mutation<any, any>({
       query: (payload) => {
         return {

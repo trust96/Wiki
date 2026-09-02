@@ -17,6 +17,33 @@ export type TSignupParams = {
   terms?: boolean;
 };
 
-export type TLoginResponseData = TWikiResponseData<null>;
-export type TSignupResponseData = TWikiResponseData<null>;
+export type TUser = {
+  id: number;
+  email: string;
+  username: string;
+  firstName?: string;
+  lastName?: string;
+  nickname?: string;
+  avatar?: string;
+  bio?: string;
+  role?: string;
+  emailVerifiedAt?: string;
+};
+
+export type TUpdateUserParams = {
+  firstName?: string;
+  lastName?: string;
+  nickname?: string;
+  bio?: string;
+  avatar?: string;
+};
+
+export type TUserResponseData = TWikiResponseData<{ user: TUser }>;
+
+export type TLoginResponseData = TWikiResponseData<{
+  token: string;
+  user: TUser;
+}>;
+export type TSignupResponseData = TUserResponseData;
+export type TUpdateUserResponseData = TUserResponseData;
 export type TForgottenPasswordResponseData = TWikiResponseData<null>;
