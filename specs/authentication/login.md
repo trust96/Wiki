@@ -15,8 +15,8 @@
 
 - There shall be the possibility to login through "google" Button
 
-- If the user is already logged in, it shall redirect to the homepage
-
-- If the login is successful, it shall redirect to the homepage
-
 - If the user is not verified, it shall redirect to the verification page
+
+- If the user is already logged in, or the login is successful:
+  - If the user has not completed onboarding, it shall redirect to onboarding
+  - Otherwise it shall redirect to the homepage

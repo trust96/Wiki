@@ -10,5 +10,5 @@
   - Search icon: When clicked, it shall redirect to the search page.
   - Add icon: When clicked, it shall open a modal to create a new wiki.
     (this is the main CTA)
-  - Notifications icon: When clicked, it shall open a dropdown with recent notifications.
+  - Notifications icon: When clicked, it shall redirect to the notifications page.
   - Profile icon: When clicked, it shall redirect to the user's profile page.
