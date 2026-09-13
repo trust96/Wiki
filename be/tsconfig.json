@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "sourceMap": false,
+    "rootDir": "src",
+    "jsx": "react-jsx",
+    "strict": false,
+    "lib": ["ESNext", "DOM"],
+    "module": "CommonJS",
+    "target": "ESNext",
+    "resolveJsonModule": true
+  },
+  "include": ["./src/**/*.ts", "types/*.d.ts"],
+  "exclude": ["node_modules"]
+}
