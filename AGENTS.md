@@ -5,7 +5,7 @@ Monorepo. Each space has its own agent and `guidelines/` folder. Nested `AGENTS.
 | Space | Path | Stack |
 | --- | --- | --- |
 | Dashboard | `dashboard/` | React 19 + Vite + Mantine |
-| Backend | `backend/` | Laravel |
+| Backend | `backend/` | Laravel — [`backend/AGENTS.md`](backend/AGENTS.md) |
 | Site | `site/` | Pug + Vite |
 
 Product intent lives in `specs/`. Do not apply dashboard React conventions to backend PHP, or the reverse.
