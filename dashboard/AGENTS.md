@@ -65,5 +65,6 @@ Put new UI in the matching `components/` layer. Do not recreate a flat `componen
 - Import from layer barrels (`@/components/primitive`), not from another space (`backend/`, `site/`).
 - User-visible strings for new or touched UI go through i18next (`public/locales/{en,it}`).
 - HTTP goes through `services/` + `normalizeBaseQuery`. Do not `fetch` from components.
+- Call only paths listed as shipped in [`../backend/endpoints.md`](../backend/endpoints.md). That file is the live API contract. Do not follow leftover Strapi URLs.
 - Style with Mantine props and `src/theme` first. CSS modules are the exception.
 - Browser-verify UI changes (real interaction, not only a screenshot).
