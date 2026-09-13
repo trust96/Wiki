@@ -28,6 +28,10 @@ yarn workspace wiki_client build
 
 From `dashboard/`: `yarn dev`, `yarn test`, `yarn storybook`, `yarn build`.
 
+## Design
+
+Screen drafts and Superdesign links: [`../specs/design/dashboard.md`](../specs/design/dashboard.md). Product rules stay in `specs/`. Do not copy Superdesign HTML into the app.
+
 ## How it boots
 
 `main.tsx` starts MSW, then mounts `Root`. `Root` wraps `App` in `WikiProvider` (Redux + Router + Mantine, default dark) and mounts global `WikiLoader` + `ErrorModal`. Routes live in `App.tsx`.
