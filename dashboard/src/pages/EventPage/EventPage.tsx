@@ -21,7 +21,7 @@ export const EventPage = () => {
       <Stack gap={45}>
         <Stack>
           <Title c={PRIMARY_COLOR} order={2} mb={"md"}>
-            {currentPage?.name}
+            {currentPage?.title}
           </Title>
           <TableOfContents links={links} />
         </Stack>

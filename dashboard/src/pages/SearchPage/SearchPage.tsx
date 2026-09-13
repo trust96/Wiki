@@ -12,7 +12,7 @@ export const SearchPage = () => {
   const [searchString, setSearchString] = useState("");
   const { data: pages } = usePage();
   const filteredPages = (pages?.data ?? [])?.filter((page) => {
-    return page.name.includes(searchString);
+    return page.title.includes(searchString);
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,13 +27,13 @@ export const SearchPage = () => {
       <WikiList isHoverable>
         {filteredPages?.map((page) => {
           const handleClick = () => {
-            push(`/page/${page?.documentId}`);
+            push(`/page/${page?.id}`);
           };
           return (
             <WikiListItem key={page?.id} onClick={handleClick}>
               <Stack gap={4}>
                 <Text size="md" c={primaryShade(5)} fw="bolder">
-                  {page?.name}
+                  {page?.title}
                 </Text>
                 <Text size="md" c={primaryShade(5)} fw="bolder">
                   {page?.description}

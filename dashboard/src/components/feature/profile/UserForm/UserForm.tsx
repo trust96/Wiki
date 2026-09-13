@@ -13,10 +13,11 @@ import { useUser } from "@/hooks/useUser";
 import { WikiTextarea } from "@/components/input";
 
 export const UserForm = () => {
-  const { setValues, getInputProps, onSubmit, values } = useForm({
-    initialValues: userFormInitialValues,
-    validate: yupResolver(userFormValidationSchema),
-  });
+  const { setValues, getInputProps, onSubmit, values } =
+    useForm<typeof userFormInitialValues>({
+      initialValues: userFormInitialValues,
+      validate: yupResolver(userFormValidationSchema),
+    });
   const user = useUser();
   useEffect(() => {
     if (user?.id) {
@@ -31,26 +32,22 @@ export const UserForm = () => {
   }, [user?.id]);
   const { push } = useRouter();
   const [updateUser] = useUpdateUserMutation();
-  const userId = user?.id;
   const [uploadFile] = useUploadMutation();
   const handleSubmit = onSubmit(async (data: typeof values) => {
     try {
-      await updateUser({
-        userId,
-        data: {
-          ...data,
-          isOnboarded: true,
-        },
-      });
-
+      let avatar: string | undefined;
       if (data?.avatar) {
-        await uploadFile({
-          files: data.avatar,
-          ref: "plugin::users-permissions.user",
-          refId: userId,
-          field: "avatar",
-        });
+        const upload = await uploadFile({ files: data.avatar });
+        avatar = upload?.data?.url;
       }
+
+      await updateUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        nickname: data.nickName,
+        bio: data.bio,
+        ...(avatar ? { avatar } : {}),
+      });
     } catch (error) {
       console.log(error);
     } finally {

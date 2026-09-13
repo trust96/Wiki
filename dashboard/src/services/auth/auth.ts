@@ -5,28 +5,35 @@ import type {
   TLoginResponseData,
   TSignupParams,
   TSignupResponseData,
+  TUpdateUserParams,
+  TUpdateUserResponseData,
+  TUserResponseData,
 } from "./auth.model";
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: normalizeBaseQuery,
+  tagTypes: ["CurrentUser"],
   endpoints: (builder) => ({
-    currentUser: builder.query({
+    currentUser: builder.query<TUserResponseData, void>({
       query: () => {
         return {
-          url: "/users/me?populate=*",
+          url: "/auth/me",
           method: "GET",
         };
       },
       providesTags: ["CurrentUser"],
     }),
-    updateUser: builder.mutation<any, any>({
+    // The server resolves the user from the token, so no id goes in the url.
+    updateUser: builder.mutation<
+      TUpdateUserResponseData,
+      TUpdateUserParams
+    >({
       query: (payload) => {
-        const { userId, data } = payload;
         return {
-          url: `/users/${userId}`,
+          url: "/users/me",
           method: "PUT",
-          payload: data,
+          payload,
         };
       },
       invalidatesTags: ["CurrentUser"],
