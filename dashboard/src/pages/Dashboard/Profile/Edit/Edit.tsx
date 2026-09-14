@@ -1,17 +1,19 @@
 import { WikiFull, type TDirection } from "@/components/layout";
+import { useTranslation } from "react-i18next";
 import { UserForm } from "../../patterns";
 
-const formId = "onboarding-form";
+const formId = "user-form";
 
 export const ProfileEdit = () => {
-  const confirmProps: TDirection = {
-    text: "Complete",
+  const { t } = useTranslation("dashboard");
+  const right: TDirection = {
+    text: t("onboarding.complete"),
     form: formId,
   };
 
   return (
-    <WikiFull title="Edit Profile" right={confirmProps}>
-      <UserForm />
+    <WikiFull title={t("profile.edit")} right={right}>
+      <UserForm nextPath="/profile" />
     </WikiFull>
   );
 };

@@ -1,17 +1,16 @@
+import { onboardingParamsSchema } from "@/services/schema";
 import { z } from "zod";
 
 export const userFormInitialValues = {
+  artistName: "",
   firstName: "",
   lastName: "",
   bio: "",
-  avatar: null,
-  nickName: "",
-  genre: [],
-  profession: [],
+  avatar: null as File | null,
 };
 
-export const userFormValidationSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  bio: z.string(),
-});
+export const userFormValidationSchema = onboardingParamsSchema
+  .omit({ avatar: true })
+  .extend({
+    avatar: z.instanceof(File).nullable(),
+  });

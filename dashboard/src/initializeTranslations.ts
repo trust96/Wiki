@@ -17,6 +17,7 @@ i18n
       "signup",
       "email_verification",
       "forgotten_password",
+      "dashboard",
     ],
     defaultNS: "common",
     lng: "it",
