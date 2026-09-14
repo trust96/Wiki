@@ -18,7 +18,7 @@ import { ContributionSection } from "./ContributionSection";
 export const Profile = () => {
   const { id } = useParams();
   const user = useUser();
-  const isCurrentUser = !id || id === user?.id;
+  const isCurrentUser = !id || id === String(user?.id);
   const { t } = useTranslation();
   const bio = user?.bio;
   const fansCount = 12;
@@ -31,7 +31,7 @@ export const Profile = () => {
           <Avatar src={user?.avatar} size={"lg"} />
           <Stack gap={"sm"}>
             <Text component="div" fw={"bolder"} tt={"capitalize"} lh={1}>
-              {user?.nickname}
+              {user?.artistName}
             </Text>
             <Group gap={"md"}>
               <Stack gap={"xs"} align="start">

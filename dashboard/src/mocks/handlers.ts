@@ -6,10 +6,13 @@ import {
   registerUser,
 } from "./auth.handler";
 import {
+  contributions,
+  notifications,
   pages,
   singlePage,
   translations,
   updateProfile,
+  updateSection,
   upload,
 } from "./content.handler";
 
@@ -22,6 +25,9 @@ export const handlers = [
   updateProfile,
   pages,
   singlePage,
+  contributions,
+  notifications,
+  updateSection,
   translations,
   upload,
 ];

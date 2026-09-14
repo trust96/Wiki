@@ -1,33 +1,55 @@
 import { http } from "msw";
 import { fail, ok } from "./envelope";
-import userJson from "./user.json";
+import mayaJson from "./user.json";
+import newUserJson from "./newUser.json";
+import { userSchema, type TUser } from "@/services/schema";
 
-export const mockUser = {
-  ...userJson,
-  id: 1,
-  email: "user@example.com",
-  username: "admin",
-  role: "user",
-  emailVerifiedAt: "2026-01-01T00:00:00Z",
+export const mayaUser: TUser = userSchema.parse(mayaJson);
+export const newUser: TUser = userSchema.parse(newUserJson);
+
+export let mockUser: TUser = { ...mayaUser };
+
+export const resetMockUser = () => {
+  mockUser = { ...mayaUser };
 };
 
+const users: TUser[] = [mayaUser, newUser];
+
+const findUser = (identifier: string) =>
+  users.find(
+    (user) => user.username === identifier || user.email === identifier,
+  );
+
 export const loginUser = http.post("/api/auth/login", async ({ request }) => {
-  const { identifier } = (await request.json()) as any;
+  const { identifier } = (await request.json()) as { identifier?: string };
 
   if (identifier === "unverified@example.com") return fail(101, 401);
 
-  if (identifier !== "admin" && identifier !== mockUser.email)
-    return fail(100, 401);
+  const loginId =
+    identifier === "admin" || identifier === "user@example.com"
+      ? "maya"
+      : identifier;
+  const user = loginId ? findUser(loginId) : undefined;
+  if (!user) return fail(100, 401);
 
+  mockUser = { ...user };
   return ok({ token: "mock-token", user: mockUser });
 });
 
 export const registerUser = http.post(
   "/api/auth/register",
   async ({ request }) => {
-    const { email, username } = (await request.json()) as any;
+    const { email, username } = (await request.json()) as {
+      email?: string;
+      username?: string;
+    };
 
-    return ok({ user: { ...mockUser, email, username } });
+    mockUser = {
+      ...newUser,
+      email: email ?? newUser.email,
+      username: username ?? newUser.username,
+    };
+    return ok({ user: mockUser });
   },
 );
 
@@ -35,9 +57,11 @@ export const currentUser = http.get("/api/auth/me", () =>
   ok({ user: mockUser }),
 );
 
-export const logoutUser = http.post("/api/auth/logout", () => ok());
+export const logoutUser = http.post("/api/auth/logout", () => {
+  resetMockUser();
+  return ok();
+});
 
-// These endpoints have no payload back, only the envelope.
 export const authStubHandlers = [
   "verify-email",
   "resend-verification",

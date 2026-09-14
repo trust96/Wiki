@@ -24,7 +24,7 @@ export const UserForm = () => {
       setValues({
         firstName: user?.firstName || "",
         lastName: user?.lastName || "",
-        nickName: user?.nickname || "",
+        nickName: user?.artistName || "",
         avatar: null,
         bio: user?.bio,
       });
@@ -44,7 +44,7 @@ export const UserForm = () => {
       await updateUser({
         firstName: data.firstName,
         lastName: data.lastName,
-        nickname: data.nickName,
+        artistName: data.nickName,
         bio: data.bio,
         ...(avatar ? { avatar } : {}),
       });

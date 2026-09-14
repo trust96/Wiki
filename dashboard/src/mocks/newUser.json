@@ -1,0 +1,13 @@
+{
+  "id": 2,
+  "email": "new@example.com",
+  "username": "new",
+  "artistName": "",
+  "firstName": "",
+  "lastName": "",
+  "bio": "",
+  "avatar": "",
+  "isOnboarded": false,
+  "role": "user",
+  "emailVerifiedAt": "2026-09-01T00:00:00Z"
+}

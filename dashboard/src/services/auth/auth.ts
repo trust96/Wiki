@@ -12,7 +12,7 @@ import type {
 
 export const currentUserKey = ["me"] as const;
 
-export const useCurrentUserQuery = () =>
+export const useCurrentUserQuery = (enabled = true) =>
   useQuery({
     queryKey: currentUserKey,
     queryFn: () =>
@@ -20,6 +20,7 @@ export const useCurrentUserQuery = () =>
         url: "/auth/me",
         method: "GET",
       }),
+    enabled,
   });
 
 export const useUpdateUserMutation = () => {

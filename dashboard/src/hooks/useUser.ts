@@ -1,6 +1,8 @@
-import userJsonData from "../mocks/user.json";
+import { useCurrentUserQuery } from "@/services/auth/auth";
+import { useUiStore } from "@/state/ui";
 
 export const useUser = () => {
-  const userData = userJsonData;
-  return userData;
+  const token = useUiStore((state) => state.token);
+  const { data } = useCurrentUserQuery(Boolean(token));
+  return data?.data?.user;
 };
