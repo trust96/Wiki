@@ -1,0 +1,1 @@
+export { WikiSummary } from "./WikiSummary";
