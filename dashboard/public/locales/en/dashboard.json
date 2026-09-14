@@ -27,6 +27,7 @@
     "genre": "Genre",
     "updated": "Updated",
     "results": "Results",
+    "placeholder": "Search for wikis",
     "loadingMore": "Loading more"
   },
   "wiki": {
@@ -48,7 +49,9 @@
     "pending": "Pending",
     "approved": "Approved",
     "declined": "Declined",
-    "abandoned": "Abandoned"
+    "abandoned": "Abandoned",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "notifications": {
     "title": "Notifications",

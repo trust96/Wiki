@@ -1,20 +1,14 @@
-import {
-  Button,
-  Container,
-  Image,
-  SimpleGrid,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Button, Image, SimpleGrid, Text, Title } from "@mantine/core";
 import classes from "./NotFound.module.css";
+import { wikiContainerClass } from "@/foundations";
 import { useRouter } from "@/hooks/useRouter";
 
 export const NotFound = () => {
   const { back } = useRouter();
 
   return (
-    <Container className={classes.root}>
-      <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
+    <Box className={`${wikiContainerClass} ${classes.root}`}>
+      <SimpleGrid spacing={{ base: 40, md: 80 }} cols={{ base: 1, md: 2 }}>
         <Image src={"/not_found_page.svg"} className={classes.mobileImage} />
         <div>
           <Title className={classes.title}>Something is not right...</Title>
@@ -35,6 +29,6 @@ export const NotFound = () => {
         </div>
         <Image src={"/not_found_page.svg"} className={classes.desktopImage} />
       </SimpleGrid>
-    </Container>
+    </Box>
   );
 };

@@ -57,7 +57,7 @@ primitive → Mantine (and CSS modules)
 | --- | --- | --- |
 | `primitive/` | Reusable wrappers around Mantine/HTML. No routes, no API, no domain copy. | `WikiIcon`, `WikiLink`, `WikiList`, `WikiListItem`, `WikiLogo`, `WikiModal` |
 | `layout/` | App chrome and page frames. | `PageComponent`, `WikiNavigation`, `WikiSidebar`, `WikiFooter`, `WikiBottomNavigation`, `WikiFull` |
-| `input/` | Form controls built on Mantine inputs. | `SearchField`, `WikiTextarea` |
+| `input/` | Form controls built on Mantine inputs. | `SearchField`, `WikiTextarea`, `WikiEditor` |
 | `button/` | Specialized buttons. | `GoogleButton`, `ShareButton` |
 | `feedback/` | Global overlay chrome mounted in `Root`. | `ErrorModal`, `WikiLoader` |
 

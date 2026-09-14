@@ -5,29 +5,33 @@
 
 .title {
   font-weight: 500;
-  font-size: 34px;
+  font-size: 32px;
   margin-bottom: var(--mantine-spacing-md);
   font-family: var(--mantine-font-family);
 
-  @media (max-width: $mantine-breakpoint-sm) {
-    font-size: 32px;
+  @media (min-width: $mantine-breakpoint-md) {
+    font-size: 34px;
   }
 }
 
 .control {
-  @media (max-width: $mantine-breakpoint-sm) {
-    width: 100%;
+  width: 100%;
+
+  @media (min-width: $mantine-breakpoint-md) {
+    width: auto;
   }
 }
 
 .mobileImage {
-  @media (min-width: 48em) {
+  @media (min-width: $mantine-breakpoint-md) {
     display: none;
   }
 }
 
 .desktopImage {
-  @media (max-width: 47.99em) {
-    display: none;
+  display: none;
+
+  @media (min-width: $mantine-breakpoint-md) {
+    display: block;
   }
 }

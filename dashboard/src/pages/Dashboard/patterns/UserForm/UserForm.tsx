@@ -4,7 +4,7 @@ import { useRouter } from "@/hooks/useRouter";
 import { useUser } from "@/hooks/useUser";
 import { useUpdateUserMutation } from "@/services/auth/auth";
 import { useUploadMutation } from "@/services/file";
-import { Button, Stack, Text, TextInput, Title } from "@mantine/core";
+import { Stack, Text, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useEffect } from "react";
@@ -103,9 +103,6 @@ export const UserForm = ({ nextPath = "/home" }: TUserFormProps) => {
           rows={5}
           {...getInputProps("bio")}
         />
-        <Button type="submit" form={formId}>
-          {t("onboarding.complete")}
-        </Button>
       </Stack>
     </form>
   );

@@ -44,7 +44,7 @@ Alias: `@/` → `src/`.
 src/
   pages/
     Auth/         login, signup, email, password
-    Dashboard/    home, search, wiki, profile, onboarding + patterns/
+    Dashboard/    home, search, wiki, profile, notifications, onboarding + patterns/
   components/
     primitive/    Mantine/HTML wrappers, Wiki* public API
     layout/       shells, nav, page frames

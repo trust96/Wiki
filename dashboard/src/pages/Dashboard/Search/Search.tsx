@@ -47,6 +47,7 @@ export const Search = () => {
         <Title order={2}>{t("search.title")}</Title>
         <SearchField
           value={query}
+          placeholder={t("search.placeholder")}
           onChange={(event) => {
             const next = event.currentTarget.value;
             setQuery(next);

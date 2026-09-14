@@ -1,10 +1,11 @@
-import { Button, Container, Group, Text, Title } from "@mantine/core";
+import { Box, Button, Group, Text, Title } from "@mantine/core";
 import classes from "./ServerError.module.css";
+import { wikiContainerClass } from "@/foundations";
 
 export const ServerError = () => {
   return (
     <div className={classes.root}>
-      <Container>
+      <Box className={wikiContainerClass}>
         <div className={classes.label}>500</div>
         <Title className={classes.title}>Something bad just happened...</Title>
         <Text size="lg" ta="center" className={classes.description}>
@@ -16,7 +17,7 @@ export const ServerError = () => {
             Refresh the page
           </Button>
         </Group>
-      </Container>
+      </Box>
     </div>
   );
 };

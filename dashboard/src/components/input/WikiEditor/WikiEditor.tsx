@@ -56,12 +56,11 @@ const nodes = [
 
 const HtmlPlugin = ({ value }: { value: string }) => {
   const [editor] = useLexicalComposerContext();
-  const isFirst = useRef(true);
+  const didHydrate = useRef(false);
 
   useEffect(() => {
-    if (!isFirst.current) return;
-    isFirst.current = false;
-    if (!value) return;
+    if (didHydrate.current || !value) return;
+    didHydrate.current = true;
     editor.update(() => {
       const parser = new DOMParser();
       const dom = parser.parseFromString(value, "text/html");

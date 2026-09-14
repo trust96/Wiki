@@ -12,7 +12,7 @@ export const useForgottenPassword = () => {
     initialValues: forgottenPasswordInitialValues,
     validate: zod4Resolver(forgottenPasswordValidationSchema),
   });
-  const handleSubmit = onSubmit(async (values) => {
+  const handleSubmit = onSubmit(async () => {
     //TODO: add logic for submit
   });
   return { getInputProps, handleSubmit };

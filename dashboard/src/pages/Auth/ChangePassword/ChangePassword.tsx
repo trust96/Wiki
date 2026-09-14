@@ -6,8 +6,8 @@ import {
 } from "./helper";
 import { useForm } from "@mantine/form";
 
-export const ChangePassword = (_) => {
-  const { getInputProps, onSubmit, values } = useForm({
+export const ChangePassword = () => {
+  const { getInputProps, onSubmit } = useForm({
     initialValues: changePasswordInitialValues,
     validate: zod4Resolver(changePasswordValidationSchema),
   });

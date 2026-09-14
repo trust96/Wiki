@@ -49,8 +49,8 @@ const Profile = () => {
           </Text>
           <Spoiler
             maxHeight={40}
-            hideLabel={t("profile.edit")}
-            showLabel="show more"
+            hideLabel={t("profile.showLess")}
+            showLabel={t("profile.showMore")}
           >
             <Text size="sm">{user?.bio}</Text>
           </Spoiler>

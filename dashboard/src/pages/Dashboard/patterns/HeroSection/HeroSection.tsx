@@ -45,6 +45,7 @@ export const HeroSection = () => {
       </Stack>
       <SearchField
         value={query}
+        placeholder={t("search.placeholder")}
         onChange={(event) => setQuery(event.currentTarget.value)}
         onKeyDown={(event) => {
           if (event.key === "Enter") {
