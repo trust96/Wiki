@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "wikiId": 1,
+    "title": "Salsa step",
+    "excerpt": "The salsa step in house dance is a groovy forward-and-back foot pattern built on the signature house bounce. The dancer keeps a steady, relaxed rhythm, letting the knees soften and the body pulse gently with the beat.",
+    "genre": "House",
+    "status": "approved",
+    "reason": null,
+    "updatedAt": "2026-09-14T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "wikiId": 2,
+    "title": "House bounce",
+    "excerpt": "The house bounce is a small, continuous pulse through the knees and hips. Everything else in house sits on top of it.",
+    "genre": "House",
+    "status": "pending",
+    "reason": null,
+    "updatedAt": "2026-09-13T10:00:00Z"
+  },
+  {
+    "id": 3,
+    "wikiId": 4,
+    "title": "Breaking freeze",
+    "excerpt": "A freeze stops the body on the beat in a controlled pose. Strength and lines matter more than how long you can hold it.",
+    "genre": "Breaking",
+    "status": "declined",
+    "reason": "Needs a clearer description of how weight sits in the freeze, and a note on musicality.",
+    "updatedAt": "2026-09-11T10:00:00Z"
+  }
+]

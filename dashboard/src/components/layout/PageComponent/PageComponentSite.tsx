@@ -1,8 +1,9 @@
-import { Container, Flex } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import { WikiFooter } from "../Footer";
 import { WikiNavigation } from "../Navigation";
 import type { TPageComponentSiteProps } from "./types";
 import { PageComponentMetaData } from "./PageComponentMetaData";
+import { wikiContainerClass } from "@/foundations";
 
 export const PageComponentSite = (props: TPageComponentSiteProps) => {
   return (
@@ -13,9 +14,14 @@ export const PageComponentSite = (props: TPageComponentSiteProps) => {
       />
       <Flex direction="column" h="100%">
         <WikiNavigation.Site />
-        <Container flex={1} py="lg" w="100%" style={{ overflow: "auto" }}>
+        <Box
+          className={wikiContainerClass}
+          flex={1}
+          py="lg"
+          style={{ overflow: "auto" }}
+        >
           {props.children}
-        </Container>
+        </Box>
         <WikiFooter />
       </Flex>
     </>

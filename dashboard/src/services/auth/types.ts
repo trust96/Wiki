@@ -1,4 +1,7 @@
 import type { TWikiResponseData } from "@/helper/request";
+import type { TUser } from "@/services/schema";
+
+export type { TUser } from "@/services/schema";
 
 export type TForgottenPasswordParams = {
   email: string;
@@ -17,25 +20,13 @@ export type TSignupParams = {
   terms?: boolean;
 };
 
-export type TUser = {
-  id: number;
-  email: string;
-  username: string;
-  firstName?: string;
-  lastName?: string;
-  nickname?: string;
-  avatar?: string;
-  bio?: string;
-  role?: string;
-  emailVerifiedAt?: string;
-};
-
 export type TUpdateUserParams = {
   firstName?: string;
   lastName?: string;
-  nickname?: string;
+  artistName?: string;
   bio?: string;
   avatar?: string;
+  isOnboarded?: boolean;
 };
 
 export type TUserResponseData = TWikiResponseData<{ user: TUser }>;

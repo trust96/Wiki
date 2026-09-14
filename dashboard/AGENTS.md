@@ -30,7 +30,7 @@ From `dashboard/`: `yarn dev`, `yarn test`, `yarn storybook`, `yarn build`.
 
 ## Design
 
-Screen drafts and Superdesign links: [`../specs/design/dashboard.md`](../specs/design/dashboard.md). Product rules stay in `specs/`. Do not copy Superdesign HTML into the app.
+Screen drafts: [`../specs/design/dashboard.md`](../specs/design/dashboard.md). Target system: [`../specs/design/system.md`](../specs/design/system.md). Product rules stay in `specs/`. Do not copy Superdesign HTML into the app.
 
 ## How it boots
 
@@ -44,7 +44,7 @@ Alias: `@/` → `src/`.
 src/
   pages/
     Auth/         login, signup, email, password
-    Dashboard/    home, search, wiki, profile, onboarding + patterns/
+    Dashboard/    home, search, wiki, profile, notifications, onboarding + patterns/
   components/
     primitive/    Mantine/HTML wrappers, Wiki* public API
     layout/       shells, nav, page frames

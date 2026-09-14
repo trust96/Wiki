@@ -1,0 +1,67 @@
+{
+  "home": {
+    "title": "Home",
+    "description": "Trova un wiki di danza",
+    "welcome": "Benvenuto su",
+    "tagline": "Trova un wiki di danza o inizia a contribuire.",
+    "sponsor": "Sponsorizzato da"
+  },
+  "onboarding": {
+    "title": "Il tuo nome",
+    "heading": "Scegli il nome che vedrà la community",
+    "subtitle": "Questa è la tua identità pubblica su Wiki dance.",
+    "artistName": "Nome d'arte",
+    "private": "Privato",
+    "privateNote": "Queste informazioni non saranno pubbliche.",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "bio": "Bio",
+    "complete": "Completa",
+    "photo": "Foto opzionale"
+  },
+  "search": {
+    "title": "Cerca nella community",
+    "description": "Cerca wiki",
+    "latest": "Ultimi wiki",
+    "wiki": "Wiki",
+    "genre": "Genere",
+    "updated": "Aggiornato",
+    "results": "Risultati",
+    "placeholder": "Cerca wiki",
+    "loadingMore": "Carico altro"
+  },
+  "wiki": {
+    "contents": "Indice",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "instructor": "Insegnante",
+    "updated": "Aggiornato"
+  },
+  "profile": {
+    "document": {
+      "title": "Profilo",
+      "description": "I tuoi contributi"
+    },
+    "edit": "Modifica profilo",
+    "links": "Gestisci link",
+    "contributions": "Contributi",
+    "all": "Tutti",
+    "pending": "In attesa",
+    "approved": "Approvati",
+    "declined": "Rifiutati",
+    "abandoned": "Abbandonati",
+    "showMore": "Mostra di più",
+    "showLess": "Mostra di meno"
+  },
+  "notifications": {
+    "title": "Notifiche",
+    "description": "Esiti delle tue modifiche",
+    "openWiki": "Apri wiki",
+    "editContent": "Modifica contenuto",
+    "reason": "Motivo"
+  },
+  "section": {
+    "title": "Modifica contenuto",
+    "save": "Salva"
+  }
+}

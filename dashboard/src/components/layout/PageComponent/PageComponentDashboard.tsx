@@ -1,9 +1,10 @@
-import { Box, Container, Flex, Paper } from "@mantine/core";
+import { Box, Flex, Paper } from "@mantine/core";
 import { WikiBottomNavigation } from "../BottomNavigation";
 import { WikiNavigation } from "../Navigation";
 import { WikiSidebar } from "../Sidebar";
 import type { TPageComponentDashboardProps } from "./types";
 import { PageComponentMetaData } from "./PageComponentMetaData";
+import { wikiContainerClass } from "@/foundations";
 
 export const PageComponentDashboard = (props: TPageComponentDashboardProps) => {
   return (
@@ -12,7 +13,7 @@ export const PageComponentDashboard = (props: TPageComponentDashboardProps) => {
         title={props.title}
         description={props.description}
       />
-      <Container>
+      <Box className={wikiContainerClass}>
         <Flex direction="column" h="100dvh" gap="md" py="md">
           <WikiNavigation.Dashboard />
           <Flex flex={1} gap="md" align="stretch" mih={0}>
@@ -27,7 +28,7 @@ export const PageComponentDashboard = (props: TPageComponentDashboardProps) => {
             <WikiBottomNavigation />
           </Box>
         </Flex>
-      </Container>
+      </Box>
     </Box>
   );
 };

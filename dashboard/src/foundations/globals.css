@@ -1,6 +1,7 @@
 :root {
   --wiki-nav-height: 56px;
   --wiki-footer-height: 56px;
+  --wiki-container-max: 72rem;
 }
 
 html,
@@ -8,8 +9,21 @@ body {
   width: 100%;
   height: 100%;
 }
+
 #root {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.wikiContainer {
+  width: 100%;
+  padding-inline: var(--mantine-spacing-md);
+}
+
+@media (min-width: $mantine-breakpoint-md) {
+  .wikiContainer {
+    max-width: var(--wiki-container-max);
+    margin-inline: auto;
+  }
 }

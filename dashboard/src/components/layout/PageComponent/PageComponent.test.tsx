@@ -14,3 +14,16 @@ test("renders children when specified", async () => {
   );
   await expect.element(getByText("i am a child")).toBeInTheDocument();
 });
+
+test("dashboard frame uses wikiContainer", async () => {
+  const { container, getByText } = await render(
+    <PageComponent.Dashboard title="Test" description="Test page">
+      <div>dashboard child</div>
+    </PageComponent.Dashboard>,
+    {
+      wrapper: WikiProvider,
+    },
+  );
+  await expect.element(getByText("dashboard child")).toBeInTheDocument();
+  expect(container.querySelector(".wikiContainer")).toBeTruthy();
+});

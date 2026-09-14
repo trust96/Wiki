@@ -1,11 +1,16 @@
 import {
+  Alert,
+  Badge,
   Button,
   Checkbox,
+  Chip,
   createTheme,
+  FileInput,
   Modal,
   Paper,
   PasswordInput,
   Select,
+  Table,
   Textarea,
   TextInput,
 } from "@mantine/core";
@@ -72,6 +77,33 @@ export const theme = createTheme({
     Checkbox: Checkbox.extend({
       defaultProps: {
         size: "md",
+      },
+    }),
+    FileInput: FileInput.extend({
+      defaultProps: {
+        size: "md",
+      },
+    }),
+    Chip: Chip.extend({
+      defaultProps: {
+        size: "sm",
+        radius: "xl",
+      },
+    }),
+    Badge: Badge.extend({
+      defaultProps: {
+        size: "sm",
+      },
+    }),
+    Table: Table.extend({
+      defaultProps: {
+        highlightOnHover: true,
+        verticalSpacing: "sm",
+      },
+    }),
+    Alert: Alert.extend({
+      defaultProps: {
+        radius: "md",
       },
     }),
     Paper: Paper.extend({

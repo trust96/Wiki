@@ -2,16 +2,20 @@ import { Button, Menu } from "@mantine/core";
 import { WikiIcon } from "@/components/primitive";
 import { tokenKey } from "@/helper/constants";
 import { useRouter } from "@/hooks/useRouter";
+import { currentUserKey } from "@/services/auth/auth";
 import { useUiStore } from "@/state/ui";
 import { semanticColor } from "@/foundations";
+import { useQueryClient } from "@tanstack/react-query";
 
 const NavigationMenu = () => {
   const { push } = useRouter();
+  const queryClient = useQueryClient();
   const removeToken = useUiStore((state) => state.removeToken);
 
   const handleLogout = () => {
     localStorage.removeItem(tokenKey);
     removeToken();
+    queryClient.removeQueries({ queryKey: currentUserKey });
     push("/auth/login");
   };
 

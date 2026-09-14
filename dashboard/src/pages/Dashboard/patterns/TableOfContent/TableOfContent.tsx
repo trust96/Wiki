@@ -1,5 +1,6 @@
 import { Group, NavLink, Stack, Text } from "@mantine/core";
 import { useLocation } from "react-router";
+import { useTranslation } from "react-i18next";
 import { WikiIcon } from "@/components/primitive";
 
 export type TTableOfContentLink = {
@@ -13,6 +14,7 @@ type TTableOfContentsProps = {
 };
 
 export const TableOfContents = ({ links }: TTableOfContentsProps) => {
+  const { t } = useTranslation("dashboard");
   const { hash } = useLocation();
   const active = hash || links[0]?.link;
 
@@ -20,7 +22,7 @@ export const TableOfContents = ({ links }: TTableOfContentsProps) => {
     <Stack gap={4}>
       <Group gap="xs" mb="sm">
         <WikiIcon name="list" size="md" />
-        <Text fw={600}>Table of contents</Text>
+        <Text fw={600}>{t("wiki.contents")}</Text>
       </Group>
       {links.map((item) => (
         <NavLink

@@ -1,11 +1,8 @@
-import { z } from "zod";
+import { loginParamsSchema } from "@/services/schema";
 
 export const loginInitialValues = {
   identifier: "",
   password: "",
 } as const;
 
-export const loginValidationSchema = z.object({
-  identifier: z.string(),
-  password: z.string().min(1, "Required"),
-});
+export const loginValidationSchema = loginParamsSchema;

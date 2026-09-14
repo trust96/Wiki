@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "wikiId": 1,
+    "sectionId": 1,
+    "title": "Salsa step",
+    "status": "approved",
+    "reason": "Clear, useful, and on beat with the rest of the wiki.",
+    "updatedAt": "2026-09-14T10:05:00Z"
+  },
+  {
+    "id": 2,
+    "wikiId": 4,
+    "sectionId": 7,
+    "title": "Breaking freeze",
+    "status": "declined",
+    "reason": "Needs a clearer description of how weight sits in the freeze, and a note on musicality.",
+    "updatedAt": "2026-09-11T10:05:00Z"
+  }
+]

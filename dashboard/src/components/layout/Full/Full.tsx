@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Container,
   Divider,
   Group,
   Stack,
@@ -9,6 +8,7 @@ import {
 } from "@mantine/core";
 import { WikiModal } from "@/components/primitive";
 import { WikiIcon } from "@/components/primitive";
+import { wikiContainerClass } from "@/foundations";
 import { useRouter } from "@/hooks/useRouter";
 import {
   forwardRef,
@@ -105,7 +105,7 @@ const Full = forwardRef((props: TFull, ref: RefObject<HTMLDivElement>) => {
       >
         Are you sure you want to leave without saving changes?
       </WikiModal>
-      <Container w="100%" h="100%">
+      <Box className={wikiContainerClass} h="100%">
         <Stack gap="md" h="100%">
           {noNav ? null : (
             <>
@@ -129,7 +129,7 @@ const Full = forwardRef((props: TFull, ref: RefObject<HTMLDivElement>) => {
             {props.children}
           </Box>
         </Stack>
-      </Container>
+      </Box>
     </>
   );
 });
