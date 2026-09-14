@@ -39,7 +39,7 @@ moderating the content and providing new content.
 
 ## Design
 
-Dashboard visual drafts (Superdesign ids and previews): [`design/dashboard.md`](design/dashboard.md). That file does not replace approved specs.
+Dashboard visual drafts: [`design/dashboard.md`](design/dashboard.md). Target system (chrome, pieces, container, Lexical): [`design/system.md`](design/system.md). Those files do not replace approved specs.
 
 ## Characteristics of the app
 

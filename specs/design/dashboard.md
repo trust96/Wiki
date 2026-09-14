@@ -2,7 +2,7 @@
 
 Visual index for the dashboard first-run and contribution surfaces. Product rules live in the approved specs under `specs/`. Those specs match these drafts. This file maps each screen to its Superdesign draft and the code that should implement it.
 
-Do not copy Superdesign HTML or Tailwind into the app. Rebuild screens and chrome from these drafts with Mantine. Implementation order and state: [`implementation.md`](implementation.md). Do not treat the current Wiki\* tree or theme as the baseline.
+Do not copy Superdesign HTML or Tailwind into the app. Rebuild screens and chrome from these drafts with Mantine. Target system (chrome, pieces, color, spacing, container, Lexical): [`system.md`](system.md). Implementation order and branches: [`implementation.md`](implementation.md). Do not treat the current Wiki\* tree or theme as the baseline.
 
 ## Where to get the designs
 
@@ -10,7 +10,7 @@ Do not copy Superdesign HTML or Tailwind into the app. Rebuild screens and chrom
 | --- | --- |
 | Superdesign project | [Wiki Dance Dashboard](https://superdesign.dev/teams/3d836524-6c81-47b9-92eb-1e90764386b1/projects/aec57b9b-5091-4103-884f-67d31b5ebe88) |
 | Project id | `aec57b9b-5091-4103-884f-67d31b5ebe88` |
-| Tokens | `dashboard/src/foundations`, `.superdesign/design-system.md` |
+| Tokens | [`system.md`](system.md), then `dashboard/src/foundations` |
 | Local Superdesign state | `.superdesign/resume.json` |
 
 Preview URL for any draft: `https://p.superdesign.dev/draft/<draft-id>`
@@ -19,8 +19,8 @@ Preview URL for any draft: `https://p.superdesign.dev/draft/<draft-id>`
 
 | Surface | Chrome | Notes |
 | --- | --- | --- |
-| Onboarding | `WikiFull` (`Full`) | Same shell as login. The Superdesign `FullChrome` slot often fails to render children — do not wrap onboarding in that extracted component. |
-| Home, Search, Wiki, Profile, Notifications, section edit | `PageComponent.Dashboard` | Top nav + left sidebar (desktop) / bottom nav (mobile). Notifications is enabled in the designed chrome; Add stays disabled. |
+| Onboarding, profile edit | `WikiFull` | Back / title / Complete. Wordmark is Site chrome only — see [`system.md`](system.md). Superdesign `FullChrome` slot often fails to render children; do not wrap onboarding in that extracted component. |
+| Home, Search, Wiki, Profile, Notifications, section edit | `PageComponent.Dashboard` | Top nav + left sidebar (from `md`) / bottom nav (phone). Notifications enabled; Add stays disabled. One `.wikiContainer` class, not Mantine `Container`. |
 
 Extracted Superdesign components (reference only):
 
