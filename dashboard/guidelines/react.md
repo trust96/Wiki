@@ -156,10 +156,10 @@ Mantine is the design system. `WikiProvider` sets `theme` from `src/foundations`
 1. Use Mantine layout/typography props (`Stack`, `Flex`, `Group`, `gap`, `p`, `c`, `fw`, `visibleFrom`, `hiddenFrom`).
 2. Colors: `PRIMARY_COLOR`, `primaryShade(n)`, `semanticColor` from `@/foundations`. Do not hardcode the purple palette.
 3. Spacing: theme scale (`xs`–`xl`). `theme.ts` maps those to 4px steps.
-4. CSS modules colocated with the component, imported as `styles` or `classes`. Use Mantine CSS variables (`var(--mantine-color-body)`, `var(--mantine-spacing-md)`) and PostCSS breakpoints (`$mantine-breakpoint-sm`). Layout chrome may use `--wiki-nav-height` / `--wiki-footer-height` from `foundations/globals.css`.
-5. Extend Mantine defaults in `foundations/theme.ts` (Button, Modal, inputs, Paper). Do not fork those defaults in a one-off `style={{}}` unless the component is the exception.
+4. CSS modules colocated with the component, imported as `styles` or `classes`. Use Mantine CSS variables (`var(--mantine-color-body)`, `var(--mantine-spacing-md)`) and PostCSS breakpoints (`$mantine-breakpoint-md` with `min-width` — mobile first). Layout chrome uses `--wiki-nav-height` / `--wiki-footer-height` from `foundations/globals.css`.
+5. Extend Mantine defaults in `foundations/theme.ts` (Button, Modal, inputs, Paper, Chip, Badge, Table, Alert, FileInput). Do not fork those defaults in a one-off `style={{}}` unless the component is the exception.
 
-No Tailwind. No new CSS-in-JS library. Do not put page layout in `globals.css`.
+No Tailwind. No new CSS-in-JS library. Page shells use `wikiContainerClass` from `@/foundations` (`.wikiContainer` in `globals.css`). Do not add a second max-width in page CSS.
 
 ## Data and state
 
