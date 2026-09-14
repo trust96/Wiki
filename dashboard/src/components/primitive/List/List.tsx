@@ -1,5 +1,5 @@
 import { Stack } from "@mantine/core";
-import type { TListProps } from "./List.model";
+import type { TListProps } from "./types";
 import styles from "./List.module.css";
 
 export const WikiList = ({ children, isHoverable }: TListProps) => {

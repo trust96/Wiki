@@ -1,7 +1,7 @@
 import { Container, Flex } from "@mantine/core";
 import { WikiFooter } from "../Footer";
 import { WikiNavigation } from "../Navigation";
-import type { TPageComponentSiteProps } from "./PageComponent.model";
+import type { TPageComponentSiteProps } from "./types";
 import { PageComponentMetaData } from "./PageComponentMetaData";
 
 export const PageComponentSite = (props: TPageComponentSiteProps) => {

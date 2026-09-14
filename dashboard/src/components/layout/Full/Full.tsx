@@ -10,8 +10,33 @@ import {
 import { WikiModal } from "@/components/primitive";
 import { WikiIcon } from "@/components/primitive";
 import { useRouter } from "@/hooks/useRouter";
-import { forwardRef, type RefObject, useState, isValidElement } from "react";
-import type { TFull, TDirection } from "./Full.model";
+import {
+  forwardRef,
+  isValidElement,
+  useState,
+  type MouseEventHandler,
+  type ReactNode,
+  type RefObject,
+} from "react";
+
+export type TDirection = {
+  icon?: ReactNode;
+  text?: string;
+  onClick?: MouseEventHandler;
+  disabled?: boolean;
+  form?: string;
+};
+export type TFull = {
+  children: ReactNode;
+  title?: string;
+  left?: TDirection | ReactNode;
+  right?: TDirection | ReactNode;
+  back?: string;
+  isDirty?: boolean;
+  clear?: string;
+  id?: string;
+  noNav?: boolean;
+};
 
 const Full = forwardRef((props: TFull, ref: RefObject<HTMLDivElement>) => {
   const { noNav } = props;

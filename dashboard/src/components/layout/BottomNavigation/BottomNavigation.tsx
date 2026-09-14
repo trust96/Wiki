@@ -2,7 +2,7 @@ import { Flex, Paper } from "@mantine/core";
 import { WikiLink, WikiIcon } from "@/components/primitive";
 import { navigationData } from "@/helper/navigationData";
 import { useRouter } from "@/hooks/useRouter";
-import { PRIMARY_COLOR } from "@/theme";
+import { PRIMARY_COLOR } from "@/foundations";
 
 const BottomNavigation = () => {
   const pathname = useRouter().pathname;

@@ -1,5 +1,20 @@
-import type { TModalProps } from "./Modal.model";
+import type { ModalRootProps } from "@mantine/core";
 import { Button, Divider, Group, Modal, ScrollArea, Text } from "@mantine/core";
+import type { MouseEventHandler, ReactNode } from "react";
+
+export interface TModalProps extends ModalRootProps {
+  title?: ReactNode;
+  confirmProps?: {
+    label: string;
+    onClick?: MouseEventHandler;
+    form?: string;
+    color?: string;
+  };
+  closeProps?: {
+    label: string;
+    color?: string;
+  };
+}
 
 const WikiModal = ({
   children,

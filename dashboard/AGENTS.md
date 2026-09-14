@@ -1,6 +1,6 @@
 # Dashboard agent
 
-React SPA (`wiki_client`). Vite + React 19 + Mantine 8 + RTK Query + react-router 7.
+React SPA (`wiki_client`). Vite + React 19 + Mantine 8 + TanStack Query + Zustand + react-router 7.
 
 This file is the index. Conventions live in `guidelines/*.md`. Do not copy those docs here — add a new guideline file and link it.
 
@@ -34,7 +34,7 @@ Screen drafts and Superdesign links: [`../specs/design/dashboard.md`](../specs/d
 
 ## How it boots
 
-`main.tsx` starts MSW, then mounts `Root`. `Root` wraps `App` in `WikiProvider` (Redux + Router + Mantine, default dark) and mounts global `WikiLoader` + `ErrorModal`. Routes live in `App.tsx`.
+`main.tsx` starts MSW, then mounts `Root`. `Root` wraps `App` in `WikiProvider` (TanStack Query + Router + Mantine, default dark) and mounts global `WikiLoader` + `ErrorModal`. Routes live in `App.tsx`.
 
 Alias: `@/` → `src/`.
 
@@ -42,25 +42,25 @@ Alias: `@/` → `src/`.
 
 ```
 src/
-  pages/          route screens (one folder per screen)
+  pages/
+    Auth/         login, signup, email, password
+    Dashboard/    home, search, wiki, profile, onboarding + patterns/
   components/
     primitive/    Mantine/HTML wrappers, Wiki* public API
     layout/       shells, nav, page frames
     input/        form controls
     button/       specialized buttons
-    feature/      domain UI (app, home, profile, wiki)
-  hooks/          shared data/nav hooks
-  services/       RTK Query APIs
-  state/          Redux store + UI slices
-  theme/          Mantine theme + brand tokens
-  helper/         fetch adapter, constants, small utils
-  model/          shared types (API envelope)
-  styles/         global CSS only
+    feedback/     WikiLoader, ErrorModal
+  foundations/    tokens, Mantine theme, global CSS
+  hooks/          shared data/nav hooks (useRouter is thin)
+  services/       TanStack Query hooks + HTTP
+  state/          Zustand UI store (token, loader, errors)
+  helper/         fetch adapter, request types, constants, small utils
   mocks/          MSW
 public/locales/   i18next JSON (en, it)
 ```
 
-Put new UI in the matching `components/` layer. Do not recreate a flat `components/<Name>` tree or a `patterns/` tree.
+Shared UI goes in the matching `components/` type folder (`button/`, `input/`, …). Page-specific UI lives in that area’s `patterns/` (e.g. `pages/Dashboard/patterns/`). Routes stay in `App.tsx`. Do not recreate a flat `components/<Name>` tree.
 
 ## Non-negotiables
 
@@ -70,5 +70,5 @@ Put new UI in the matching `components/` layer. Do not recreate a flat `componen
 - User-visible strings for new or touched UI go through i18next (`public/locales/{en,it}`).
 - HTTP goes through `services/` + `normalizeBaseQuery`. Do not `fetch` from components.
 - Call only paths listed as shipped in [`../backend/endpoints.md`](../backend/endpoints.md). That file is the live API contract. Do not follow leftover Strapi URLs.
-- Style with Mantine props and `src/theme` first. CSS modules are the exception.
+- Style with Mantine props and `src/foundations` first. CSS modules are the exception.
 - Browser-verify UI changes (real interaction, not only a screenshot).

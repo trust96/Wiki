@@ -1,5 +1,5 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
 import { normalizeBaseQuery } from "@/helper/normalizeBaseQuery";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   TLoginParams,
   TLoginResponseData,
@@ -8,60 +8,51 @@ import type {
   TUpdateUserParams,
   TUpdateUserResponseData,
   TUserResponseData,
-} from "./auth.model";
+} from "./types";
 
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: normalizeBaseQuery,
-  tagTypes: ["CurrentUser"],
-  endpoints: (builder) => ({
-    currentUser: builder.query<TUserResponseData, void>({
-      query: () => {
-        return {
-          url: "/auth/me",
-          method: "GET",
-        };
-      },
-      providesTags: ["CurrentUser"],
-    }),
-    // The server resolves the user from the token, so no id goes in the url.
-    updateUser: builder.mutation<
-      TUpdateUserResponseData,
-      TUpdateUserParams
-    >({
-      query: (payload) => {
-        return {
-          url: "/users/me",
-          method: "PUT",
-          payload,
-        };
-      },
-      invalidatesTags: ["CurrentUser"],
-    }),
-    register: builder.mutation<TSignupResponseData, TSignupParams>({
-      query: (payload) => {
-        return {
-          url: "/auth/register",
-          method: "POST",
-          payload,
-        };
-      },
-    }),
-    login: builder.mutation<TLoginResponseData, TLoginParams>({
-      query: (payload) => {
-        return {
-          url: "/auth/login",
-          method: "POST",
-          payload,
-        };
-      },
-    }),
-  }),
-});
+export const currentUserKey = ["me"] as const;
 
-export const {
-  useUpdateUserMutation,
-  useRegisterMutation,
-  useLoginMutation,
-  useCurrentUserQuery,
-} = authApi;
+export const useCurrentUserQuery = () =>
+  useQuery({
+    queryKey: currentUserKey,
+    queryFn: () =>
+      normalizeBaseQuery<TUserResponseData["data"]>({
+        url: "/auth/me",
+        method: "GET",
+      }),
+  });
+
+export const useUpdateUserMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: TUpdateUserParams) =>
+      normalizeBaseQuery<TUpdateUserResponseData["data"]>({
+        url: "/users/me",
+        method: "PUT",
+        payload,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: currentUserKey });
+    },
+  });
+};
+
+export const useRegisterMutation = () =>
+  useMutation({
+    mutationFn: (payload: TSignupParams) =>
+      normalizeBaseQuery<TSignupResponseData["data"]>({
+        url: "/auth/register",
+        method: "POST",
+        payload,
+      }),
+  });
+
+export const useLoginMutation = () =>
+  useMutation({
+    mutationFn: (payload: TLoginParams) =>
+      normalizeBaseQuery<TLoginResponseData["data"]>({
+        url: "/auth/login",
+        method: "POST",
+        payload,
+      }),
+  });

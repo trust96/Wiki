@@ -1,6 +1,5 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
 import { normalizeBaseQuery } from "@/helper/normalizeBaseQuery";
-import type { TWikiResponseData } from "@/model/baseQuery.model";
+import { useQuery } from "@tanstack/react-query";
 
 export type TPageSection = {
   id: number;
@@ -17,27 +16,27 @@ export type TPage = {
   updatedAt?: string;
 };
 
-export const pageApi = createApi({
-  reducerPath: "pageApi",
-  baseQuery: normalizeBaseQuery,
-  endpoints: (builder) => ({
-    pages: builder.query<TWikiResponseData<TPage[]>, void>({
-      query: () => {
-        return {
-          url: "/pages",
-          method: "GET",
-        };
-      },
-    }),
-    singlePage: builder.query<TWikiResponseData<TPage>, { id: number }>({
-      query: ({ id }) => {
-        return {
-          url: `/pages/${id}`,
-          method: "GET",
-        };
-      },
-    }),
-  }),
-});
+export const pagesKey = ["pages"] as const;
+export const pageKey = (id: number) => ["page", id] as const;
 
-export const { usePagesQuery, useSinglePageQuery } = pageApi;
+export const usePagesQuery = (enabled = true) =>
+  useQuery({
+    queryKey: pagesKey,
+    queryFn: () =>
+      normalizeBaseQuery<TPage[]>({
+        url: "/pages",
+        method: "GET",
+      }),
+    enabled,
+  });
+
+export const useSinglePageQuery = (id: number, enabled = true) =>
+  useQuery({
+    queryKey: pageKey(id),
+    queryFn: () =>
+      normalizeBaseQuery<TPage>({
+        url: `/pages/${id}`,
+        method: "GET",
+      }),
+    enabled,
+  });

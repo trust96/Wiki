@@ -2,7 +2,7 @@
 
 Visual index for the dashboard first-run and contribution surfaces. Product rules live in the approved specs under `specs/`. Those specs match these drafts. This file maps each screen to its Superdesign draft and the code that should implement it.
 
-Do not copy Superdesign HTML or Tailwind into the app. Implement with existing Wiki\* components, Mantine, and `dashboard/src/theme`. Tokens already live in `dashboard/src/theme` and `.superdesign/design-system.md` — do not duplicate the palette here.
+Do not copy Superdesign HTML or Tailwind into the app. Rebuild screens and chrome from these drafts with Mantine. Implementation order and state: [`implementation.md`](implementation.md). Do not treat the current Wiki\* tree or theme as the baseline.
 
 ## Where to get the designs
 
@@ -10,7 +10,7 @@ Do not copy Superdesign HTML or Tailwind into the app. Implement with existing W
 | --- | --- |
 | Superdesign project | [Wiki Dance Dashboard](https://superdesign.dev/teams/3d836524-6c81-47b9-92eb-1e90764386b1/projects/aec57b9b-5091-4103-884f-67d31b5ebe88) |
 | Project id | `aec57b9b-5091-4103-884f-67d31b5ebe88` |
-| Tokens | `dashboard/src/theme`, `.superdesign/design-system.md` |
+| Tokens | `dashboard/src/foundations`, `.superdesign/design-system.md` |
 | Local Superdesign state | `.superdesign/resume.json` |
 
 Preview URL for any draft: `https://p.superdesign.dev/draft/<draft-id>`
@@ -40,12 +40,12 @@ Active drafts are the ones to implement. Current Home is a baseline of today’s
 
 | Screen | Route | Draft | Version | Status | Chrome | Visible behavior | Code |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Current Home (baseline) | `/home` | [`21a12a34-6ef6-4596-a0cc-d065a5c0b4a7`](https://p.superdesign.dev/draft/21a12a34-6ef6-4596-a0cc-d065a5c0b4a7) | 1 | Reference only | Dashboard | Pixel-ish snapshot of the current homepage | `pages/Home/HomePage.tsx`, `components/feature/home/HeroSection/HeroSection.tsx` |
+| Current Home (baseline) | `/home` | [`21a12a34-6ef6-4596-a0cc-d065a5c0b4a7`](https://p.superdesign.dev/draft/21a12a34-6ef6-4596-a0cc-d065a5c0b4a7) | 1 | Reference only | Dashboard | Pixel-ish snapshot of the current homepage | `pages/Dashboard/Home/Home.tsx`, `pages/Dashboard/patterns/HeroSection/` |
 | Home after onboarding | `/home` | [`a9e086d4-6317-4af2-b41d-eb937906f91b`](https://p.superdesign.dev/draft/a9e086d4-6317-4af2-b41d-eb937906f91b) | 1 | Active | Dashboard | “Welcome to Wiki dance, Maya”, live search, genre chips, suggested wikis, sponsor at the bottom | same as above |
 | Onboarding | `/onboarding` | [`5ca0b01b-c346-4420-88cc-cd8ed9b5729a`](https://p.superdesign.dev/draft/5ca0b01b-c346-4420-88cc-cd8ed9b5729a) | 4 | Active (liked) | `WikiFull` | Artist name first; First / Last under “Private”; bio 300; Complete in the header and as a pill | [`authentication/onboarding.md`](../authentication/onboarding.md) |
 | Search | `/search` | [`d776e06a-e7ed-40e5-8efc-135b5bc50598`](https://p.superdesign.dev/draft/d776e06a-e7ed-40e5-8efc-135b5bc50598) | 2 | Active | Dashboard | Idle state: **Latest wikis, last 5**, table columns Wiki / Genre / Updated | [`wiki/search.md`](../wiki/search.md) |
-| Wiki article | `/page/:id` | [`1579b9fb-5a7c-4db3-b83a-1e0573e58958`](https://p.superdesign.dev/draft/1579b9fb-5a7c-4db3-b83a-1e0573e58958) | 1 | Active | Dashboard | Read view of one wiki (Salsa step), table of contents, no likes or comments | `pages/EventPage/EventPage.tsx`, `components/feature/wiki/TableOfContent/` |
-| Profile | `/profile` | [`b74c0476-0b06-48c1-880c-e5587ebadb2d`](https://p.superdesign.dev/draft/b74c0476-0b06-48c1-880c-e5587ebadb2d) | 1 | Active | Dashboard | Maya + contribution cards | `pages/Profile/Profile.tsx`, `pages/Profile/ContributionSection.tsx` |
+| Wiki article | `/page/:id` | [`1579b9fb-5a7c-4db3-b83a-1e0573e58958`](https://p.superdesign.dev/draft/1579b9fb-5a7c-4db3-b83a-1e0573e58958) | 1 | Active | Dashboard | Read view of one wiki (Salsa step), table of contents, no likes or comments | `pages/Dashboard/Wiki/Wiki.tsx`, `pages/Dashboard/patterns/TableOfContent/` |
+| Profile | `/profile` | [`b74c0476-0b06-48c1-880c-e5587ebadb2d`](https://p.superdesign.dev/draft/b74c0476-0b06-48c1-880c-e5587ebadb2d) | 1 | Active | Dashboard | Maya + contribution cards | `pages/Dashboard/Profile/Profile.tsx`, `pages/Dashboard/Profile/ContributionSection.tsx` |
 | Notifications | `/notifications` | [`ef6d7292-fdb8-4981-881b-c9be53dc8369`](https://p.superdesign.dev/draft/ef6d7292-fdb8-4981-881b-c9be53dc8369) | 2 | Active | Dashboard | Approved / Declined with reason. Declined opens Edit content | [`dashboard_navigation/notifications.md`](../dashboard_navigation/notifications.md) — no route yet |
 | Edit declined section | section form | [`2645c2fb-81a0-4dd9-a43a-5c5cd888f035`](https://p.superdesign.dev/draft/2645c2fb-81a0-4dd9-a43a-5c5cd888f035) | 1 | Active | Dashboard | Reason banner + editor + Save | [`wiki/section/form.md`](../wiki/section/form.md) |
 

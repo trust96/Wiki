@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import App from "./App.tsx";
 import WikiProvider from "./WikiProvider.tsx";
-import { ErrorModal, WikiLoader } from "./components/feature/app";
+import { ErrorModal, WikiLoader } from "@/components/feedback";
 
 export const Root = () => {
   return (

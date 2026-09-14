@@ -2,7 +2,7 @@ import { Box, Container, Flex, Paper } from "@mantine/core";
 import { WikiBottomNavigation } from "../BottomNavigation";
 import { WikiNavigation } from "../Navigation";
 import { WikiSidebar } from "../Sidebar";
-import type { TPageComponentDashboardProps } from "./PageComponent.model";
+import type { TPageComponentDashboardProps } from "./types";
 import { PageComponentMetaData } from "./PageComponentMetaData";
 
 export const PageComponentDashboard = (props: TPageComponentDashboardProps) => {
