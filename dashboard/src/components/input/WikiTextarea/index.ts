@@ -1,2 +1,2 @@
 export { WikiTextarea } from "./WikiTextarea";
-export type { TWikiTextareaProps } from "./WikiTextarea.model";
+export type { TWikiTextareaProps } from "./WikiTextarea";

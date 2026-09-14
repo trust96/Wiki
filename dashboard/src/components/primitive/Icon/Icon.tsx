@@ -1,7 +1,15 @@
 import { Box } from "@mantine/core";
-import { forwardRef, type Ref } from "react";
-import type { TIconProps } from "./Icon.model";
-import { iconSizes } from "./Icon.helper";
+import type { MaterialSymbol } from "material-symbols";
+import { forwardRef, type HtmlHTMLAttributes, type Ref } from "react";
+import { iconSizes } from "./helper";
+
+export type TIconProps = {
+  name: MaterialSymbol;
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | number;
+  isClickable?: boolean;
+  color?: string;
+  isOutlined?: boolean;
+} & HtmlHTMLAttributes<HTMLSpanElement>;
 
 const Icon = forwardRef((props: TIconProps, ref: Ref<HTMLSpanElement>) => {
   const { name, isOutlined = true, className, size, isClickable, color, style, ...rest } =

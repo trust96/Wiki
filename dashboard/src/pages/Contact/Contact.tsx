@@ -1,4 +1,4 @@
-import { yupResolver } from "mantine-form-yup-resolver";
+import { zod4Resolver } from "mantine-form-zod-resolver";
 import {
   Box,
   Button,
@@ -11,16 +11,16 @@ import {
 import {
   contactInitialValues,
   contactValidationSchema,
-} from "./Contact.helper";
+} from "./helper";
 import { useForm } from "@mantine/form";
-import { typeOptions } from "./Contact.constant";
+import { typeOptions } from "./constants";
 import { useRouter } from "@/hooks/useRouter";
 
 export const Contact = (_) => {
   const { push } = useRouter();
   const { getInputProps, onSubmit, errors, values } = useForm({
     initialValues: contactInitialValues,
-    validate: yupResolver(contactValidationSchema),
+    validate: zod4Resolver(contactValidationSchema),
   });
 
   return (

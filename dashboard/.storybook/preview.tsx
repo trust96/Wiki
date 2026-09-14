@@ -1,10 +1,10 @@
 import type { Preview } from "@storybook/react-vite";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { MemoryRouter } from "react-router";
-import { theme } from "../src/theme";
+import { theme } from "../src/foundations";
 import "material-symbols";
 import "@mantine/core/styles.css";
-import "../src/styles/globals.css";
+import "../src/foundations/globals.css";
 
 const preview: Preview = {
   tags: ["autodocs"],

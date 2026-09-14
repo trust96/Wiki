@@ -17,7 +17,7 @@ From `dashboard/`: `yarn storybook`, `yarn build-storybook`.
 
 ## How it boots
 
-`.storybook/preview.tsx` wraps every story in `MantineProvider` (theme from `src/theme`) and `MemoryRouter` so `WikiLink` works. Toolbar **Scheme** toggles light/dark via `forceColorScheme`. Do not wrap stories in `WikiProvider` — that locks dark and fights the toolbar. If a story needs Redux, wrap that story only.
+`.storybook/preview.tsx` wraps every story in `MantineProvider` (theme from `src/foundations`) and `MemoryRouter` so `WikiLink` works. Toolbar **Scheme** toggles light/dark via `forceColorScheme`. Do not wrap stories in `WikiProvider` — that locks dark and fights the toolbar. If a story needs TanStack Query or Zustand, wrap that story only.
 
 ## Stories
 

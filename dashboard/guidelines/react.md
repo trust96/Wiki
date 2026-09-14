@@ -2,7 +2,7 @@
 
 Dashboard is a Vite SPA. Functional components only. React Compiler is on — do not add `memo` / `useMemo` / `useCallback` unless profiling shows a need.
 
-Canonical references: `pages/Login/`, `components/primitive/Icon/`, `components/layout/PageComponent/`, `theme/theme.ts`, `state/store.ts`, `services/auth/auth.ts`.
+Canonical references: `pages/Auth/Login/`, `components/primitive/Icon/`, `components/layout/PageComponent/`, `foundations/theme.ts`, `state/ui.ts`, `services/auth/auth.ts`.
 
 ## How to write code
 
@@ -29,7 +29,7 @@ const tableOfContentLinkItems = (currentPageEntity?.sections ?? []).map(...)
 const pages = (data?.data ?? []).filter((page) => page.name.includes(search));
 
 // no — extra hook/helper for a single filter
-const { filteredPages } = useFilteredEventPages(searchString);
+const { filteredPages } = useFilteredPages(searchString);
 ```
 
 If two names seem equally good, or you are guessing the domain word (`event` vs `page`, `section` vs `block`), stop and ask. Do not invent a parallel vocabulary.
@@ -46,10 +46,10 @@ Do not over-engineer:
 Imports flow downward. A layer must not import from a layer above it.
 
 ```
-pages → feature / layout / input / button / primitive / hooks / services / theme
-feature → input / button / primitive / hooks / services / theme
-layout → primitive / theme
-input, button → primitive / theme
+pages → layout / input / button / primitive / feedback / hooks / services / foundations
+        + own area patterns
+layout / feedback → primitive / foundations
+input, button → primitive / foundations
 primitive → Mantine (and CSS modules)
 ```
 
@@ -59,7 +59,7 @@ primitive → Mantine (and CSS modules)
 | `layout/` | App chrome and page frames. | `PageComponent`, `WikiNavigation`, `WikiSidebar`, `WikiFooter`, `WikiBottomNavigation`, `WikiFull` |
 | `input/` | Form controls built on Mantine inputs. | `SearchField`, `WikiTextarea` |
 | `button/` | Specialized buttons. | `GoogleButton`, `ShareButton` |
-| `feature/` | Domain blocks, grouped by area: `app`, `home`, `profile`, `wiki`. | `HeroSection`, `UserForm`, `TableOfContents`, `ErrorModal`, `WikiLoader` |
+| `feedback/` | Global overlay chrome mounted in `Root`. | `ErrorModal`, `WikiLoader` |
 
 Use the existing Wiki\* wrapper instead of the raw Mantine equivalent (`WikiModal` not `Modal`, `WikiLink` not `Anchor`+`Link`, `WikiIcon` not a raw material-symbol span).
 
@@ -70,7 +70,7 @@ import { WikiIcon, WikiLink } from "@/components/primitive";
 import { PageComponent } from "@/components/layout";
 import { SearchField } from "@/components/input";
 import { GoogleButton } from "@/components/button";
-import { HeroSection } from "@/components/feature/home";
+import { HeroSection } from "../patterns";
 ```
 
 ## Component folder
@@ -80,21 +80,23 @@ One folder per component:
 ```
 Icon/
   Icon.tsx
-  Icon.model.ts       # T* props/types
-  Icon.helper.ts      # pure maps, schemas, small helpers
-  Icon.constant.ts    # only when values are lookup tables
+  helper.ts           # maps, schemas, small helpers — only if the tsx is crowded
+  types.ts            # only when two files in the folder share types
+  constants.ts        # only when values are a lookup table
   Icon.module.css     # only when Mantine props are not enough
   index.ts            # public API
 ```
+
+Do not prefix those files with the component name (`helper.ts`, not `Icon.helper.ts`). Props types live in the component file. Do not add a `.model.ts`.
 
 `index.ts` is the public surface. Internals may default-export; the barrel re-exports the Wiki\* (or domain) name and renames types to `TWiki*`:
 
 ```ts
 export { default as WikiIcon } from "./Icon";
-export type { TIconProps as TWikiIconProps } from "./Icon.model";
+export type { TIconProps as TWikiIconProps } from "./Icon";
 ```
 
-New public APIs: named exports from `index.ts`. Types use a `T` prefix (`TLoginParams`, `TIconProps`). Enums use `E` (`EStoreSlice`).
+New public APIs: named exports from `index.ts`. Types use a `T` prefix (`TLoginParams`, `TIconProps`). Enums use `E` (`EAppMode`).
 
 Related variants of one concept are a namespace object, not parallel top-level components:
 
@@ -105,60 +107,79 @@ export const Navigation = { Site: NavigationSimple, Dashboard: NavigationDashboa
 
 Usage: `<PageComponent.Site>`, `<PageComponent.Dashboard>`, `<WikiNavigation.Dashboard />`.
 
-`feature/app` is global chrome mounted in `Root` (`WikiLoader`, `ErrorModal`). Do not mount a second app-wide loader or error modal inside a page.
+`components/feedback` is global chrome mounted in `Root` (`WikiLoader`, `ErrorModal`). Do not mount a second app-wide loader or error modal inside a page.
 
 ## Pages
 
-Routes are declared only in `App.tsx`. Each screen is a folder under `pages/`.
+Routes are declared only in `App.tsx`. `useRouter` is a thin `{ push, back, pathname }` over react-router.
 
-Auth / marketing screens use `PageComponent.Site` (top nav + footer). Logged-in app screens use `PageComponent.Dashboard` (dashboard nav + sidebar / bottom nav) or `WikiFull` for full-height flows with back/save (profile edit, onboarding, wiki page).
+Group screens by area, then by route name:
 
-Split a screen when it has a form or non-trivial state. Follow `Login/`:
+```
+pages/
+  Auth/
+    Login/
+    Signup/
+    EmailVerification/
+    ForgottenPassword/
+  Dashboard/
+    Home/              # /home
+    Search/            # /search
+    Wiki/              # /page/:id
+    Profile/           # /profile
+      Edit/            # /profile/edit
+    Onboarding/
+    patterns/          # Dashboard-only UI
+```
+
+Auth / marketing screens use `PageComponent.Site` (top nav + footer). Logged-in app screens use `PageComponent.Dashboard` (dashboard nav + sidebar / bottom nav) or `WikiFull` for full-height flows with back/save (profile edit, onboarding, wiki).
+
+A route folder holds the screen. Page-specific components live in that area’s `patterns/` (or next to the route when they are only used there). Do not import across areas (`Auth` must not import `Dashboard/patterns`). Shared UI used by more than one area goes in `components/`.
+
+Split a screen when it has a form or non-trivial state. Follow `Auth/Login/`:
 
 | File | Job |
 | --- | --- |
 | `LoginPage.tsx` | Route entry: i18n document title, wrap with `PageComponent.*` |
 | `Login.tsx` | Presentational UI |
 | `useLogin.ts` | Form + mutation + navigation |
-| `Login.helper.ts` | Initial values, yup schema |
+| `helper.ts` | Initial values, zod schema |
 | `LoginModal.tsx` | Optional modal variant |
 | `tests/Login.test.tsx` | Browser test, wrapped in `WikiProvider` |
 
 Keep hooks that are unique to one screen next to that screen. Put a hook in `src/hooks/` only when a second caller needs it (`useRouter`, `usePage`, `useSinglePage`, `useUser`).
 
-Do not import from another `pages/` folder. Extract shared UI into `feature/` (or a lower layer) instead.
-
 ## Styling
 
-Mantine is the design system. `WikiProvider` sets `theme` from `src/theme` and `defaultColorScheme="dark"`.
+Mantine is the design system. `WikiProvider` sets `theme` from `src/foundations` and `defaultColorScheme="dark"`.
 
 1. Use Mantine layout/typography props (`Stack`, `Flex`, `Group`, `gap`, `p`, `c`, `fw`, `visibleFrom`, `hiddenFrom`).
-2. Colors: `PRIMARY_COLOR`, `primaryShade(n)`, `semanticColor` from `@/theme`. Do not hardcode the purple palette.
+2. Colors: `PRIMARY_COLOR`, `primaryShade(n)`, `semanticColor` from `@/foundations`. Do not hardcode the purple palette.
 3. Spacing: theme scale (`xs`–`xl`). `theme.ts` maps those to 4px steps.
-4. CSS modules colocated with the component, imported as `styles` or `classes`. Use Mantine CSS variables (`var(--mantine-color-body)`, `var(--mantine-spacing-md)`) and PostCSS breakpoints (`$mantine-breakpoint-sm`). Layout chrome may use `--wiki-nav-height` / `--wiki-footer-height` from `styles/globals.css`.
-5. Extend Mantine defaults in `theme/theme.ts` (Button, Modal, inputs, Paper). Do not fork those defaults in a one-off `style={{}}` unless the component is the exception.
+4. CSS modules colocated with the component, imported as `styles` or `classes`. Use Mantine CSS variables (`var(--mantine-color-body)`, `var(--mantine-spacing-md)`) and PostCSS breakpoints (`$mantine-breakpoint-sm`). Layout chrome may use `--wiki-nav-height` / `--wiki-footer-height` from `foundations/globals.css`.
+5. Extend Mantine defaults in `foundations/theme.ts` (Button, Modal, inputs, Paper). Do not fork those defaults in a one-off `style={{}}` unless the component is the exception.
 
 No Tailwind. No new CSS-in-JS library. Do not put page layout in `globals.css`.
 
 ## Data and state
 
-HTTP: RTK Query in `src/services/*`, registered in `state/store.ts`. All requests go through `helper/normalizeBaseQuery.ts` (auth header, JSON/file body, loader count, `apiError` on failure).
+HTTP: TanStack Query hooks in `src/services/*`. All requests go through `helper/normalizeBaseQuery.ts` (auth header, JSON/file body, loader count, API errors on failure).
 
-Components call generated hooks (`useLoginMutation`, `usePagesQuery`). Shared skip/token logic lives in `src/hooks` (`usePage` skips without a token).
+Components call service hooks (`useLoginMutation`, `usePagesQuery`). Shared skip/token logic lives in `src/hooks` (`usePage` skips without a token).
 
-UI slices stay thin:
+Client UI state is Zustand in `state/ui.ts`:
 
-- `uiSlice` — loader count, auth token
-- `apiErrorSlice` — errors shown by `feature/app/ErrorModal`
-- `modalSlice` — modal flags
+- `loaders` — global overlay count
+- `token` — auth token
+- `apiErrors` — errors shown by `components/feedback/ErrorModal`
 
-Do not add React Query, axios, or a second Redux store. Do not `fetch` inside a component. Mutations that fail already surface via `ErrorModal`; check `data.isSuccess` before navigating.
+Do not add Redux, axios, or a second query client. Do not `fetch` inside a component. Mutations that fail already surface via `ErrorModal`; check `data.isSuccess` before navigating.
 
-API payloads use `TWikiResponseData<T>` (`model/baseQuery.model.ts`): `{ isSuccess, code, data }`.
+API payloads use `TWikiResponseData<T>` (`helper/request.ts`): `{ isSuccess, code, data }`.
 
 ## Forms
 
-`@mantine/form` + yup + `mantine-form-yup-resolver`. Initial values and schemas live in `*.helper.ts` (or a `use*ValidationSchema` hook when messages need `t()`). Bind inputs with `getInputProps`. Submit buttons may use `form="id"` when they sit outside the `<form>`.
+`@mantine/form` + zod + `mantine-form-zod-resolver` (`zod4Resolver`). Initial values and schemas live in `helper.ts` (or a `use*ValidationSchema` hook when messages need `t()`). Bind inputs with `getInputProps`. Submit buttons may use `form="id"` when they sit outside the `<form>`.
 
 ## i18n
 
@@ -173,4 +194,4 @@ Auth screens already do this (`login`, `signup`, `errors`, `common`, …). New o
 
 ## Tests
 
-Vitest browser (`vitest.browser.config.ts`), `vitest-browser-react`. Wrap with `WikiProvider`. Colocate under `pages/<Name>/tests/` or next to the component (`PageComponent.test.tsx`). Prefer assertions on visible text; snapshots exist for Login/Signup — update them only when the UI change is intentional.
+Vitest browser (`vitest.browser.config.ts`), `vitest-browser-react`. Wrap with `WikiProvider`. Colocate under `pages/Auth/Login/tests/` (or next to the component, `PageComponent.test.tsx`). Prefer assertions on visible text; snapshots exist for Login/Signup — update them only when the UI change is intentional.

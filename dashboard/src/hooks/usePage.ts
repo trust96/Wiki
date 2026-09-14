@@ -1,13 +1,7 @@
 import { usePagesQuery } from "@/services/page";
-import type { TRootState } from "@/state/store";
-import { useSelector } from "react-redux";
+import { useUiStore } from "@/state/ui";
 
 export const usePage = () => {
-  const token = useSelector((state: TRootState) => state.ui.token);
-
-  const response = usePagesQuery(undefined, {
-    skip: !token,
-  });
-
-  return response;
+  const token = useUiStore((state) => state.token);
+  return usePagesQuery(Boolean(token));
 };

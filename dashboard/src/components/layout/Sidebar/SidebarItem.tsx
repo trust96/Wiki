@@ -1,8 +1,19 @@
 import { Box, Flex } from "@mantine/core";
 import { WikiLink, WikiIcon } from "@/components/primitive";
 import { useRouter } from "@/hooks/useRouter";
-import { PRIMARY_COLOR } from "@/theme";
-import type { TSidebarItemProps } from "./Sidebar.model";
+import { PRIMARY_COLOR } from "@/foundations";
+import { type MaterialSymbol } from "material-symbols";
+import { type MouseEventHandler } from "react";
+
+export type TSidebarItem = {
+  id: string;
+  handleClick?: MouseEventHandler;
+  icon: MaterialSymbol;
+  href?: string;
+  size?: number;
+  isDisabled?: boolean;
+};
+export type TSidebarItemProps = TSidebarItem;
 
 const SidebarItem = (props: TSidebarItemProps) => {
   const { href, handleClick, isDisabled } = props;

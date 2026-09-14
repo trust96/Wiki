@@ -2,17 +2,16 @@ import { Button, Menu } from "@mantine/core";
 import { WikiIcon } from "@/components/primitive";
 import { tokenKey } from "@/helper/constants";
 import { useRouter } from "@/hooks/useRouter";
-import { removeToken } from "@/state/uiSlice/uiSlice";
-import { semanticColor } from "@/theme";
-import { useDispatch } from "react-redux";
+import { useUiStore } from "@/state/ui";
+import { semanticColor } from "@/foundations";
 
 const NavigationMenu = () => {
   const { push } = useRouter();
-  const dispatch = useDispatch();
+  const removeToken = useUiStore((state) => state.removeToken);
 
   const handleLogout = () => {
     localStorage.removeItem(tokenKey);
-    dispatch(removeToken());
+    removeToken();
     push("/auth/login");
   };
 

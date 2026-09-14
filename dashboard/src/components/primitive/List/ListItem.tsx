@@ -1,5 +1,5 @@
 import { Box, Group } from "@mantine/core";
-import type { TListItemProps } from "./List.model";
+import type { TListItemProps } from "./types";
 
 export const WikiListItem = ({
   children,

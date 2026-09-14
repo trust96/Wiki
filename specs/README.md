@@ -37,6 +37,10 @@ moderating the content and providing new content.
 
 ...and more
 
+## Design
+
+Dashboard visual drafts (Superdesign ids and previews): [`design/dashboard.md`](design/dashboard.md). That file does not replace approved specs.
+
 ## Characteristics of the app
 
 - Open source
