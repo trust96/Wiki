@@ -4,5 +4,6 @@ import { useUiStore } from "@/state/ui";
 export const useUser = () => {
   const token = useUiStore((state) => state.token);
   const { data } = useCurrentUserQuery(Boolean(token));
+  if (!token) return undefined;
   return data?.data?.user;
 };

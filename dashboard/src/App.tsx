@@ -7,6 +7,7 @@ import EmailVerification from "./pages/Auth/EmailVerification/EmailVerification"
 import { ForgottenPassword } from "./pages/Auth/ForgottenPassword/ForgottenPassword";
 import LoginPage from "./pages/Auth/Login/LoginPage";
 import SignupPage from "./pages/Auth/Signup/SignupPage";
+import { AuthGate } from "./pages/AuthGate";
 import { Home } from "./pages/Dashboard/Home/Home";
 import { Onboarding } from "./pages/Dashboard/Onboarding/Onboarding";
 import { ProfileEdit } from "./pages/Dashboard/Profile/Edit/Edit";
@@ -22,13 +23,13 @@ function App() {
   return (
     <Routes>
       <Route index path="/" element={<UnderConstruction />} />
-      <Route path="auth">
-        <Route path="signup" element={<SignupPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="email_verification" element={<EmailVerification />} />
-        <Route path="forgotten_password" element={<ForgottenPassword />} />
-      </Route>
-      <Route>
+      <Route element={<AuthGate />}>
+        <Route path="auth">
+          <Route path="signup" element={<SignupPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="email_verification" element={<EmailVerification />} />
+          <Route path="forgotten_password" element={<ForgottenPassword />} />
+        </Route>
         <Route path="onboarding" element={<Onboarding />} />
         <Route index path="home" element={<Home />} />
         <Route path="profile/edit" element={<ProfileEdit />} />
