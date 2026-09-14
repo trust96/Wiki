@@ -13,6 +13,7 @@ import { ProfileEdit } from "./pages/Dashboard/Profile/Edit/Edit";
 import { ProfilePage } from "./pages/Dashboard/Profile/ProfilePage";
 import { Search } from "./pages/Dashboard/Search/Search";
 import { Wiki } from "./pages/Dashboard/Wiki/Wiki";
+import { Notifications } from "./pages/Dashboard/Notifications/Notifications";
 import { NotFound } from "./pages/NotFound/NotFound";
 import { UnderConstruction } from "./pages/UnderConstruction/UnderConstruction";
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="profile" element={<ProfilePage />} />
         <Route path="user/:id" element={<ProfilePage />} />
         <Route path="search" element={<Search />} />
+        <Route path="notifications" element={<Notifications />} />
         <Route path="page/:id" element={<Wiki />} />
       </Route>
       <Route path="*" element={<NotFound />} />

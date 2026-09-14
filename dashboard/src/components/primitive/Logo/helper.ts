@@ -1,7 +1,6 @@
 export const sizes = {
-  sm: 75,
-  md: 100,
-  lg: 125,
-  xl: 200,
+  sm: 16,
+  md: 20,
+  lg: 24,
+  xl: 32,
 };
-
