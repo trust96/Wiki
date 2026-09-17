@@ -1,6 +1,5 @@
 import { AvatarField } from "../AvatarField";
 import { WikiTextarea } from "@/components/input";
-import { useRouter } from "@/hooks/useRouter";
 import { useUser } from "@/hooks/useUser";
 import { useUpdateUserMutation } from "@/services/auth/auth";
 import { useUploadMutation } from "@/services/file";
@@ -9,6 +8,7 @@ import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "wouter";
 import { userFormInitialValues, userFormValidationSchema } from "./helper";
 
 const formId = "user-form";
@@ -20,7 +20,7 @@ type TUserFormProps = {
 export const UserForm = ({ nextPath = "/home" }: TUserFormProps) => {
   const { t } = useTranslation("dashboard");
   const user = useUser();
-  const { push } = useRouter();
+  const [, navigate] = useLocation();
   const { mutateAsync: updateUser } = useUpdateUserMutation();
   const { mutateAsync: uploadFile } = useUploadMutation();
   const { setValues, getInputProps, onSubmit, values } = useForm<
@@ -61,7 +61,7 @@ export const UserForm = ({ nextPath = "/home" }: TUserFormProps) => {
       isOnboarded: true,
     });
     if (result.isSuccess) {
-      push(nextPath);
+      navigate(nextPath);
     }
   });
 

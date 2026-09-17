@@ -1,13 +1,13 @@
 import { PageComponent } from "@/components/layout";
 import { useNotifications } from "@/hooks/useNotifications";
-import { useRouter } from "@/hooks/useRouter";
 import { Button, Card, Group, Stack, Text, Title } from "@mantine/core";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "wouter";
 import { ContributionStatus, ReasonBanner } from "../patterns";
 
 export const Notifications = () => {
   const { t } = useTranslation("dashboard");
-  const { push } = useRouter();
+  const [, navigate] = useLocation();
   const { data } = useNotifications();
   const items = data?.data ?? [];
 
@@ -36,7 +36,7 @@ export const Notifications = () => {
                 <Button
                   size="compact-sm"
                   variant="outline"
-                  onClick={() => push(`/page/${item.wikiId}`)}
+                  onClick={() => navigate(`/page/${item.wikiId}`)}
                 >
                   {t("notifications.openWiki")}
                 </Button>
@@ -44,7 +44,7 @@ export const Notifications = () => {
                   <Button
                     size="compact-sm"
                     onClick={() =>
-                      push(
+                      navigate(
                         `/page/${item.wikiId}/section/${item.sectionId}?reason=${encodeURIComponent(item.reason ?? "")}`,
                       )
                     }

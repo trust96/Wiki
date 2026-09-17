@@ -1,5 +1,5 @@
 import { Group, NavLink, Stack, Text } from "@mantine/core";
-import { useLocation } from "react-router";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { WikiIcon } from "@/components/primitive";
 
@@ -15,7 +15,14 @@ type TTableOfContentsProps = {
 
 export const TableOfContents = ({ links }: TTableOfContentsProps) => {
   const { t } = useTranslation("dashboard");
-  const { hash } = useLocation();
+  const [hash, setHash] = useState(
+    () => (typeof window === "undefined" ? "" : window.location.hash),
+  );
+  useEffect(() => {
+    const onHash = () => setHash(window.location.hash);
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
   const active = hash || links[0]?.link;
 
   return (

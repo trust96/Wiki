@@ -2,16 +2,16 @@ import { PageComponent } from "@/components/layout";
 import { WikiIcon } from "@/components/primitive";
 import { PRIMARY_COLOR } from "@/foundations";
 import { useSinglePage } from "@/hooks/useSinglePage";
-import { useRouter } from "@/hooks/useRouter";
 import { Badge, Button, Group, Menu, Stack, Text, Title } from "@mantine/core";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "wouter";
 import { useTranslation } from "react-i18next";
 import { TableOfContents } from "../patterns";
 
 export const Wiki = () => {
   const { t } = useTranslation("dashboard");
-  const { id } = useParams();
-  const { push } = useRouter();
+  const params = useParams<{ id?: string }>();
+  const id = params.id;
+  const [, navigate] = useLocation();
   const { data: page } = useSinglePage(Number(id));
   const currentPage = page?.data;
   const links = (currentPage?.sections ?? []).map((section, index) => ({
@@ -51,7 +51,7 @@ export const Wiki = () => {
               <Menu.Item
                 disabled={!firstSection}
                 onClick={() =>
-                  push(`/page/${currentPage?.id}/section/${firstSection?.id}`)
+                  navigate(`/page/${currentPage?.id}/section/${firstSection?.id}`)
                 }
               >
                 {t("wiki.edit")}

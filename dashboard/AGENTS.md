@@ -1,6 +1,6 @@
 # Dashboard agent
 
-React SPA (`wiki_client`). Vite + React 19 + Mantine 8 + TanStack Query + Zustand + react-router 7.
+React SPA (`wiki_client`). Vite + React 19 + Mantine 8 + TanStack Query + Zustand + wouter.
 
 This file is the index. Conventions live in `guidelines/*.md`. Do not copy those docs here — add a new guideline file and link it.
 
@@ -34,7 +34,7 @@ Screen drafts: [`../specs/design/dashboard.md`](../specs/design/dashboard.md). T
 
 ## How it boots
 
-`main.tsx` starts MSW, then mounts `Root`. `Root` wraps `App` in `WikiProvider` (TanStack Query + Router + Mantine, default dark) and mounts global `WikiLoader` + `ErrorModal`. Routes live in `App.tsx`.
+`main.tsx` starts MSW, then mounts `Root`. `Root` wraps `App` in `WikiProvider` (TanStack Query + Mantine, default dark) and mounts global `WikiLoader` + `ErrorModal`. Routes live in `App.tsx` (wouter `Switch` / `Route`).
 
 Alias: `@/` → `src/`.
 
@@ -52,7 +52,7 @@ src/
     button/       specialized buttons
     feedback/     WikiLoader, ErrorModal
   foundations/    tokens, Mantine theme, global CSS
-  hooks/          shared data/nav hooks (useRouter is thin)
+  hooks/          shared data hooks (usePage, useUser, …)
   services/       TanStack Query hooks + HTTP
   state/          Zustand UI store (token, loader, errors)
   helper/         fetch adapter, request types, constants, small utils

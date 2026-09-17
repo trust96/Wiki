@@ -46,7 +46,7 @@ export const Login = () => {
               c="dimmed"
               size="xs"
               fw={"bold"}
-              href="/auth/forgotten_password"
+              href="~/auth/forgotten_password"
             >
               {t("forgotten_password")}
             </WikiLink>
@@ -59,7 +59,7 @@ export const Login = () => {
         </Button>
         <GoogleButton>{t("login_google_button")}</GoogleButton>
       </Stack>
-      <WikiLink c="dimmed" size="xs" fw={"bold"} href="/auth/signup">
+      <WikiLink c="dimmed" size="xs" fw={"bold"} href="~/auth/signup">
         {t("sign_up")}
       </WikiLink>
     </Stack>

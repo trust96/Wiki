@@ -1,18 +1,17 @@
 import { SearchField } from "@/components/input";
 import { PageComponent } from "@/components/layout";
 import { usePage } from "@/hooks/usePage";
-import { useRouter } from "@/hooks/useRouter";
 import type { TGenre } from "@/services/schema";
 import { Box, Stack, Table, Text, Title } from "@mantine/core";
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useLocation, useSearchParams } from "wouter";
 import { GenreFilters } from "../patterns";
 import { WikiSummary } from "../patterns";
 
 export const Search = () => {
   const { t } = useTranslation("dashboard");
-  const { push } = useRouter();
+  const [, navigate] = useLocation();
   const [params, setParams] = useSearchParams();
   const [query, setQuery] = useState(params.get("q") ?? "");
   const [genres, setGenres] = useState<TGenre[]>([]);
@@ -51,7 +50,7 @@ export const Search = () => {
           onChange={(event) => {
             const next = event.currentTarget.value;
             setQuery(next);
-            setParams(next ? { q: next } : {});
+            setParams(next ? { q: next } : {}, { replace: true });
             setLimit(6);
           }}
         />
@@ -68,7 +67,7 @@ export const Search = () => {
                     excerpt={wiki.description}
                     genre={wiki.genre}
                     updatedAt={wiki.updatedAt}
-                    onClick={() => push(`/page/${wiki.id}`)}
+                    onClick={() => navigate(`/page/${wiki.id}`)}
                   />
                 ))}
               </Stack>
@@ -86,7 +85,7 @@ export const Search = () => {
                   {latest.map((wiki) => (
                     <Table.Tr
                       key={wiki.id}
-                      onClick={() => push(`/page/${wiki.id}`)}
+                      onClick={() => navigate(`/page/${wiki.id}`)}
                       style={{ cursor: "pointer" }}
                     >
                       <Table.Td>{wiki.title}</Table.Td>
@@ -110,7 +109,7 @@ export const Search = () => {
                 excerpt={wiki.description}
                 genre={wiki.genre}
                 updatedAt={wiki.updatedAt}
-                onClick={() => push(`/page/${wiki.id}`)}
+                onClick={() => navigate(`/page/${wiki.id}`)}
               />
             ))}
             {results.length < filtered.length ? (

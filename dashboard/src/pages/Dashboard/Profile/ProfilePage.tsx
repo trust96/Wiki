@@ -2,11 +2,11 @@ import { Avatar, Button, Divider, Group, Spoiler, Stack, Text } from "@mantine/c
 import { PageComponent } from "@/components/layout";
 import { WikiIcon } from "@/components/primitive";
 import { useContributions } from "@/hooks/useContributions";
-import { useRouter } from "@/hooks/useRouter";
 import { useUser } from "@/hooks/useUser";
 import type { TContributionStatus } from "@/services/schema";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "wouter";
 import { WikiSummary } from "../patterns";
 
 const filters: Array<TContributionStatus | "all"> = [
@@ -32,7 +32,7 @@ export const ProfilePage = () => {
 const Profile = () => {
   const { t } = useTranslation("dashboard");
   const user = useUser();
-  const { push } = useRouter();
+  const [, navigate] = useLocation();
   const { data } = useContributions();
   const [filter, setFilter] = useState<(typeof filters)[number]>("all");
   const contributions = (data?.data ?? []).filter(
@@ -59,7 +59,7 @@ const Profile = () => {
               size="compact-sm"
               variant="subtle"
               leftSection={<WikiIcon name="edit" size="sm" />}
-              onClick={() => push("/profile/edit")}
+              onClick={() => navigate("/profile/edit")}
             >
               {t("profile.edit")}
             </Button>
@@ -95,7 +95,7 @@ const Profile = () => {
             genre={item.genre}
             updatedAt={item.updatedAt}
             status={item.status}
-            onClick={() => push(`/page/${item.wikiId}`)}
+            onClick={() => navigate(`/page/${item.wikiId}`)}
           />
         ))}
       </Stack>

@@ -5,7 +5,7 @@ import { useForgottenPassword } from "./useForgottenPassword";
 
 export const ForgottenPassword = () => {
   const { t } = useTranslation("forgotten_password");
-  const { handleSubmit, getInputProps } = useForgottenPassword();
+  const { handleSubmit, getInputProps, sent } = useForgottenPassword();
 
   return (
     <PageComponent.Site
@@ -14,19 +14,23 @@ export const ForgottenPassword = () => {
     >
       <Stack>
         <Title order={2}>{t("title")}</Title>
-        <Text>{t("content")}</Text>
-        <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-          <Stack align="center">
-            <TextInput
-              {...getInputProps("email")}
-              label={"Email"}
-              type="email"
-              w={"100%"}
-              autoComplete="email"
-            />
-            <Button fullWidth>{t("continue_button")}</Button>
-          </Stack>
-        </form>
+        <Text>{sent ? t("sent") : t("content")}</Text>
+        {sent ? null : (
+          <form style={{ width: "100%" }} onSubmit={handleSubmit}>
+            <Stack align="center">
+              <TextInput
+                {...getInputProps("email")}
+                label={t("email")}
+                type="email"
+                w={"100%"}
+                autoComplete="email"
+              />
+              <Button fullWidth type="submit">
+                {t("continue_button")}
+              </Button>
+            </Stack>
+          </form>
+        )}
       </Stack>
     </PageComponent.Site>
   );

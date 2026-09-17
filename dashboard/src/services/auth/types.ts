@@ -16,8 +16,8 @@ export type TSignupParams = {
   email: string;
   username: string;
   password: string;
-  confirmPassword?: string;
-  terms?: boolean;
+  confirmPassword: string;
+  terms: boolean;
 };
 
 export type TUpdateUserParams = {

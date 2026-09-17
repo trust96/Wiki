@@ -10,6 +10,11 @@
   "password": "Password",
   "confirm_password": "Confirm password",
   "terms": "I agree to the terms and conditions",
+  "validation": {
+    "password": "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character",
+    "confirm": "Passwords do not match",
+    "terms": "You must accept the terms and conditions"
+  },
   "signup_button": "Sign up",
   "signup_google_button": "Signup with google",
   "login": "You already have an account? Login"

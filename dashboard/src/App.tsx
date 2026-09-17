@@ -1,12 +1,13 @@
 import "material-symbols";
 import "@mantine/core/styles.css";
 import "@/foundations/globals.css";
-import { Route, Routes } from "react-router";
+import { Route, Switch } from "wouter";
 import EmailVerification from "./pages/Auth/EmailVerification/EmailVerification";
 import { ForgottenPassword } from "./pages/Auth/ForgottenPassword/ForgottenPassword";
 import LoginPage from "./pages/Auth/Login/LoginPage";
+import { ResetPassword } from "./pages/Auth/ResetPassword/ResetPassword";
 import SignupPage from "./pages/Auth/Signup/SignupPage";
-import { AuthGate } from "./pages/AuthGate";
+import { AuthGate, GuestGate } from "./pages/AuthGate";
 import { Home } from "./pages/Dashboard/Home/Home";
 import { Onboarding } from "./pages/Dashboard/Onboarding/Onboarding";
 import { ProfileEdit } from "./pages/Dashboard/Profile/Edit/Edit";
@@ -20,27 +21,42 @@ import { UnderConstruction } from "./pages/UnderConstruction/UnderConstruction";
 
 function App() {
   return (
-    <Routes>
-      <Route index path="/" element={<UnderConstruction />} />
-      <Route element={<AuthGate />}>
-        <Route path="auth">
-          <Route path="signup" element={<SignupPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="email_verification" element={<EmailVerification />} />
-          <Route path="forgotten_password" element={<ForgottenPassword />} />
-        </Route>
-        <Route path="onboarding" element={<Onboarding />} />
-        <Route index path="home" element={<Home />} />
-        <Route path="profile/edit" element={<ProfileEdit />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="user/:id" element={<ProfilePage />} />
-        <Route path="search" element={<Search />} />
-        <Route path="notifications" element={<Notifications />} />
-        <Route path="page/:id/section/:sectionId" element={<SectionForm />} />
-        <Route path="page/:id" element={<Wiki />} />
+    <Switch>
+      <Route path="/" component={UnderConstruction} />
+      <Route path="/auth" nest>
+        <GuestGate>
+          <Switch>
+            <Route path="/signup" component={SignupPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route
+              path="/email_verification/:code?"
+              component={EmailVerification}
+            />
+            <Route path="/forgotten_password" component={ForgottenPassword} />
+            <Route path="/new_password/:code" component={ResetPassword} />
+          </Switch>
+        </GuestGate>
       </Route>
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+      <Route>
+        <AuthGate>
+          <Switch>
+            <Route path="/onboarding" component={Onboarding} />
+            <Route path="/home" component={Home} />
+            <Route path="/profile/edit" component={ProfileEdit} />
+            <Route path="/profile" component={ProfilePage} />
+            <Route path="/user/:id" component={ProfilePage} />
+            <Route path="/search" component={Search} />
+            <Route path="/notifications" component={Notifications} />
+            <Route
+              path="/page/:id/section/:sectionId"
+              component={SectionForm}
+            />
+            <Route path="/page/:id" component={Wiki} />
+            <Route component={NotFound} />
+          </Switch>
+        </AuthGate>
+      </Route>
+    </Switch>
   );
 }
 

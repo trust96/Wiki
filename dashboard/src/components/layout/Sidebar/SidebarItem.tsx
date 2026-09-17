@@ -1,7 +1,7 @@
 import { Box, Flex } from "@mantine/core";
 import { WikiLink, WikiIcon } from "@/components/primitive";
-import { useRouter } from "@/hooks/useRouter";
 import { PRIMARY_COLOR } from "@/foundations";
+import { useRoute } from "wouter";
 import { type MaterialSymbol } from "material-symbols";
 import { type MouseEventHandler } from "react";
 
@@ -17,8 +17,8 @@ export type TSidebarItemProps = TSidebarItem;
 
 const SidebarItem = (props: TSidebarItemProps) => {
   const { href, handleClick, isDisabled } = props;
-  const pathname = useRouter().pathname;
-  const isActive = pathname === props.href;
+  const [match] = useRoute(href ?? "/__none__");
+  const isActive = Boolean(href) && match;
   const color = isActive ? PRIMARY_COLOR : "inherit";
 
   const icon = (
