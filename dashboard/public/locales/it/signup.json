@@ -10,6 +10,11 @@
   "password": "Password",
   "confirm_password": "Conferma password",
   "terms": "Accetto i termini e le condizioni",
+  "validation": {
+    "password": "La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale",
+    "confirm": "Le password non coincidono",
+    "terms": "Devi accettare i termini e le condizioni"
+  },
   "signup_button": "Registrati",
   "signup_google_button": "Registrati con google",
   "login": "Hai già un account? Accedi"

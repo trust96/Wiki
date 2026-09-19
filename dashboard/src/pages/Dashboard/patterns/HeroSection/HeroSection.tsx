@@ -2,18 +2,18 @@ import { SearchField } from "@/components/input";
 import { primaryShade } from "@/foundations";
 import { appName } from "@/helper/constants";
 import { usePage } from "@/hooks/usePage";
-import { useRouter } from "@/hooks/useRouter";
 import { useUser } from "@/hooks/useUser";
 import type { TGenre } from "@/services/schema";
 import { Stack, Text, Title } from "@mantine/core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "wouter";
 import { GenreFilters } from "../GenreFilters";
 import { WikiSummary } from "../WikiSummary";
 
 export const HeroSection = () => {
   const { t } = useTranslation("dashboard");
-  const { push } = useRouter();
+  const [, navigate] = useLocation();
   const user = useUser();
   const { data } = usePage();
   const [query, setQuery] = useState("");
@@ -49,7 +49,7 @@ export const HeroSection = () => {
         onChange={(event) => setQuery(event.currentTarget.value)}
         onKeyDown={(event) => {
           if (event.key === "Enter") {
-            push(`/search?q=${encodeURIComponent(query)}`);
+            navigate(`/search?q=${encodeURIComponent(query)}`);
           }
         }}
       />
@@ -62,7 +62,7 @@ export const HeroSection = () => {
             excerpt={wiki.description}
             genre={wiki.genre}
             updatedAt={wiki.updatedAt}
-            onClick={() => push(`/page/${wiki.id}`)}
+            onClick={() => navigate(`/page/${wiki.id}`)}
           />
         ))}
       </Stack>

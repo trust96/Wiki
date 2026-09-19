@@ -61,7 +61,7 @@ export const Signup = (_) => {
         </Button>
         <GoogleButton>{t("signup_google_button")}</GoogleButton>
       </Stack>
-      <WikiLink c="dimmed" size="xs" fw={"bold"} href="/auth/login">
+      <WikiLink c="dimmed" size="xs" fw={"bold"} href="~/auth/login">
         {t("login")}
       </WikiLink>
     </Stack>

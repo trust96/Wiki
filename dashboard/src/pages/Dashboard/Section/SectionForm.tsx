@@ -1,7 +1,6 @@
 import { WikiEditor } from "@/components/input";
 import { PageComponent } from "@/components/layout";
 import { useSinglePage } from "@/hooks/useSinglePage";
-import { useRouter } from "@/hooks/useRouter";
 import { useUploadMutation } from "@/services/file";
 import { useUpdateSectionMutation } from "@/services/page";
 import { sectionFormParamsSchema } from "@/services/schema";
@@ -9,7 +8,7 @@ import { Button, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useEffect } from "react";
-import { useParams, useSearchParams } from "react-router";
+import { useLocation, useParams, useSearchParams } from "wouter";
 import { useTranslation } from "react-i18next";
 import { ReasonBanner } from "../patterns";
 
@@ -17,9 +16,11 @@ const formId = "section-form";
 
 export const SectionForm = () => {
   const { t } = useTranslation("dashboard");
-  const { id, sectionId } = useParams();
-  const [params] = useSearchParams();
-  const { push } = useRouter();
+  const params = useParams<{ id?: string; sectionId?: string }>();
+  const id = params.id;
+  const sectionId = params.sectionId;
+  const [searchParams] = useSearchParams();
+  const [, navigate] = useLocation();
   const pageId = Number(id);
   const { data } = useSinglePage(pageId);
   const section = data?.data?.sections.find(
@@ -27,7 +28,7 @@ export const SectionForm = () => {
   );
   const { mutateAsync: save } = useUpdateSectionMutation();
   const { mutateAsync: uploadFile } = useUploadMutation();
-  const reason = params.get("reason");
+  const reason = searchParams.get("reason");
   const { setValues, values, onSubmit } = useForm<{ content: string }>({
     initialValues: { content: "" },
     validate: zod4Resolver(sectionFormParamsSchema),
@@ -47,7 +48,7 @@ export const SectionForm = () => {
       content: values.content,
     });
     if (result.isSuccess) {
-      push(`/page/${pageId}`);
+      navigate(`/page/${pageId}`);
     }
   });
 

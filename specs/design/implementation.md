@@ -1,6 +1,6 @@
 # Dashboard first-run implementation
 
-Rebuild the dashboard UI from the approved specs and Superdesign drafts. Current screens, Wiki\* components, and theme are not the visual baseline. Keep React + Vite + Mantine + react-router + i18n.
+Rebuild the dashboard UI from the approved specs and Superdesign drafts. Current screens, Wiki\* components, and theme are not the visual baseline. Keep React + Vite + Mantine + wouter + i18n.
 
 Target system (chrome, pieces, color, spacing, container, Lexical): [`system.md`](system.md). Drafts: [`dashboard.md`](dashboard.md). Product rules: `specs/authentication/*`, `specs/wiki/*`, `specs/dashboard_navigation/*`.
 

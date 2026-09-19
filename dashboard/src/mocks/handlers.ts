@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  verifyEmail,
 } from "./auth.handler";
 import {
   contributions,
@@ -21,6 +22,7 @@ export const handlers = [
   registerUser,
   currentUser,
   logoutUser,
+  verifyEmail,
   ...authStubHandlers,
   updateProfile,
   pages,

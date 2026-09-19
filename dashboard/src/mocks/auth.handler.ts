@@ -62,8 +62,16 @@ export const logoutUser = http.post("/api/auth/logout", () => {
   return ok();
 });
 
+export const verifyEmail = http.post("/api/auth/verify-email", async () => {
+  mockUser = {
+    ...newUser,
+    emailVerifiedAt: "2026-09-14T00:00:00Z",
+    isOnboarded: false,
+  };
+  return ok({ token: "mock-token", user: mockUser });
+});
+
 export const authStubHandlers = [
-  "verify-email",
   "resend-verification",
   "forgot-password",
   "reset-password",

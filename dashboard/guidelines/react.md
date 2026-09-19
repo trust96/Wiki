@@ -111,7 +111,7 @@ Usage: `<PageComponent.Site>`, `<PageComponent.Dashboard>`, `<WikiNavigation.Das
 
 ## Pages
 
-Routes are declared only in `App.tsx`. `useRouter` is a thin `{ push, back, pathname }` over react-router.
+Routes are declared only in `App.tsx` with wouter (`Switch`, `Route`, `Link`, `Redirect`, `useLocation`, `useParams`, `useSearchParams`, `useRoute`). Do not wrap navigation in a custom `useRouter`. Wouter’s own `useRouter` is config (parser, base), not navigate — do not import it.
 
 Group screens by area, then by route name:
 
@@ -122,6 +122,7 @@ pages/
     Signup/
     EmailVerification/
     ForgottenPassword/
+    ResetPassword/     # /auth/new_password/:code
   Dashboard/
     Home/              # /home
     Search/            # /search
@@ -147,7 +148,7 @@ Split a screen when it has a form or non-trivial state. Follow `Auth/Login/`:
 | `LoginModal.tsx` | Optional modal variant |
 | `tests/Login.test.tsx` | Browser test, wrapped in `WikiProvider` |
 
-Keep hooks that are unique to one screen next to that screen. Put a hook in `src/hooks/` only when a second caller needs it (`useRouter`, `usePage`, `useSinglePage`, `useUser`).
+Keep hooks that are unique to one screen next to that screen. Put a hook in `src/hooks/` only when a second caller needs it (`usePage`, `useSinglePage`, `useUser`).
 
 ## Styling
 
@@ -194,4 +195,4 @@ Auth screens already do this (`login`, `signup`, `errors`, `common`, …). New o
 
 ## Tests
 
-Vitest browser (`vitest.browser.config.ts`), `vitest-browser-react`. Wrap with `WikiProvider`. Colocate under `pages/Auth/Login/tests/` (or next to the component, `PageComponent.test.tsx`). Prefer assertions on visible text; snapshots exist for Login/Signup — update them only when the UI change is intentional.
+Vitest browser (`vitest.browser.config.ts`), `vitest-browser-react`. Wrap with `WikiProvider`. Screens that render `WikiLink` also need wouter `Router` + `memoryLocation` (module-level hook so it does not reset each render). Colocate under `pages/Auth/Login/tests/` (or next to the component, `PageComponent.test.tsx`). Prefer assertions on visible text; snapshots exist for Login/Signup — update them only when the UI change is intentional.

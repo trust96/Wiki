@@ -1,6 +1,6 @@
 import { Anchor, type AnchorProps } from "@mantine/core";
 import type { ReactNode } from "react";
-import { Link as RouterLink } from "react-router";
+import { Link as WouterLink } from "wouter";
 
 export type TLinkProps = Omit<AnchorProps, "href" | "component"> & {
   href: string;
@@ -9,9 +9,9 @@ export type TLinkProps = Omit<AnchorProps, "href" | "component"> & {
 
 const WikiLink = ({ href, children, ...rest }: TLinkProps) => {
   return (
-    <Anchor component={RouterLink} to={href} {...rest}>
-      {children}
-    </Anchor>
+    <WouterLink href={href} asChild>
+      <Anchor {...rest}>{children}</Anchor>
+    </WouterLink>
   );
 };
 

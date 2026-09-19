@@ -1,11 +1,8 @@
 import { Box, Button, Image, SimpleGrid, Text, Title } from "@mantine/core";
 import classes from "./NotFound.module.css";
 import { wikiContainerClass } from "@/foundations";
-import { useRouter } from "@/hooks/useRouter";
 
 export const NotFound = () => {
-  const { back } = useRouter();
-
   return (
     <Box className={`${wikiContainerClass} ${classes.root}`}>
       <SimpleGrid spacing={{ base: 40, md: 80 }} cols={{ base: 1, md: 2 }}>
@@ -21,7 +18,7 @@ export const NotFound = () => {
             variant="outline"
             size="md"
             mt="xl"
-            onClick={back}
+            onClick={() => history.back()}
             className={classes.control}
           >
             Get back to previous page

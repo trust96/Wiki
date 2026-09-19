@@ -1,4 +1,3 @@
-import { useRouter } from "@/hooks/useRouter";
 import { currentUserKey, useLoginMutation } from "@/services/auth/auth";
 import type { TLoginParams } from "@/services/auth/types";
 import { tokenKey } from "@/helper/constants";
@@ -6,6 +5,7 @@ import { useUiStore } from "@/state/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
+import { useLocation } from "wouter";
 import { loginInitialValues, loginValidationSchema } from "./helper";
 
 export const useLogin = () => {
@@ -13,12 +13,21 @@ export const useLogin = () => {
     initialValues: loginInitialValues,
     validate: zod4Resolver(loginValidationSchema),
   });
-  const { push } = useRouter();
+  const [, navigate] = useLocation();
   const addToken = useUiStore((state) => state.addToken);
+  const clearApiErrors = useUiStore((state) => state.clearApiErrors);
   const queryClient = useQueryClient();
   const { mutateAsync: login } = useLoginMutation();
   const handleSubmit = onSubmit(async (values) => {
     const data = await login(values);
+    if (data.code === 101) {
+      clearApiErrors();
+      navigate("/email_verification", {
+        replace: true,
+        state: { email: values.identifier },
+      });
+      return;
+    }
     if (!data.isSuccess || !data.data) {
       return;
     }
@@ -30,10 +39,10 @@ export const useLogin = () => {
       data: { user: data.data.user },
     });
     if (!data.data.user.isOnboarded) {
-      push("/onboarding");
+      navigate("~/onboarding");
       return;
     }
-    push("/home");
+    navigate("~/home");
   });
   return {
     getInputProps,

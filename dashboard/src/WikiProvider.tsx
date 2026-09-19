@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 import { useState, type PropsWithChildren } from "react";
-import { BrowserRouter } from "react-router";
 import { theme } from "@/foundations";
 
 const WikiProvider = (props: PropsWithChildren) => {
@@ -17,11 +16,9 @@ const WikiProvider = (props: PropsWithChildren) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <MantineProvider theme={theme} defaultColorScheme="dark">
-          {props.children}
-        </MantineProvider>
-      </BrowserRouter>
+      <MantineProvider theme={theme} defaultColorScheme="dark">
+        {props.children}
+      </MantineProvider>
     </QueryClientProvider>
   );
 };

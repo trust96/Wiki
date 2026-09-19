@@ -1,7 +1,18 @@
 import { PageComponent } from "./PageComponent";
 import { render } from "vitest-browser-react";
 import { test, expect } from "vitest";
+import type { ReactNode } from "react";
+import { Router } from "wouter";
+import { memoryLocation } from "wouter/memory-location";
 import WikiProvider from "@/WikiProvider";
+
+const { hook } = memoryLocation({ path: "/home" });
+
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <Router hook={hook}>
+    <WikiProvider>{children}</WikiProvider>
+  </Router>
+);
 
 test("renders children when specified", async () => {
   const { getByText } = await render(
@@ -9,7 +20,7 @@ test("renders children when specified", async () => {
       <div> i am a child</div>
     </PageComponent.Site>,
     {
-      wrapper: WikiProvider,
+      wrapper,
     },
   );
   await expect.element(getByText("i am a child")).toBeInTheDocument();
@@ -21,7 +32,7 @@ test("dashboard frame uses wikiContainer", async () => {
       <div>dashboard child</div>
     </PageComponent.Dashboard>,
     {
-      wrapper: WikiProvider,
+      wrapper,
     },
   );
   await expect.element(getByText("dashboard child")).toBeInTheDocument();

@@ -57,3 +57,47 @@ export const useLoginMutation = () =>
         payload,
       }),
   });
+
+export const useVerifyEmailMutation = () =>
+  useMutation({
+    mutationFn: (payload: { token: string }) =>
+      normalizeBaseQuery<TLoginResponseData["data"]>({
+        url: "/auth/verify-email",
+        method: "POST",
+        payload,
+      }),
+  });
+
+export const useResendVerificationMutation = () =>
+  useMutation({
+    mutationFn: (payload: { email: string }) =>
+      normalizeBaseQuery<null>({
+        url: "/auth/resend-verification",
+        method: "POST",
+        payload,
+      }),
+  });
+
+export const useForgotPasswordMutation = () =>
+  useMutation({
+    mutationFn: (payload: { email: string }) =>
+      normalizeBaseQuery<null>({
+        url: "/auth/forgot-password",
+        method: "POST",
+        payload,
+      }),
+  });
+
+export const useResetPasswordMutation = () =>
+  useMutation({
+    mutationFn: (payload: {
+      token: string;
+      password: string;
+      confirmPassword: string;
+    }) =>
+      normalizeBaseQuery<null>({
+        url: "/auth/reset-password",
+        method: "POST",
+        payload,
+      }),
+  });

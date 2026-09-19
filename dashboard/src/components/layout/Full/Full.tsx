@@ -9,7 +9,6 @@ import {
 import { WikiModal } from "@/components/primitive";
 import { WikiIcon } from "@/components/primitive";
 import { wikiContainerClass } from "@/foundations";
-import { useRouter } from "@/hooks/useRouter";
 import {
   forwardRef,
   isValidElement,
@@ -40,10 +39,9 @@ export type TFull = {
 
 const Full = forwardRef((props: TFull, ref: RefObject<HTMLDivElement>) => {
   const { noNav } = props;
-  const { back } = useRouter();
   const [isOpened, setIsOpened] = useState(false);
   const handleBackNavigation = () => {
-    back();
+    history.back();
   };
   const handleDefaultLeftAction = () => {
     if (props.isDirty) {

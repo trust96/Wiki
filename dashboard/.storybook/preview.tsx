@@ -1,10 +1,13 @@
 import type { Preview } from "@storybook/react-vite";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import { MemoryRouter } from "react-router";
+import { Router } from "wouter";
+import { memoryLocation } from "wouter/memory-location";
 import { theme } from "../src/foundations";
 import "material-symbols";
 import "@mantine/core/styles.css";
 import "../src/foundations/globals.css";
+
+const { hook: memoryHook } = memoryLocation({ path: "/" });
 
 const preview: Preview = {
   tags: ["autodocs"],
@@ -39,12 +42,12 @@ const preview: Preview = {
     (Story, context) => {
       const scheme = context.globals.theme === "light" ? "light" : "dark";
       return (
-        <MemoryRouter>
+        <Router hook={memoryHook}>
           <MantineProvider theme={theme} forceColorScheme={scheme}>
             <ColorSchemeScript forceColorScheme={scheme} />
             <Story />
           </MantineProvider>
-        </MemoryRouter>
+        </Router>
       );
     },
   ],
