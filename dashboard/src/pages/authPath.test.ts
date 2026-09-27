@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { guestRedirect, sessionRedirect } from "./authPath";
+import { entryRedirect, guestRedirect, sessionRedirect } from "./authPath";
 import type { TUser } from "@/services/schema";
 
 const maya: TUser = {
@@ -66,4 +66,24 @@ test("session new user on onboarding stays", () => {
 
 test("session onboarded user on home stays", () => {
   expect(sessionRedirect("token", maya, false, "/home")).toBeNull();
+});
+
+test("entry without token goes to login", () => {
+  expect(entryRedirect("", undefined, false)).toBe("/auth/login");
+});
+
+test("entry waits while me is pending", () => {
+  expect(entryRedirect("token", undefined, true)).toBeNull();
+});
+
+test("entry with token but no user goes to login", () => {
+  expect(entryRedirect("token", undefined, false)).toBe("/auth/login");
+});
+
+test("entry with onboarded Maya goes home", () => {
+  expect(entryRedirect("token", maya, false)).toBe("/home");
+});
+
+test("entry with new user goes onboarding", () => {
+  expect(entryRedirect("token", newbie, false)).toBe("/onboarding");
 });

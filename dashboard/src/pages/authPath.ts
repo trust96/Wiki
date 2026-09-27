@@ -23,3 +23,13 @@ export const sessionRedirect = (
   if (user.isOnboarded && pathname === "/onboarding") return "/home";
   return null;
 };
+
+export const entryRedirect = (
+  token: string,
+  user: TUser | undefined,
+  mePending: boolean,
+): string | null => {
+  if (mePending) return null;
+  if (!token || !user) return "/auth/login";
+  return user.isOnboarded ? "/home" : "/onboarding";
+};

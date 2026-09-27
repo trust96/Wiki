@@ -47,7 +47,7 @@ export const ResetPassword = () => {
       confirmPassword: values.confirmPassword,
     });
     if (!data.isSuccess) return;
-    navigate("/login");
+    navigate("~/auth/login");
   });
 
   return (

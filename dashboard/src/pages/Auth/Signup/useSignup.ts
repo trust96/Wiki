@@ -29,7 +29,7 @@ export const useSignup = () => {
       return;
     }
 
-    navigate("/email_verification", { state: { email: values.email } });
+    navigate("~/auth/email_verification", { state: { email: values.email } });
   });
   return { getInputProps, handleSubmit };
 };
