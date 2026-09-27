@@ -22,7 +22,7 @@ export const useLogin = () => {
     const data = await login(values);
     if (data.code === 101) {
       clearApiErrors();
-      navigate("/email_verification", {
+      navigate("~/auth/email_verification", {
         replace: true,
         state: { email: values.identifier },
       });

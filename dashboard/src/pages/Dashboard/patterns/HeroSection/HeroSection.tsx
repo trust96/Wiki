@@ -43,16 +43,18 @@ export const HeroSection = () => {
           {t("home.tagline")}
         </Text>
       </Stack>
-      <SearchField
-        value={query}
-        placeholder={t("search.placeholder")}
-        onChange={(event) => setQuery(event.currentTarget.value)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            navigate(`/search?q=${encodeURIComponent(query)}`);
-          }
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          navigate(`/search?q=${encodeURIComponent(query)}`);
         }}
-      />
+      >
+        <SearchField
+          value={query}
+          placeholder={t("search.placeholder")}
+          onChange={(event) => setQuery(event.currentTarget.value)}
+        />
+      </form>
       <GenreFilters value={genres} onChange={setGenres} />
       <Stack gap="sm">
         {wikis.map((wiki) => (

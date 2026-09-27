@@ -13,7 +13,7 @@ export const SearchField = (props: TextInputProps) => {
       rightSectionWidth={42}
       leftSection={<WikiIcon name="search" size="md" />}
       rightSection={
-        <ActionIcon size={32} radius="xl" variant="filled">
+        <ActionIcon type="submit" size={32} radius="xl" variant="filled">
           <WikiIcon name="arrow_circle_right" size="md" />
         </ActionIcon>
       }

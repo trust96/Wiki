@@ -27,15 +27,6 @@ const NavigationMenu = () => {
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item leftSection={<WikiIcon name="shield" size="sm" />}>
-          Area riservata
-        </Menu.Item>
-        <Menu.Item leftSection={<WikiIcon name="edit" size="sm" />}>
-          Cambia password
-        </Menu.Item>
-        <Menu.Item leftSection={<WikiIcon name="settings" size="sm" />}>
-          Impostazioni
-        </Menu.Item>
         <Menu.Item
           color={semanticColor.danger}
           leftSection={<WikiIcon name="logout" size="sm" />}
