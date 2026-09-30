@@ -5,13 +5,18 @@ import { TOKEN_SECRET, MAX_AGE } from "../helper/constants";
 import logger from "../helper/logger";
 
 const redisClient = createClient({ url: "redis://redis:6379" });
-redisClient.connect().catch(logger.error);
+
+try {
+  await redisClient.connect();
+} catch (error) {
+  logger.error(error);
+}
 
 const redisStore = new RedisStore({ client: redisClient, prefix: "eventus:" });
 export const sessionMiddleware = session({
   store: redisStore,
-  resave: true, // required: force lightweight session keep alive (touch)
-  saveUninitialized: false, // recommended: only save session when data exists
+  resave: true,
+  saveUninitialized: false,
   secret: TOKEN_SECRET!,
   cookie: { maxAge: MAX_AGE },
 });

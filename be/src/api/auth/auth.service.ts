@@ -1,15 +1,9 @@
 import logger from "../../helper/logger";
-import { sendEmail } from "../../helper/sendEmail";
-import { User } from "@prisma/client";
-import { APP_NAME } from "../../helper/constants";
 
-export const sendForgottenPasswordEmail = async (user: User, token: Token) => {
+export const sendForgottenPasswordEmail = async () => {
   try {
-    await sendEmail({
-      subject: `Reset your password on ${APP_NAME}`,
-      to: user?.email,
-      html: "email content",
-    });
+    //implement send email
+    return;
   } catch (error) {
     logger.error(error);
   }

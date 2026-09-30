@@ -2,6 +2,7 @@
   "name": "gemma_server",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "nodemon src/server.ts",

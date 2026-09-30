@@ -1,6 +1,6 @@
 import { compare } from "bcryptjs";
 import { getUserByEmail } from "../user/user.service";
-import { USER_STATUS, USER_ROLE } from "../../helper/constants";
+import { USER_ROLE } from "../../helper/constants";
 import { Response, Request } from "express";
 import logger from "../../helper/logger";
 import { getUserResponseMapper } from "../user/user.mapper";
@@ -25,7 +25,7 @@ export const loginController = async (req: Request, res: Response) => {
 
   //TODO: add ver
   const isVerified = true;
-  const isAdmin = user.role <= USER_ROLE.SUPER_ADMIN;
+  const isAdmin = user.role <= USER_ROLE.ADMIN;
   if (!isAdmin && !isVerified) {
     logger.error("Account not verified");
     res.status(401).json({ message: "Account non verificato" });
@@ -69,13 +69,13 @@ export const triggerForgottenPasswordController = async (req: Request, res: Resp
   });
 };
 
-export const changeForgottenPasswordController = async (req: Request, res: Response) => {
+export const changeForgottenPasswordController = async (_req: Request, res: Response) => {
   //TODO: add logic for change forgotten password
   logger.info("Password changed successfully");
   res.status(200).json({ message: "La password è stata cambiata con successo" });
 };
 
-export const resendForgottenPasswordEmailController = async (req: Request, res: Response) => {
+export const resendForgottenPasswordEmailController = async (_req: Request, res: Response) => {
   //TODO: add the implementation of the resend email
   logger.info("Forgotten password email sent successfully");
   res.status(200).json({

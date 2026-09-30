@@ -1,9 +1,6 @@
-import { render } from "@react-email/components";
-import CredentialsEmail from "../../emails/auth/CredentialsEmail";
 import { USER_ROLE } from "../../helper/constants";
 import logger from "../../helper/logger";
 import prisma from "../../helper/prisma";
-import { sendEmail } from "../../helper/sendEmail";
 import { User } from "@prisma/client";
 
 export const createUser = async (data: any) => {
@@ -100,14 +97,9 @@ export const getAllUsersByType = async (userRole: USER_ROLE) => {
   return users;
 };
 
-export const sendCredentialsEmail = async (user: User) => {
+export const sendCredentialsEmail = async (_user: User) => {
   try {
-    const email = await CredentialsEmail({ user });
-    await sendEmail({
-      subject: "Benvenuto su Gemma",
-      to: user?.email,
-      html: render(email),
-    });
+    // TODO: send welcome email
   } catch (error) {
     logger.error(error);
   }

@@ -10,7 +10,7 @@
     "jsx": "react-jsx",
     "strict": false,
     "lib": ["ESNext", "DOM"],
-    "module": "CommonJS",
+    "module": "nodenext",
     "target": "ESNext",
     "resolveJsonModule": true
   },
