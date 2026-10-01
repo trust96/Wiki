@@ -9,7 +9,7 @@ import { useLocation } from "wouter";
 import { loginInitialValues, loginValidationSchema } from "./helper";
 
 export const useLogin = () => {
-  const { getInputProps, onSubmit } = useForm<TLoginParams>({
+  const { getInputProps, onSubmit, errors } = useForm<TLoginParams>({
     initialValues: loginInitialValues,
     validate: zod4Resolver(loginValidationSchema),
   });
@@ -18,23 +18,24 @@ export const useLogin = () => {
   const clearApiErrors = useUiStore((state) => state.clearApiErrors);
   const queryClient = useQueryClient();
   const { mutateAsync: login } = useLoginMutation();
+  console.log(errors);
   const handleSubmit = onSubmit(async (values) => {
     const data = await login(values);
     if (data.code === 101) {
       clearApiErrors();
       navigate("~/auth/email_verification", {
         replace: true,
-        state: { email: values.identifier },
+        state: { email: values.email },
       });
       return;
     }
-    if (!data.isSuccess || !data.data) {
+    if (!data.ok || !data.data) {
       return;
     }
     localStorage.setItem(tokenKey, data.data.token);
     addToken(data.data.token);
     queryClient.setQueryData(currentUserKey, {
-      isSuccess: true,
+      ok: true,
       code: null,
       data: { user: data.data.user },
     });

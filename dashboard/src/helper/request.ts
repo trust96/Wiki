@@ -2,7 +2,7 @@ import type { HttpType } from "./constants";
 
 export type TWikiResponseData<T> = {
   code: number | null;
-  isSuccess: boolean;
+  ok: boolean;
   data: T;
 };
 

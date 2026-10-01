@@ -61,7 +61,7 @@ export const notificationSchema = z.object({
 });
 
 export const loginParamsSchema = z.object({
-  identifier: z.string().min(1),
+  email: z.string().min(1),
   password: z.string().min(1),
 });
 

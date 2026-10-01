@@ -2,7 +2,6 @@
   "name": "wiki_server",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev": "tsx watch src/server.ts",
@@ -10,7 +9,7 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate",
-    "build": "prisma generate && esbuild src/server.ts --bundle --platform=node --packages=external --format=esm --outdir=dist --sourcemap",
+    "build": "prisma generate && esbuild src/server.ts --bundle --platform=node --packages=external --format=cjs --outdir=dist --sourcemap",
     "serve": "prisma migrate deploy && node ./dist/server.js"
   },
   "keywords": [],

@@ -1,13 +1,11 @@
 import { USER_ROLE } from "../../helper/constants";
 import logger from "../../helper/logger";
 import prisma from "../../helper/prisma";
-import type { User } from "../../generated/prisma/client.js";
+import type { Prisma, User } from "../../generated/prisma/client.js";
 
-export const createUser = async (data: any) => {
+export const createUser = async (data: Prisma.UserCreateInput) => {
   const user = await prisma.user.create({
-    data: {
-      ...data,
-    },
+    data,
   });
   return user;
 };

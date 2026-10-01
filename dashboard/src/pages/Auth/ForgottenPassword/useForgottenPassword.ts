@@ -29,7 +29,7 @@ export const useForgottenPassword = () => {
   });
   const handleSubmit = onSubmit(async (values) => {
     const data = await forgot({ email: values.email });
-    if (!data.isSuccess) return;
+    if (!data.ok) return;
     setSent(true);
   });
   return { getInputProps, handleSubmit, sent };

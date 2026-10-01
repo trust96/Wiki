@@ -26,7 +26,7 @@ export const Login = () => {
       <form onSubmit={handleSubmit} id="login">
         <Stack>
           <TextInput
-            {...getInputProps("identifier")}
+            {...getInputProps("email")}
             label={t("email")}
             id="email"
           />

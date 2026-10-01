@@ -1,8 +1,18 @@
 import { app } from "./app";
 import { PORT, HOST } from "./helper/constants";
 import startUp from "./startup";
+import { connectRedis } from "./middleware/sessionMiddleware";
 
-app.listen(Number(PORT), HOST!, async () => {
+const start = async () => {
+  await connectRedis();
   await startUp();
-  console.log(`http://${HOST}:${PORT} is up and running 🚀`);
+
+  app.listen(Number(PORT), HOST!, () => {
+    console.log(`http://${HOST}:${PORT} is up and running 🚀`);
+  });
+};
+
+start().catch((error) => {
+  console.error(error);
+  process.exit(1);
 });

@@ -3,6 +3,7 @@ import {
   changeForgottenPasswordController,
   loginController,
   logoutController,
+  registerController,
   resendForgottenPasswordEmailController,
   triggerForgottenPasswordController,
 } from "./auth.controller";
@@ -12,6 +13,7 @@ import validate from "../../middleware/validationMiddleware";
 
 export const authRouter = Router();
 
+authRouter.post("/auth/register", validate(authValidation), registerController);
 authRouter.post("/auth/login", validate(authValidation), loginController);
 authRouter.post("/auth/forgotten_password", validate(forgottenPasswordValidation), triggerForgottenPasswordController);
 authRouter.post("/auth/logout", auth(), logoutController);

@@ -8,7 +8,7 @@ export type TForgottenPasswordParams = {
 };
 
 export type TLoginParams = {
-  identifier: string;
+  email: string;
   password: string;
 };
 

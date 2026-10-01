@@ -53,13 +53,13 @@ input, button → primitive / foundations
 primitive → Mantine (and CSS modules)
 ```
 
-| Layer | Role | Public names |
-| --- | --- | --- |
-| `primitive/` | Reusable wrappers around Mantine/HTML. No routes, no API, no domain copy. | `WikiIcon`, `WikiLink`, `WikiList`, `WikiListItem`, `WikiLogo`, `WikiModal` |
-| `layout/` | App chrome and page frames. | `PageComponent`, `WikiNavigation`, `WikiSidebar`, `WikiFooter`, `WikiBottomNavigation`, `WikiFull` |
-| `input/` | Form controls built on Mantine inputs. | `SearchField`, `WikiTextarea`, `WikiEditor` |
-| `button/` | Specialized buttons. | `GoogleButton`, `ShareButton` |
-| `feedback/` | Global overlay chrome mounted in `Root`. | `ErrorModal`, `WikiLoader` |
+| Layer        | Role                                                                      | Public names                                                                                       |
+| ------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `primitive/` | Reusable wrappers around Mantine/HTML. No routes, no API, no domain copy. | `WikiIcon`, `WikiLink`, `WikiList`, `WikiListItem`, `WikiLogo`, `WikiModal`                        |
+| `layout/`    | App chrome and page frames.                                               | `PageComponent`, `WikiNavigation`, `WikiSidebar`, `WikiFooter`, `WikiBottomNavigation`, `WikiFull` |
+| `input/`     | Form controls built on Mantine inputs.                                    | `SearchField`, `WikiTextarea`, `WikiEditor`                                                        |
+| `button/`    | Specialized buttons.                                                      | `GoogleButton`, `ShareButton`                                                                      |
+| `feedback/`  | Global overlay chrome mounted in `Root`.                                  | `ErrorModal`, `WikiLoader`                                                                         |
 
 Use the existing Wiki\* wrapper instead of the raw Mantine equivalent (`WikiModal` not `Modal`, `WikiLink` not `Anchor`+`Link`, `WikiIcon` not a raw material-symbol span).
 
@@ -101,8 +101,14 @@ New public APIs: named exports from `index.ts`. Types use a `T` prefix (`TLoginP
 Related variants of one concept are a namespace object, not parallel top-level components:
 
 ```ts
-export const PageComponent = { Site: PageComponentSite, Dashboard: PageComponentDashboard };
-export const Navigation = { Site: NavigationSimple, Dashboard: NavigationDashboard };
+export const PageComponent = {
+  Site: PageComponentSite,
+  Dashboard: PageComponentDashboard,
+};
+export const Navigation = {
+  Site: NavigationSimple,
+  Dashboard: NavigationDashboard,
+};
 ```
 
 Usage: `<PageComponent.Site>`, `<PageComponent.Dashboard>`, `<WikiNavigation.Dashboard />`.
@@ -139,14 +145,14 @@ A route folder holds the screen. Page-specific components live in that area’s 
 
 Split a screen when it has a form or non-trivial state. Follow `Auth/Login/`:
 
-| File | Job |
-| --- | --- |
-| `LoginPage.tsx` | Route entry: i18n document title, wrap with `PageComponent.*` |
-| `Login.tsx` | Presentational UI |
-| `useLogin.ts` | Form + mutation + navigation |
-| `helper.ts` | Initial values, zod schema |
-| `LoginModal.tsx` | Optional modal variant |
-| `tests/Login.test.tsx` | Browser test, wrapped in `WikiProvider` |
+| File                   | Job                                                           |
+| ---------------------- | ------------------------------------------------------------- |
+| `LoginPage.tsx`        | Route entry: i18n document title, wrap with `PageComponent.*` |
+| `Login.tsx`            | Presentational UI                                             |
+| `useLogin.ts`          | Form + mutation + navigation                                  |
+| `helper.ts`            | Initial values, zod schema                                    |
+| `LoginModal.tsx`       | Optional modal variant                                        |
+| `tests/Login.test.tsx` | Browser test, wrapped in `WikiProvider`                       |
 
 Keep hooks that are unique to one screen next to that screen. Put a hook in `src/hooks/` only when a second caller needs it (`usePage`, `useSinglePage`, `useUser`).
 
@@ -174,9 +180,9 @@ Client UI state is Zustand in `state/ui.ts`:
 - `token` — auth token
 - `apiErrors` — errors shown by `components/feedback/ErrorModal`
 
-Do not add Redux, axios, or a second query client. Do not `fetch` inside a component. Mutations that fail already surface via `ErrorModal`; check `data.isSuccess` before navigating.
+Do not add Redux, axios, or a second query client. Do not `fetch` inside a component. Mutations that fail already surface via `ErrorModal`; check `data.ok` before navigating.
 
-API payloads use `TWikiResponseData<T>` (`helper/request.ts`): `{ isSuccess, code, data }`.
+API payloads use `TWikiResponseData<T>` (`helper/request.ts`): `{ ok, code, data }`.
 
 ## Forms
 
@@ -188,7 +194,7 @@ API payloads use `TWikiResponseData<T>` (`helper/request.ts`): `{ isSuccess, cod
 
 ```tsx
 const { t } = useTranslation("login");
-<Title>{t("title")}</Title>
+<Title>{t("title")}</Title>;
 ```
 
 Auth screens already do this (`login`, `signup`, `errors`, `common`, …). New or edited user-visible copy must land in both `en` and `it`. Do not grow hardcoded English in pages that you are already touching.

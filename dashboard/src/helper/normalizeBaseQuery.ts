@@ -10,7 +10,7 @@ import { toFormData } from "./toFormData";
 import imageCompression from "browser-image-compression";
 
 const failed = <T>(): TWikiResponseData<T> => ({
-  isSuccess: false,
+  ok: false,
   code: null,
   data: null as T,
 });
@@ -59,7 +59,7 @@ export const normalizeBaseQuery = async <T>(
 
     const responseData = (await response.json()) as TWikiResponseData<T>;
 
-    if (!responseData.isSuccess) {
+    if (!responseData.ok) {
       addApiError({
         status: response.status !== 200 ? response.status : null,
         code: responseData.code,

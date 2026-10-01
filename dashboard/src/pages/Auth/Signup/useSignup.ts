@@ -25,7 +25,7 @@ export const useSignup = () => {
       terms: values.terms,
     });
 
-    if (!data.isSuccess) {
+    if (!data.ok) {
       return;
     }
 
@@ -56,9 +56,7 @@ export const useSignupValidationSchema = () => {
       confirmPassword: z
         .string()
         .min(1, required(t("signup:confirm_password"))),
-      terms: z
-        .boolean()
-        .refine((value) => value, t("signup:validation.terms")),
+      terms: z.boolean().refine((value) => value, t("signup:validation.terms")),
     })
     .refine((values) => values.password === values.confirmPassword, {
       path: ["confirmPassword"],

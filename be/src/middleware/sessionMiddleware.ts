@@ -6,12 +6,14 @@ import logger from "../helper/logger";
 
 const redisClient = createClient({ url: REDIS_URL });
 
-try {
-  await redisClient.connect();
-} catch (error) {
-  logger.error(`Failed to connect to Redis at ${REDIS_URL}`, error);
-  throw error;
-}
+export const connectRedis = async () => {
+  try {
+    await redisClient.connect();
+  } catch (error) {
+    logger.error(`Failed to connect to Redis at ${REDIS_URL}`, error);
+    throw error;
+  }
+};
 
 const redisStore = new RedisStore({ client: redisClient, prefix: "eventus:" });
 export const sessionMiddleware = session({
