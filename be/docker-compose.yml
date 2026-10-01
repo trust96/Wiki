@@ -1,69 +1,28 @@
 services:
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: ${DOCKER_TARGET:-development}
-    container_name: wiki-be
-    restart: unless-stopped
-    ports:
-      - "${PORT:-5000}:5000"
-    environment:
-      NODE_ENV: ${NODE_ENV:-development}
-      HOST: 0.0.0.0
-      PORT: ${PORT:-5000}
-      TOKEN_SECRET: ${TOKEN_SECRET:-change-me}
-      PASSWORD_SALT: ${PASSWORD_SALT:-10}
-      TOKEN_NAME: ${TOKEN_NAME:-wiki-admin-token}
-      APP_NAME: ${APP_NAME:-WikiDance}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-wiki}:${POSTGRES_PASSWORD:-wiki}@postgres:5432/${POSTGRES_DB:-wiki}?schema=public
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    networks:
-      - wiki_net
-
+  # Compatibility shim. Prefer running the root compose file:
+  #   docker compose --profile dev -f docker-compose.yml up --build
+  #   docker compose --profile prod -f docker-compose.yml up --build
+  frontend-dev:
+    extends:
+      file: ../docker-compose.yml
+      service: frontend-dev
+  backend-dev:
+    extends:
+      file: ../docker-compose.yml
+      service: backend-dev
+  frontend-prod:
+    extends:
+      file: ../docker-compose.yml
+      service: frontend-prod
+  backend-prod:
+    extends:
+      file: ../docker-compose.yml
+      service: backend-prod
   postgres:
-    image: postgres:16-alpine
-    container_name: wiki-postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-wiki}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wiki}
-      POSTGRES_DB: ${POSTGRES_DB:-wiki}
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wiki} -d ${POSTGRES_DB:-wiki}"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
-    networks:
-      - wiki_net
-
+    extends:
+      file: ../docker-compose.yml
+      service: postgres
   redis:
-    image: redis:7-alpine
-    container_name: wiki-redis
-    restart: unless-stopped
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
-    volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes
-    networks:
-      - wiki_net
-
-volumes:
-  postgres_data:
-  redis_data:
-
-networks:
-  wiki_net:
-    driver: bridge
+    extends:
+      file: ../docker-compose.yml
+      service: redis
