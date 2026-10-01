@@ -10,3 +10,21 @@ export const publicUserSchema = z.object({
 });
 
 export type TPublicUser = z.infer<typeof publicUserSchema>;
+
+export const createUserRequestSchema = z.object({
+  email: z.string().trim().toLowerCase().email(),
+  name: z.string().optional(),
+  surname: z.string().optional(),
+  role: z.number().optional(),
+});
+
+export const updateUserRequestSchema = createUserRequestSchema.partial();
+
+export const changePasswordRequestSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(1),
+});
+
+export type TCreateUserRequest = z.infer<typeof createUserRequestSchema>;
+export type TUpdateUserRequest = z.infer<typeof updateUserRequestSchema>;
+export type TChangePasswordRequest = z.infer<typeof changePasswordRequestSchema>;

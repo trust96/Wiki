@@ -4,8 +4,18 @@ export type { EApiCodeValue, EApiErrorCode } from "./codes";
 export { wikiApiResponseSchema } from "./envelope";
 export type { TWikiApiResponse } from "./envelope";
 
-export { publicUserSchema } from "./user";
-export type { TPublicUser } from "./user";
+export {
+  publicUserSchema,
+  createUserRequestSchema,
+  updateUserRequestSchema,
+  changePasswordRequestSchema,
+} from "./user";
+export type {
+  TPublicUser,
+  TCreateUserRequest,
+  TUpdateUserRequest,
+  TChangePasswordRequest,
+} from "./user";
 
 export {
   loginRequestSchema,

@@ -19,7 +19,7 @@ export const PASSWORD_SALT = Number(process.env.PASSWORD_SALT ?? 10);
 export const MAX_AGE = 1000 * 60 * 60 * 24 * 60; // 2 months
 
 export enum USER_ROLE {
-  ADMIN,
-  MODERATOR,
-  USER,
+  ADMIN = 100,
+  MODERATOR = 250,
+  USER = 500,
 }

@@ -18,11 +18,8 @@ export const useSignup = () => {
 
   const handleSubmit = onSubmit(async (values) => {
     const data = await registerUser({
-      username: values.username,
       email: values.email,
       password: values.password,
-      confirmPassword: values.confirmPassword,
-      terms: values.terms,
     });
 
     if (!data.ok) {
@@ -41,10 +38,7 @@ export const useSignupValidationSchema = () => {
 
   return z
     .object({
-      email: z
-        .string()
-        .min(1, required(t("signup:email")))
-        .email(),
+      email: z.email().min(1, required(t("signup:email"))),
       username: z.string().min(1, required(t("signup:username"))),
       password: z
         .string()

@@ -1,7 +1,8 @@
-import type { Prisma } from "../../generated/prisma/client.js";
-import type { TPublicUser } from "@wiki/api-contracts";
+import type { TCreateUserRequest, TPublicUser, TUpdateUserRequest } from "@wiki/api-contracts";
+import { USER_ROLE } from "../../helper/constants";
+import { User } from "../../generated/prisma/client";
 
-export const getUserResponseMapper = (user: any): TPublicUser => {
+export const getUserResponseMapper = (user: User): TPublicUser => {
   return {
     id: user?.id,
     email: user?.email,
@@ -12,20 +13,11 @@ export const getUserResponseMapper = (user: any): TPublicUser => {
   };
 };
 
-export const getUserRequestMapper = (user: {
-  id?: string;
-  surname?: string;
-  name?: string;
-  email?: string;
-  role?: number | string | null;
-  password?: string;
-}): Prisma.UserCreateInput => {
+export const getUserRequestMapper = (user: TCreateUserRequest | TUpdateUserRequest) => {
   return {
-    id: user.id,
     surname: user.surname,
     name: user.name,
     email: user.email,
-    role: user.role ? Number(user.role) : null,
-    password: user.password,
+    role: USER_ROLE.USER,
   };
 };

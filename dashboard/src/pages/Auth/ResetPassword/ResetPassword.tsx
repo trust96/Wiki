@@ -7,6 +7,7 @@ import { useLocation, useParams } from "wouter";
 import { z } from "zod";
 import { useResetPasswordMutation } from "@/services/auth/auth";
 import { resetPasswordInitialValues } from "./helper";
+import { changeForgottenPasswordRequestSchema } from "@wiki/api-contracts";
 
 export const ResetPassword = () => {
   const { t } = useTranslation(["new_password", "common"]);
@@ -14,16 +15,8 @@ export const ResetPassword = () => {
   const token = params.code ?? "";
   const [, navigate] = useLocation();
   const { mutateAsync: reset } = useResetPasswordMutation();
-  const schema = z
-    .object({
-      password: z
-        .string()
-        .min(
-          1,
-          t("common:validation.required", {
-            fieldName: t("new_password:password"),
-          }),
-        ),
+  const schema = changeForgottenPasswordRequestSchema
+    .extend({
       confirmPassword: z.string().min(
         1,
         t("common:validation.required", {
@@ -46,7 +39,6 @@ export const ResetPassword = () => {
     const data = await reset({
       token,
       password: values.password,
-      confirmPassword: values.confirmPassword,
     });
     if (!data.ok) return;
     navigate("~/auth/login");
