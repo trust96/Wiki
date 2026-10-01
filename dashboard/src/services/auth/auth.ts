@@ -3,11 +3,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   TLoginParams,
   TLoginResponseData,
-  TSignupParams,
+  TRegisterParams,
   TSignupResponseData,
   TUpdateUserParams,
   TUpdateUserResponseData,
   TUserResponseData,
+  TForgottenPasswordParams,
+  TResetPasswordParams,
+  TChangeForgottenPasswordRequest,
 } from "./types";
 
 export const currentUserKey = ["me"] as const;
@@ -40,7 +43,7 @@ export const useUpdateUserMutation = () => {
 
 export const useRegisterMutation = () =>
   useMutation({
-    mutationFn: (payload: TSignupParams) =>
+    mutationFn: (payload: TRegisterParams) =>
       normalizeBaseQuery<TSignupResponseData["data"]>({
         url: "/auth/register",
         method: "POST",
@@ -80,7 +83,7 @@ export const useResendVerificationMutation = () =>
 
 export const useForgotPasswordMutation = () =>
   useMutation({
-    mutationFn: (payload: { email: string }) =>
+    mutationFn: (payload: TForgottenPasswordParams) =>
       normalizeBaseQuery<null>({
         url: "/auth/forgot-password",
         method: "POST",
@@ -90,14 +93,10 @@ export const useForgotPasswordMutation = () =>
 
 export const useResetPasswordMutation = () =>
   useMutation({
-    mutationFn: (payload: {
-      token: string;
-      password: string;
-      confirmPassword: string;
-    }) =>
+    mutationFn: ({ token, ...body }: TResetPasswordParams) =>
       normalizeBaseQuery<null>({
-        url: "/auth/reset-password",
+        url: `/auth/change_forgotten_password/${encodeURIComponent(token)}`,
         method: "POST",
-        payload,
+        payload: body satisfies TChangeForgottenPasswordRequest,
       }),
   });

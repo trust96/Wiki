@@ -1,10 +1,7 @@
 import type { HttpType } from "./constants";
+import type { TWikiApiResponse } from "@wiki/api-contracts";
 
-export type TWikiResponseData<T> = {
-  code: number | null;
-  isSuccess: boolean;
-  data: T;
-};
+export type TWikiResponseData<T> = TWikiApiResponse<T>;
 
 export type TApiError = {
   status: number | null;

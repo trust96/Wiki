@@ -3,18 +3,24 @@ import { Button, PasswordInput, Stack } from "@mantine/core";
 import {
   changePasswordInitialValues,
   changePasswordValidationSchema,
+  toChangePasswordRequest,
 } from "./helper";
 import { useForm } from "@mantine/form";
 
 export const ChangePassword = () => {
-  const { getInputProps, onSubmit } = useForm({
+  const { getInputProps, onSubmit } = useForm<typeof changePasswordInitialValues>({
     initialValues: changePasswordInitialValues,
     validate: zod4Resolver(changePasswordValidationSchema),
   });
 
+  const handleSubmit = onSubmit((values) => {
+    // Wire payload matches BE changePasswordRequestSchema when mutation is connected.
+    void toChangePasswordRequest(values);
+  });
+
   return (
     <Stack>
-      <form onSubmit={onSubmit(() => {})}>
+      <form onSubmit={handleSubmit}>
         <Stack>
           <PasswordInput
             {...getInputProps("oldPassword")}

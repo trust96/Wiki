@@ -3,7 +3,7 @@ export enum EAppMode {
   Production = "production",
 }
 
-export const baseUrl = "http://localhost:3000/api";
+export const baseUrl = "http://localhost:5000/api";
 // "https://api.dancediction.com/api";
 //"https://incredible-purpose-39ec375761.strapiapp.com/api";
 export const appName = "Wiki dance";

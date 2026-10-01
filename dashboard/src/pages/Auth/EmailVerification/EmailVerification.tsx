@@ -33,11 +33,11 @@ const EmailVerification = () => {
     if (!code) return;
     const run = async () => {
       const data = await verify({ token: code });
-      if (!data.isSuccess || !data.data) return;
+      if (!data.ok || !data.data) return;
       localStorage.setItem(tokenKey, data.data.token);
       addToken(data.data.token);
       queryClient.setQueryData(currentUserKey, {
-        isSuccess: true,
+        ok: true,
         code: null,
         data: { user: data.data.user },
       });
@@ -62,7 +62,7 @@ const EmailVerification = () => {
       return;
     }
     const data = await resend({ email });
-    if (!data.isSuccess) return;
+    if (!data.ok) return;
     setSecondsLeft(RESEND_DELAY);
   };
 
@@ -82,10 +82,7 @@ const EmailVerification = () => {
           </Title>
         </Group>
         <Text>{t("content")}</Text>
-        <Button
-          onClick={handleResend}
-          disabled={secondsLeft !== 0 || !email}
-        >
+        <Button onClick={handleResend} disabled={secondsLeft !== 0 || !email}>
           {buttonLabel}
         </Button>
       </Stack>
