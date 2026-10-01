@@ -15,5 +15,5 @@ app.use(sessionMiddleware);
 app.use(corsMiddleware);
 app.use(morganMiddleware);
 app.use(formatResponse);
-app.use("/", authRouter, userRouter);
+app.use("/api", authRouter, userRouter);
 app.use(errorHandlingMiddleware);

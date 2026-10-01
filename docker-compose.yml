@@ -1,86 +1,119 @@
+# Yarn workspace monorepo — frontend + backend on the same Docker network/server.
+# Prefer this file from the repo root:
+#   yarn docker:dev
+#   yarn docker:prod
+#
+# Shared Dockerfile targets reuse one `yarn install` layer (BuildKit cache).
+
+x-backend-env: &backend-env
+  NODE_ENV: ${NODE_ENV:-development}
+  HOST: 0.0.0.0
+  PORT: 5000
+  TOKEN_SECRET: ${TOKEN_SECRET:-change-me}
+  PASSWORD_SALT: ${PASSWORD_SALT:-10}
+  TOKEN_NAME: ${TOKEN_NAME:-wiki-admin-token}
+  APP_NAME: ${APP_NAME:-WikiDance}
+  DATABASE_URL: postgresql://${POSTGRES_USER:-wiki}:${POSTGRES_PASSWORD:-wiki}@postgres:5432/${POSTGRES_DB:-wiki}?schema=public
+  REDIS_URL: redis://redis:6379
+  CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+
+x-backend-build: &backend-build
+  context: .
+  dockerfile: Dockerfile
+
+x-frontend-build: &frontend-build
+  context: .
+  dockerfile: Dockerfile
+
 services:
+  # ---- Dev (hot reload, host ports for local tooling) --------------------
+  backend-dev:
+    profiles: ["dev"]
+    build:
+      <<: *backend-build
+      target: backend-development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "${BACKEND_PORT:-5000}:5000"
+    environment:
+      <<: *backend-env
+      NODE_ENV: development
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+    # Mount workspace packages; keep image node_modules (Yarn install layer)
+    volumes:
+      - ./be:/workspace/be
+      - ./package.json:/workspace/package.json:ro
+      - ./yarn.lock:/workspace/yarn.lock:ro
+      - ./.yarnrc.yml:/workspace/.yarnrc.yml:ro
+    command:
+      [
+        "sh",
+        "-c",
+        "yarn workspace wiki_server prisma generate && yarn workspace wiki_server dev",
+      ]
+    working_dir: /workspace
+    networks:
+      - wiki_net
+
   frontend-dev:
     profiles: ["dev"]
     build:
-      context: .
-      dockerfile: dashboard/Dockerfile
-      target: development
+      <<: *frontend-build
+      target: frontend-development
     depends_on:
       backend-dev:
         condition: service_started
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     volumes:
-      - ./:/workspace
-      - /workspace/node_modules
-      - /workspace/dashboard/node_modules
+      - ./dashboard:/workspace/dashboard
+      - ./package.json:/workspace/package.json:ro
+      - ./yarn.lock:/workspace/yarn.lock:ro
+      - ./.yarnrc.yml:/workspace/.yarnrc.yml:ro
+    working_dir: /workspace
     networks:
       - wiki_net
 
-  backend-dev:
-    profiles: ["dev"]
+  # ---- Prod (same server: only frontend is public) ----------------------
+  backend-prod:
+    profiles: ["prod"]
     build:
-      context: .
-      dockerfile: be/Dockerfile
-      target: development
+      <<: *backend-build
+      target: backend-production
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_started
-    ports:
-      - "${BACKEND_PORT:-5000}:5000"
+    expose:
+      - "5000"
     environment:
-      NODE_ENV: development
-      HOST: 0.0.0.0
-      PORT: 5000
-      TOKEN_SECRET: ${TOKEN_SECRET:-change-me}
-      PASSWORD_SALT: ${PASSWORD_SALT:-10}
-      TOKEN_NAME: ${TOKEN_NAME:-wiki-admin-token}
-      APP_NAME: ${APP_NAME:-WikiDance}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-wiki}:${POSTGRES_PASSWORD:-wiki}@postgres:5432/${POSTGRES_DB:-wiki}?schema=public
+      <<: *backend-env
+      NODE_ENV: production
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
     networks:
       - wiki_net
+    restart: unless-stopped
 
   frontend-prod:
     profiles: ["prod"]
     build:
-      context: .
-      dockerfile: dashboard/Dockerfile
-      target: production
+      <<: *frontend-build
+      target: frontend-production
     depends_on:
       backend-prod:
         condition: service_started
     ports:
-      - "${FRONTEND_PORT:-3000}:80"
+      - "${FRONTEND_PORT:-80}:80"
     networks:
       - wiki_net
+    restart: unless-stopped
 
-  backend-prod:
-    profiles: ["prod"]
-    build:
-      context: .
-      dockerfile: be/Dockerfile
-      target: production
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    ports:
-      - "${BACKEND_PORT:-5000}:5000"
-    environment:
-      NODE_ENV: production
-      HOST: 0.0.0.0
-      PORT: 5000
-      TOKEN_SECRET: ${TOKEN_SECRET:-change-me}
-      PASSWORD_SALT: ${PASSWORD_SALT:-10}
-      TOKEN_NAME: ${TOKEN_NAME:-wiki-admin-token}
-      APP_NAME: ${APP_NAME:-WikiDance}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-wiki}:${POSTGRES_PASSWORD:-wiki}@postgres:5432/${POSTGRES_DB:-wiki}?schema=public
-    networks:
-      - wiki_net
-
+  # ---- Shared infra -----------------------------------------------------
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
@@ -88,8 +121,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-wiki}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wiki}
       POSTGRES_DB: ${POSTGRES_DB:-wiki}
+    # Published on loopback for host Prisma/CLI tooling
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -105,7 +139,7 @@ services:
     restart: unless-stopped
     command: redis-server --appendonly yes
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
     networks:

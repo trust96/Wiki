@@ -10,6 +10,8 @@ export const {
   PASSWORD_SALT = 10,
   TOKEN_NAME = "wiki-admin-token",
   APP_NAME = "WikiDance",
+  REDIS_URL = "redis://redis:6379",
+  CORS_ORIGIN = "http://localhost:3000",
 } = process.env;
 
 export const MAX_AGE = 1000 * 60 * 60 * 24 * 60; // 2 months

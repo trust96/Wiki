@@ -1,7 +1,11 @@
+# Compatibility shim. Prefer the root compose file from the monorepo root:
+#   yarn docker:dev
+#   yarn docker:prod
+#
+#   docker compose --profile dev -f docker-compose.yml up --build
+#   docker compose --profile prod -f docker-compose.yml up --build
+
 services:
-  # Compatibility shim. Prefer running the root compose file:
-  #   docker compose --profile dev -f docker-compose.yml up --build
-  #   docker compose --profile prod -f docker-compose.yml up --build
   frontend-dev:
     extends:
       file: ../docker-compose.yml

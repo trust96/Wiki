@@ -48,14 +48,17 @@ Run validations relevant to the files you changed:
 - App/runtime changes: `yarn dev` or `yarn serve`
 - Prisma changes: `yarn db:deploy` (and `yarn db:migrate` when developing migrations)
 - Container changes (`Dockerfile` / `docker-compose.yml`):
-  - `docker compose -f docker-compose.yml config`
-  - `docker build --target development -t wiki-be-dev .`
-  - `docker build --target production -t wiki-be-prod .`
+  - From repo root: `docker compose -f docker-compose.yml config`
+  - `docker build -f Dockerfile --target backend-development -t wiki-be-dev .`
+  - `docker build -f Dockerfile --target backend-production -t wiki-be-prod .`
+  - `docker build -f Dockerfile --target frontend-production -t wiki-fe-prod .`
 
 If a validation cannot be executed locally (missing permissions/services), report that clearly with the exact blocker.
 
 ## Docker and infra notes
 
-- Compose service names are network hostnames (`postgres`, `redis`).
-- `DATABASE_URL` must resolve to the Postgres service in containerized runs.
-- Session middleware currently expects Redis at `redis://redis:6379`; keep compose/app alignment when editing infra.
+- Prefer the **root** `Dockerfile` + `docker-compose.yml` (Yarn workspace-aware; shared `deps` stage).
+- Compose service names are network hostnames (`postgres`, `redis`, `backend-prod`).
+- `DATABASE_URL` / `REDIS_URL` must resolve to those services in containerized runs.
+- Same-server prod: only `frontend-prod` (nginx) is published; it proxies `/auth` and `/user` to `backend-prod`. Postgres/Redis bind to `127.0.0.1` only.
+- Session middleware reads `REDIS_URL` (default `redis://redis:6379`).

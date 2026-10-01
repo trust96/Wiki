@@ -6,4 +6,11 @@
 **/coverage
 **/*.log
 .cursor
+.claude
+.agents
+.devin
 backend
+**/src/generated
+**/.env
+**/.env.*
+!**/.env.example

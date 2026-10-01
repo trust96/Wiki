@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "../../generated/prisma/client.js";
 import { TUserResponseData } from "./user.model";
 
 export const getUserResponseMapper = (user: any): TUserResponseData => {

@@ -5,7 +5,7 @@ import logger from "../../helper/logger";
 import { PASSWORD_SALT } from "../../helper/constants";
 import { getUserResponseMapper, getUserRequestMapper } from "./user.mapper";
 import { getUuid } from "../../helper/uuid";
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "../../generated/prisma/client.js";
 
 export const getUserController = async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;

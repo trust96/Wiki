@@ -1,6 +1,9 @@
 import cors from "cors";
+import { CORS_ORIGIN } from "../helper/constants";
+
+const origins = CORS_ORIGIN.split(",").map((origin) => origin.trim());
 
 export const corsMiddleware = cors({
-  origin: ["http://localhost:3000"],
+  origin: origins,
   credentials: true,
 });

@@ -1,9 +1,11 @@
-import { setAuthEventListener } from "./api/auth/auth.event";
-import { setUserEventListener } from "./api/user/user.event";
+import prisma from "./helper/prisma.js";
+
 const startUp = async () => {
-  globalThis.gemmaState = {};
-  setAuthEventListener();
-  setUserEventListener();
+  const users = await prisma.user.findMany({
+    select: { id: true, email: true, name: true },
+    take: 5,
+  });
+  console.log("Prisma users:", users);
 };
 
 export default startUp;

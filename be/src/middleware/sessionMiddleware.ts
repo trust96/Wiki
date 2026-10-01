@@ -1,10 +1,10 @@
 import RedisStore from "connect-redis";
 import session from "express-session";
 import { createClient } from "redis";
-import { TOKEN_SECRET, MAX_AGE } from "../helper/constants";
+import { TOKEN_SECRET, MAX_AGE, REDIS_URL } from "../helper/constants";
 import logger from "../helper/logger";
 
-const redisClient = createClient({ url: "redis://redis:6379" });
+const redisClient = createClient({ url: REDIS_URL });
 
 try {
   await redisClient.connect();
