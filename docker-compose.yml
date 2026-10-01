@@ -1,0 +1,120 @@
+services:
+  frontend-dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+      target: development
+    depends_on:
+      backend-dev:
+        condition: service_started
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      - ./:/workspace
+      - /workspace/node_modules
+      - /workspace/dashboard/node_modules
+    networks:
+      - wiki_net
+
+  backend-dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: be/Dockerfile
+      target: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "${BACKEND_PORT:-5000}:5000"
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 5000
+      TOKEN_SECRET: ${TOKEN_SECRET:-change-me}
+      PASSWORD_SALT: ${PASSWORD_SALT:-10}
+      TOKEN_NAME: ${TOKEN_NAME:-wiki-admin-token}
+      APP_NAME: ${APP_NAME:-WikiDance}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-wiki}:${POSTGRES_PASSWORD:-wiki}@postgres:5432/${POSTGRES_DB:-wiki}?schema=public
+    networks:
+      - wiki_net
+
+  frontend-prod:
+    profiles: ["prod"]
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+      target: production
+    depends_on:
+      backend-prod:
+        condition: service_started
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    networks:
+      - wiki_net
+
+  backend-prod:
+    profiles: ["prod"]
+    build:
+      context: .
+      dockerfile: be/Dockerfile
+      target: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "${BACKEND_PORT:-5000}:5000"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 5000
+      TOKEN_SECRET: ${TOKEN_SECRET:-change-me}
+      PASSWORD_SALT: ${PASSWORD_SALT:-10}
+      TOKEN_NAME: ${TOKEN_NAME:-wiki-admin-token}
+      APP_NAME: ${APP_NAME:-WikiDance}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-wiki}:${POSTGRES_PASSWORD:-wiki}@postgres:5432/${POSTGRES_DB:-wiki}?schema=public
+    networks:
+      - wiki_net
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-wiki}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wiki}
+      POSTGRES_DB: ${POSTGRES_DB:-wiki}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wiki} -d ${POSTGRES_DB:-wiki}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - wiki_net
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - wiki_net
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  wiki_net:
+    driver: bridge
