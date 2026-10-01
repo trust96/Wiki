@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 # Local editor config
 .cursor/
+
+# Superdesign temp templates
+.superdesign/tmp/

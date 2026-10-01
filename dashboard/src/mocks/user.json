@@ -1,8 +1,13 @@
 {
-  "id": "thsishshs",
-  "avatar": "https://picsum.photos/400",
-  "bio": "I create, collaborate, and support the artists and people who push culture forward. Always discovering new talent, \n new sounds, and new ways to grow.",
-  "firstName": "Trust",
-  "lastName": "Oriabure",
-  "nickname": "D.Doctor"
+  "id": 1,
+  "email": "maya@example.com",
+  "username": "maya",
+  "artistName": "Maya",
+  "firstName": "Maya",
+  "lastName": "Rossi",
+  "bio": "House dancer in Milan. I write about groove, timing, and the steps that keep a floor moving.",
+  "avatar": "https://picsum.photos/id/64/400",
+  "isOnboarded": true,
+  "role": "user",
+  "emailVerifiedAt": "2026-01-01T00:00:00Z"
 }

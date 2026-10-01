@@ -1,43 +1,50 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
 import { normalizeBaseQuery } from "@/helper/normalizeBaseQuery";
-import type { TWikiResponseData } from "@/model/baseQuery.model";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { TSection, TWiki } from "@/services/schema";
 
-export type TPageSection = {
-  id: number;
-  title: string;
-  content: string;
-  order: number;
+export type { TSection as TPageSection, TWiki as TPage } from "@/services/schema";
+
+export const pagesKey = ["pages"] as const;
+export const pageKey = (id: number) => ["page", id] as const;
+
+export const usePagesQuery = (enabled = true) =>
+  useQuery({
+    queryKey: pagesKey,
+    queryFn: () =>
+      normalizeBaseQuery<TWiki[]>({
+        url: "/pages",
+        method: "GET",
+      }),
+    enabled,
+  });
+
+export const useSinglePageQuery = (id: number, enabled = true) =>
+  useQuery({
+    queryKey: pageKey(id),
+    queryFn: () =>
+      normalizeBaseQuery<TWiki>({
+        url: `/pages/${id}`,
+        method: "GET",
+      }),
+    enabled,
+  });
+
+export const useUpdateSectionMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: {
+      pageId: number;
+      sectionId: number;
+      content: string;
+    }) =>
+      normalizeBaseQuery<TSection>({
+        url: `/pages/${payload.pageId}/sections/${payload.sectionId}`,
+        method: "PUT",
+        payload: { content: payload.content },
+      }),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: pageKey(variables.pageId) });
+      queryClient.invalidateQueries({ queryKey: pagesKey });
+    },
+  });
 };
-
-export type TPage = {
-  id: number;
-  title: string;
-  description?: string;
-  sections?: TPageSection[];
-  updatedAt?: string;
-};
-
-export const pageApi = createApi({
-  reducerPath: "pageApi",
-  baseQuery: normalizeBaseQuery,
-  endpoints: (builder) => ({
-    pages: builder.query<TWikiResponseData<TPage[]>, void>({
-      query: () => {
-        return {
-          url: "/pages",
-          method: "GET",
-        };
-      },
-    }),
-    singlePage: builder.query<TWikiResponseData<TPage>, { id: number }>({
-      query: ({ id }) => {
-        return {
-          url: `/pages/${id}`,
-          method: "GET",
-        };
-      },
-    }),
-  }),
-});
-
-export const { usePagesQuery, useSinglePageQuery } = pageApi;

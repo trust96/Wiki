@@ -1,67 +1,109 @@
 [
   {
     "id": 1,
-    "title": "Breaking",
-    "description": "Origins, culture and foundations of breaking as a dance and a sport.",
-    "updatedAt": "2026-01-12T10:30:00Z",
+    "title": "Salsa step",
+    "description": "Basic timing and weight transfer",
+    "genre": "House",
+    "updatedAt": "2026-09-14T10:20:00Z",
     "sections": [
       {
         "id": 1,
-        "title": "History",
-        "content": "Breaking was born in the Bronx in the early 1970s, on the block parties where DJ Kool Herc isolated the percussive break and let dancers improvise over it. What started as a social dance between neighbourhood crews became a global movement carried by music, fashion and competition.",
+        "title": "Summary",
+        "content": "<p>The salsa step in house dance is a groovy forward-and-back foot pattern built on the signature house bounce. The dancer keeps a steady, relaxed rhythm, letting the knees soften and the body pulse gently with the beat.</p><p>The movement alternates between a light forward tap and a light backward tap, each done without committing weight, creating a playful, syncopated feel.</p>",
         "order": 1
       },
       {
         "id": 2,
-        "title": "Elements",
-        "content": "The vocabulary is usually split into toprock, downrock, power moves and freezes. Toprock is the standing footwork that opens a set, downrock moves the dancer to the floor, power moves are the rotational acrobatic sequences, and freezes stop the body in a controlled pose on the beat.",
+        "title": "Basic step",
+        "content": "<p>Start in a relaxed parallel stance. Tap the right foot forward on the first count without dropping the heel, then replace it. Tap the left foot back on the next count. Keep the bounce in the knees and the chest quiet.</p>",
         "order": 2
       },
       {
         "id": 3,
-        "title": "Culture",
-        "content": "Ciphers, battles and jams are the social engine of the scene. Respect for pioneers, musicality and originality weigh more than raw trick count, and the cypher remains the space where a dancer is actually judged by peers.",
+        "title": "Common mistakes",
+        "content": "<ul><li>Dumping weight onto the tapping foot so the bounce dies.</li><li>Making the step large instead of keeping it under the body.</li></ul>",
         "order": 3
+      },
+      {
+        "id": 4,
+        "title": "Musicality",
+        "content": "<p>Ride the kick and the hi-hat. The salsa step is a groove, not a travel step — stay in place and let the bounce mark the bar.</p>",
+        "order": 4
       }
     ]
   },
   {
     "id": 2,
-    "title": "House Dance",
-    "description": "Footwork, jack and skating from the Chicago and New York house scenes.",
-    "updatedAt": "2026-02-03T18:05:00Z",
+    "title": "House bounce",
+    "description": "Foundational groove",
+    "genre": "House",
+    "updatedAt": "2026-09-14T09:20:00Z",
     "sections": [
       {
-        "id": 4,
-        "title": "Origins",
-        "content": "House dance grew inside clubs such as the Power Plant in Chicago and Paradise Garage in New York, where DJs stretched disco into a faster, drum-driven sound and dancers answered it with floor-filling footwork.",
-        "order": 1
-      },
-      {
         "id": 5,
-        "title": "Technique",
-        "content": "The jack is the core groove: a ripple through the chest and hips that loosens everything else. Footwork, shuffling, skating and lofting are variations built on top of it, always kept light and on the beat.",
-        "order": 2
+        "title": "Summary",
+        "content": "<p>The house bounce is a small, continuous pulse through the knees and hips. Everything else in house sits on top of it.</p>",
+        "order": 1
       }
     ]
   },
   {
     "id": 3,
-    "title": "Waacking",
-    "description": "Arm lines, poses and musicality from the Los Angeles club scene.",
-    "updatedAt": "2026-03-21T09:15:00Z",
+    "title": "Cross body lead",
+    "description": "Partner connection",
+    "genre": "Salsa",
+    "updatedAt": "2026-09-14T07:20:00Z",
     "sections": [
       {
         "id": 6,
-        "title": "History",
-        "content": "Waacking came out of late-1960s Los Angeles clubs, largely from Latino and Black queer communities, and was popularised by the TV show Soul Train. It is a dance of the arms, the face and the pose, tied to disco and to dramatic timing.",
+        "title": "Summary",
+        "content": "<p>The cross body lead takes the follower across the lead's line while keeping the slot clear and the connection light.</p>",
         "order": 1
-      },
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Breaking freeze",
+    "description": "Holding dynamic poses",
+    "genre": "Breaking",
+    "updatedAt": "2026-09-13T10:20:00Z",
+    "sections": [
       {
         "id": 7,
-        "title": "Musicality",
-        "content": "Rotations of the forearms, points and stops follow the hi-hat and the vocals. Dancers often hit a pose on an accent and hold it a beat longer than the music expects.",
-        "order": 2
+        "title": "Summary",
+        "content": "<p>A freeze stops the body on the beat in a controlled pose. Strength and lines matter more than how long you can hold it.</p>",
+        "order": 1
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Jack in the box",
+    "description": "House footwork",
+    "genre": "House",
+    "updatedAt": "2026-09-12T10:20:00Z",
+    "sections": [
+      {
+        "id": 8,
+        "title": "Summary",
+        "content": "<p>Jack in the box is a compact house footwork phrase that drops and pops back up without losing the bounce.</p>",
+        "order": 1
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Cuban motion",
+    "description": "Hip action",
+    "genre": "Salsa",
+    "updatedAt": "2026-09-10T10:20:00Z",
+    "sections": [
+      {
+        "id": 9,
+        "title": "Summary",
+        "content": "<p>Cuban motion comes from bending and straightening the knees so the hips settle naturally, not from swinging the waist.</p>",
+        "order": 1
       }
     ]
   }

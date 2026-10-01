@@ -1,5 +1,5 @@
 import { appName } from "@/helper/constants";
-import type { TPageComponentMetaDataProps } from "./PageComponent.model";
+import type { TPageComponentMetaDataProps } from "./types";
 
 export const PageComponentMetaData = (props: TPageComponentMetaDataProps) => {
   return (

@@ -37,6 +37,10 @@ moderating the content and providing new content.
 
 ...and more
 
+## Design
+
+Dashboard visual drafts: [`design/dashboard.md`](design/dashboard.md). Target system (chrome, pieces, container, Lexical): [`design/system.md`](design/system.md). Those files do not replace approved specs.
+
 ## Characteristics of the app
 
 - Open source

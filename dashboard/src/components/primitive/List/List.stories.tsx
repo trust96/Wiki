@@ -11,26 +11,30 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: (args) => (
-    <WikiList {...args}>
-      <WikiListItem leftSection={<WikiIcon name="home" />}>Home</WikiListItem>
-      <WikiListItem leftSection={<WikiIcon name="search" />} isActive>
-        Search
-      </WikiListItem>
-      <WikiListItem leftSection={<WikiIcon name="person" />}>Profile</WikiListItem>
-    </WikiList>
-  ),
+  args: {
+    children: (
+      <>
+        <WikiListItem leftSection={<WikiIcon name="home" />}>Home</WikiListItem>
+        <WikiListItem leftSection={<WikiIcon name="search" />} isActive>
+          Search
+        </WikiListItem>
+        <WikiListItem leftSection={<WikiIcon name="person" />}>
+          Profile
+        </WikiListItem>
+      </>
+    ),
+  },
 };
 
 export const Hoverable: Story = {
   args: {
     isHoverable: true,
+    children: (
+      <>
+        <WikiListItem>First page</WikiListItem>
+        <WikiListItem>Second page</WikiListItem>
+        <WikiListItem>Third page</WikiListItem>
+      </>
+    ),
   },
-  render: (args) => (
-    <WikiList {...args}>
-      <WikiListItem>First page</WikiListItem>
-      <WikiListItem>Second page</WikiListItem>
-      <WikiListItem>Third page</WikiListItem>
-    </WikiList>
-  ),
 };

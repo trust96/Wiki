@@ -1,5 +1,8 @@
-import { Textarea } from "@mantine/core";
-import type { TWikiTextareaProps } from "./WikiTextarea.model";
+import { Textarea, type TextareaProps } from "@mantine/core";
+
+export type TWikiTextareaProps = {
+  maxLength: number;
+} & TextareaProps;
 
 export const WikiTextarea = ({ maxLength, value, ...props }: TWikiTextareaProps) => {
   const length = String(value ?? "").length;

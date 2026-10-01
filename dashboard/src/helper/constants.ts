@@ -7,10 +7,6 @@ export const baseUrl = "http://localhost:3000/api";
 // "https://api.dancediction.com/api";
 //"https://incredible-purpose-39ec375761.strapiapp.com/api";
 export const appName = "Wiki dance";
-export const enum EStoreSlice {
-  Modal = "Modal",
-  ApiError = "ApiError",
-}
 export enum AppModals {
   Login,
   Signup,

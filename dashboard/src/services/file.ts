@@ -1,22 +1,14 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { normalizeBaseQuery } from "@/helper/normalizeBaseQuery";
 import { HttpType } from "@/helper/constants";
+import { normalizeBaseQuery } from "@/helper/normalizeBaseQuery";
+import { useMutation } from "@tanstack/react-query";
 
-export const fileApi = createApi({
-  reducerPath: "fileApi",
-  baseQuery: normalizeBaseQuery,
-  endpoints: (builder) => ({
-    upload: builder.mutation<any, any>({
-      query: (payload) => {
-        return {
-          url: `/upload`,
-          method: "POST",
-          payload,
-          type: HttpType.File,
-        };
-      },
-    }),
-  }),
-});
-
-export const { useUploadMutation } = fileApi;
+export const useUploadMutation = () =>
+  useMutation({
+    mutationFn: (payload: { files: File } & object) =>
+      normalizeBaseQuery<{ url?: string }>({
+        url: "/upload",
+        method: "POST",
+        payload,
+        type: HttpType.File,
+      }),
+  });

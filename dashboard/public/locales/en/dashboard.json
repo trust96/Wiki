@@ -1,0 +1,67 @@
+{
+  "home": {
+    "title": "Home",
+    "description": "Find a dance wiki",
+    "welcome": "Welcome to",
+    "tagline": "Find a dance wiki or start contributing.",
+    "sponsor": "Sponsored by"
+  },
+  "onboarding": {
+    "title": "Your name",
+    "heading": "Pick the name the community will see",
+    "subtitle": "This is your public identity on Wiki dance.",
+    "artistName": "Artist name",
+    "private": "Private",
+    "privateNote": "This information will not be public.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "bio": "Bio",
+    "complete": "Complete",
+    "photo": "Optional photo"
+  },
+  "search": {
+    "title": "Search the community",
+    "description": "Search wikis",
+    "latest": "Latest wikis",
+    "wiki": "Wiki",
+    "genre": "Genre",
+    "updated": "Updated",
+    "results": "Results",
+    "placeholder": "Search for wikis",
+    "loadingMore": "Loading more"
+  },
+  "wiki": {
+    "contents": "Table of contents",
+    "edit": "Edit",
+    "delete": "Delete",
+    "instructor": "Instructor",
+    "updated": "Updated"
+  },
+  "profile": {
+    "document": {
+      "title": "Profile",
+      "description": "Your contributions"
+    },
+    "edit": "Edit profile",
+    "links": "Manage links",
+    "contributions": "Contributions",
+    "all": "All",
+    "pending": "Pending",
+    "approved": "Approved",
+    "declined": "Declined",
+    "abandoned": "Abandoned",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "description": "Outcomes of your edits",
+    "openWiki": "Open wiki",
+    "editContent": "Edit content",
+    "reason": "Reason"
+  },
+  "section": {
+    "title": "Edit content",
+    "save": "Save"
+  }
+}

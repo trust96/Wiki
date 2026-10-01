@@ -1,0 +1,37 @@
+.root {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 32px;
+  margin-bottom: var(--mantine-spacing-md);
+  font-family: var(--mantine-font-family);
+
+  @media (min-width: $mantine-breakpoint-md) {
+    font-size: 34px;
+  }
+}
+
+.control {
+  width: 100%;
+
+  @media (min-width: $mantine-breakpoint-md) {
+    width: auto;
+  }
+}
+
+.mobileImage {
+  @media (min-width: $mantine-breakpoint-md) {
+    display: none;
+  }
+}
+
+.desktopImage {
+  display: none;
+
+  @media (min-width: $mantine-breakpoint-md) {
+    display: block;
+  }
+}

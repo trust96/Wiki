@@ -33,7 +33,7 @@ export const navigationData: TNavigationData = [
     id: "notifications",
     href: "/notifications",
     icon: "notifications",
-    isDisabled: true,
+    isDisabled: false,
   },
   {
     id: "profile",
