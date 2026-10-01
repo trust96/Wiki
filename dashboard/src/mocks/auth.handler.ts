@@ -3,6 +3,7 @@ import { fail, ok } from "./envelope";
 import mayaJson from "./user.json";
 import newUserJson from "./newUser.json";
 import { userSchema, type TUser } from "@/services/schema";
+import { EApiCode } from "@wiki/api-contracts";
 
 export const mayaUser: TUser = userSchema.parse(mayaJson);
 export const newUser: TUser = userSchema.parse(newUserJson);
@@ -23,14 +24,15 @@ const findUser = (identifier: string) =>
 export const loginUser = http.post("/api/auth/login", async ({ request }) => {
   const { identifier } = (await request.json()) as { identifier?: string };
 
-  if (identifier === "unverified@example.com") return fail(101, 401);
+  if (identifier === "unverified@example.com")
+    return fail(EApiCode.AccountNotVerified, 401);
 
   const loginId =
     identifier === "admin" || identifier === "user@example.com"
       ? "maya"
       : identifier;
   const user = loginId ? findUser(loginId) : undefined;
-  if (!user) return fail(100, 401);
+  if (!user) return fail(EApiCode.WrongCredentials, 401);
 
   mockUser = { ...user };
   return ok({ token: "mock-token", user: mockUser });

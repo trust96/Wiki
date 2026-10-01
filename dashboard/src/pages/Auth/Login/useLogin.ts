@@ -7,6 +7,7 @@ import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useLocation } from "wouter";
 import { loginInitialValues, loginValidationSchema } from "./helper";
+import { EApiCode } from "@wiki/api-contracts";
 
 export const useLogin = () => {
   const { getInputProps, onSubmit, errors } = useForm<TLoginParams>({
@@ -21,7 +22,7 @@ export const useLogin = () => {
   console.log(errors);
   const handleSubmit = onSubmit(async (values) => {
     const data = await login(values);
-    if (data.code === 101) {
+    if (data.code === EApiCode.AccountNotVerified) {
       clearApiErrors();
       navigate("~/auth/email_verification", {
         replace: true,

@@ -1,16 +1,17 @@
 import type { TWikiResponseData } from "@/helper/request";
 import type { TUser } from "@/services/schema";
+import type {
+  TLoginRequest,
+  TForgottenPasswordRequest,
+  TPublicUser,
+} from "@wiki/api-contracts";
 
 export type { TUser } from "@/services/schema";
+export type { TPublicUser, TLoginRequest };
 
-export type TForgottenPasswordParams = {
-  email: string;
-};
+export type TForgottenPasswordParams = TForgottenPasswordRequest;
 
-export type TLoginParams = {
-  email: string;
-  password: string;
-};
+export type TLoginParams = TLoginRequest;
 
 export type TSignupParams = {
   email: string;

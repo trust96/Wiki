@@ -8,12 +8,12 @@ import {
   triggerForgottenPasswordController,
 } from "./auth.controller";
 import auth from "../../middleware/protectedRoutes";
-import { changeforgottenPasswordValidation, forgottenPasswordValidation, authValidation } from "./auth.helper";
+import { changeforgottenPasswordValidation, forgottenPasswordValidation, authValidation, registerValidation } from "./auth.helper";
 import validate from "../../middleware/validationMiddleware";
 
 export const authRouter = Router();
 
-authRouter.post("/auth/register", validate(authValidation), registerController);
+authRouter.post("/auth/register", validate(registerValidation), registerController);
 authRouter.post("/auth/login", validate(authValidation), loginController);
 authRouter.post("/auth/forgotten_password", validate(forgottenPasswordValidation), triggerForgottenPasswordController);
 authRouter.post("/auth/logout", auth(), logoutController);

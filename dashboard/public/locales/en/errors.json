@@ -1,4 +1,11 @@
 {
   "wrong_credentials": "The username or password you entered doesn’t match our records. Please try again or reset your password if needed.",
+  "email_in_use": "This email address is already in use. Try signing in or use a different email.",
+  "user_not_found": "We couldn’t find an account with those details. Please check and try again.",
+  "unauthorized": "You need to sign in to continue.",
+  "forbidden": "You don’t have permission to perform this action.",
+  "validation_error": "Some of the information you entered isn’t valid. Please check and try again.",
+  "account_not_verified": "Your account isn’t verified yet. Please check your email for a verification link.",
+  "server_error": "Something went wrong on our side. Please try again later.",
   "generic_api_error": "Something went wrong while processing your request. Please try again, or come back later."
 }

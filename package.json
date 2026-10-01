@@ -8,7 +8,8 @@
   "workspaces": [
     "dashboard",
     "be",
-    "site"
+    "site",
+    "packages/api-contracts"
   ],
   "packageManager": "yarn@4.18.0",
   "dependencies": {

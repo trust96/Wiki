@@ -1,20 +1,11 @@
-import { object, string } from "yup";
+import {
+  loginRequestSchema,
+  registerRequestSchema,
+  forgottenPasswordRequestSchema,
+  changeForgottenPasswordRequestSchema,
+} from "@wiki/api-contracts";
 
-export const authValidation = object({
-  body: object({
-    email: string().trim().lowercase().email("Email not valid").required("Email is mandatory"),
-    password: string().required("Password is mandatory"),
-  }),
-});
-
-export const forgottenPasswordValidation = object({
-  body: object({
-    email: string().trim().lowercase().email("Email is not valid").required("Email is mandatory"),
-  }),
-});
-
-export const changeforgottenPasswordValidation = object({
-  body: object({
-    password: string().required("Password is mandatory"),
-  }),
-});
+export const authValidation = loginRequestSchema;
+export const registerValidation = registerRequestSchema;
+export const forgottenPasswordValidation = forgottenPasswordRequestSchema;
+export const changeforgottenPasswordValidation = changeForgottenPasswordRequestSchema;

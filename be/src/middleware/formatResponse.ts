@@ -1,21 +1,26 @@
 import { NextFunction, Response, Request } from "express";
+import { EApiCode } from "@wiki/api-contracts";
+
+type ResponseBody = {
+  code?: number | null;
+  data?: unknown;
+};
 
 const formatResponse = (req: Request, res: Response, next: NextFunction) => {
   const send = res.json;
-  res.json = (body) => {
+  res.json = (body: ResponseBody) => {
     if (res.statusCode > 300) {
       const result = {
         ok: false,
-        message: body.message,
+        code: body?.code ?? EApiCode.ServerError,
         data: null,
       };
       return send.call(res, result);
     }
-    const { message, data } = body;
     const result = {
       ok: true,
-      data: data ?? null,
-      message: message,
+      code: null,
+      data: body?.data ?? null,
     };
 
     return send.call(res, result);

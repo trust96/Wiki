@@ -12,7 +12,7 @@ import imageCompression from "browser-image-compression";
 const failed = <T>(): TWikiResponseData<T> => ({
   ok: false,
   code: null,
-  data: null as T,
+  data: null,
 });
 
 export const normalizeBaseQuery = async <T>(

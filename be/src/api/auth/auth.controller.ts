@@ -4,13 +4,14 @@ import { PASSWORD_SALT, USER_ROLE } from "../../helper/constants";
 import { Response, Request } from "express";
 import logger from "../../helper/logger";
 import { getUserResponseMapper } from "../user/user.mapper";
+import { EApiCode } from "@wiki/api-contracts";
 
 export const registerController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const isEmailAlreadyUsed = await getUserByEmail(email);
   if (isEmailAlreadyUsed) {
     logger.warn(`This Email (${email}) has already being used`);
-    res.status(409).json({ message: "Questo indirizzo email è già in uso" });
+    res.status(409).json({ code: EApiCode.EmailInUse });
     return;
   }
 
@@ -22,7 +23,6 @@ export const registerController = async (req: Request, res: Response) => {
 
   logger.info(`User created with email: ${user.email}`);
   res.status(201).json({
-    message: "Azienda creata con successo",
     data: null,
   });
 };
@@ -33,7 +33,7 @@ export const loginController = async (req: Request, res: Response) => {
   const user = await getUserByEmail(email);
   if (!user) {
     logger.error("User not found");
-    res.status(403).json({ message: "Questo utente non esiste" });
+    res.status(403).json({ code: EApiCode.UserNotFound });
 
     return;
   }
@@ -41,7 +41,7 @@ export const loginController = async (req: Request, res: Response) => {
   const isSamePassword = await compare(password, user?.password);
   if (!isSamePassword) {
     logger.error("Wrong password");
-    res.status(403).json({ message: "Password errata" });
+    res.status(403).json({ code: EApiCode.WrongCredentials });
     return;
   }
 
@@ -50,7 +50,7 @@ export const loginController = async (req: Request, res: Response) => {
   const isAdmin = user.role <= USER_ROLE.ADMIN;
   if (!isAdmin && !isVerified) {
     logger.error("Account not verified");
-    res.status(401).json({ message: "Account non verificato" });
+    res.status(401).json({ code: EApiCode.AccountNotVerified });
 
     return;
   }
@@ -65,7 +65,6 @@ export const loginController = async (req: Request, res: Response) => {
   logger.info("User logged in successfully");
   res.status(200).json({
     data: getUserResponseMapper(user as any),
-    message: "Accesso effettuato con successo",
   });
 };
 
@@ -73,7 +72,7 @@ export const logoutController = (req: Request, res: Response) => {
   req.session.destroy(() => {});
 
   logger.info("User logged out successfully");
-  res.status(200).json({ message: "Logout effettuato con successo" });
+  res.status(200).json({ data: null });
 };
 
 export const triggerForgottenPasswordController = async (req: Request, res: Response) => {
@@ -81,26 +80,26 @@ export const triggerForgottenPasswordController = async (req: Request, res: Resp
 
   const user = await getUserByEmail(email);
   if (!user) {
-    res.status(403).json({ message: "Questo utente non esiste" });
+    res.status(403).json({ code: EApiCode.UserNotFound });
     return;
   }
 
   logger.info("triggered forgotten password");
   res.status(200).json({
-    message: "Email per la password dimenticata mandato con successo",
+    data: null,
   });
 };
 
 export const changeForgottenPasswordController = async (_req: Request, res: Response) => {
   //TODO: add logic for change forgotten password
   logger.info("Password changed successfully");
-  res.status(200).json({ message: "La password è stata cambiata con successo" });
+  res.status(200).json({ data: null });
 };
 
 export const resendForgottenPasswordEmailController = async (_req: Request, res: Response) => {
   //TODO: add the implementation of the resend email
   logger.info("Forgotten password email sent successfully");
   res.status(200).json({
-    message: "L'email della password dimenticata è stata rimandata con successo",
+    data: null,
   });
 };

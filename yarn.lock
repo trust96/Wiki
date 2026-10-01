@@ -4892,6 +4892,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@wiki/api-contracts@workspace:*, @wiki/api-contracts@workspace:packages/api-contracts":
+  version: 0.0.0-use.local
+  resolution: "@wiki/api-contracts@workspace:packages/api-contracts"
+  dependencies:
+    typescript: "npm:~5.9.0"
+    zod: "npm:^4.6.2"
+  languageName: unknown
+  linkType: soft
+
 "@zip.js/zip.js@npm:^2.8.11":
   version: 2.14.1
   resolution: "@zip.js/zip.js@npm:2.14.1"
@@ -12760,6 +12769,7 @@ __metadata:
     "@types/react-dom": "npm:^19.1.9"
     "@vitejs/plugin-react": "npm:^5.1.0"
     "@vitest/browser-webdriverio": "npm:^4.1.8"
+    "@wiki/api-contracts": "workspace:*"
     babel-plugin-react-compiler: "npm:^19.1.0-rc.3"
     baseline-browser-mapping: "npm:^2.9.19"
     browser-image-compression: "npm:^2.0.2"
@@ -12807,6 +12817,7 @@ __metadata:
     "@types/node": "npm:^20.11.7"
     "@types/nodemailer": "npm:^6.4.14"
     "@types/pg": "npm:^8.23.1"
+    "@wiki/api-contracts": "workspace:*"
     bcryptjs: "npm:^2.4.3"
     connect-redis: "npm:^7.1.1"
     cookie-parser: "npm:^1.4.6"
@@ -12830,7 +12841,7 @@ __metadata:
     tsx: "npm:^4.23.15"
     typescript: "npm:~5.9.0"
     winston: "npm:^3.11.0"
-    yup: "npm:^1.6.1"
+    zod: "npm:^4.6.2"
   languageName: unknown
   linkType: soft
 

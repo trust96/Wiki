@@ -1,4 +1,11 @@
 {
   "wrong_credentials": "Il nome utente o la password inseriti non corrispondono ai nostri dati. Riprova oppure reimposta la password se necessario.",
+  "email_in_use": "Questo indirizzo email è già in uso. Prova ad accedere o usa un’email diversa.",
+  "user_not_found": "Non abbiamo trovato un account con questi dati. Controlla e riprova.",
+  "unauthorized": "Devi effettuare l’accesso per continuare.",
+  "forbidden": "Non hai il permesso di eseguire questa azione.",
+  "validation_error": "Alcune informazioni inserite non sono valide. Controlla e riprova.",
+  "account_not_verified": "Il tuo account non è ancora verificato. Controlla la tua email per il link di verifica.",
+  "server_error": "Si è verificato un problema sul server. Riprova più tardi.",
   "generic_api_error": "Si è verificato un problema durante l’elaborazione della tua richiesta. Riprova oppure torna più tardi."
 }

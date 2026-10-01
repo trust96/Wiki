@@ -13,6 +13,7 @@ import {
   type TNotification,
   type TWiki,
 } from "@/services/schema";
+import { EApiCode } from "@wiki/api-contracts";
 
 export const mockWikis: TWiki[] = wikiSchema.array().parse(pagesJson);
 export const mockContributions: TContribution[] = contributionSchema
@@ -32,7 +33,7 @@ export const pages = http.get("/api/pages", () => ok(mockWikis));
 
 export const singlePage = http.get("/api/pages/:id", ({ params }) => {
   const page = mockWikis.find((wiki) => String(wiki.id) === params.id);
-  return page ? ok(page) : fail(103, 404);
+  return page ? ok(page) : fail(EApiCode.UserNotFound, 404);
 });
 
 export const contributions = http.get("/api/contributions", () =>
@@ -51,7 +52,7 @@ export const updateSection = http.put(
     const section = page?.sections.find(
       (item) => String(item.id) === params.sectionId,
     );
-    if (!page || !section) return fail(103, 404);
+    if (!page || !section) return fail(EApiCode.UserNotFound, 404);
     section.content = body.content ?? section.content;
     return ok(section);
   },
