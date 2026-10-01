@@ -10,9 +10,11 @@
     "jsx": "react-jsx",
     "strict": false,
     "lib": ["ESNext", "DOM"],
-    "module": "nodenext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "target": "ESNext",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noEmit": true
   },
   "include": ["./src/**/*.ts", "types/*.d.ts"],
   "exclude": ["node_modules"]

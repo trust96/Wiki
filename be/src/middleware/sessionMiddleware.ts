@@ -9,7 +9,8 @@ const redisClient = createClient({ url: REDIS_URL });
 try {
   await redisClient.connect();
 } catch (error) {
-  logger.error(error);
+  logger.error(`Failed to connect to Redis at ${REDIS_URL}`, error);
+  throw error;
 }
 
 const redisStore = new RedisStore({ client: redisClient, prefix: "eventus:" });

@@ -32,6 +32,7 @@ From `be/`:
 yarn dev
 yarn db:migrate
 yarn db:deploy
+yarn build
 yarn serve
 ```
 
@@ -46,19 +47,22 @@ yarn workspace wiki_server dev
 Run validations relevant to the files you changed:
 
 - App/runtime changes: `yarn dev` or `yarn serve`
+- Typecheck: `yarn exec tsc -p ./tsconfig.json` (noEmit; production emit is esbuild via `yarn build`)
 - Prisma changes: `yarn db:deploy` (and `yarn db:migrate` when developing migrations)
 - Container changes (`Dockerfile` / `docker-compose.yml`):
-  - From repo root: `docker compose -f docker-compose.yml config`
-  - `docker build -f Dockerfile --target backend-development -t wiki-be-dev .`
-  - `docker build -f Dockerfile --target backend-production -t wiki-be-prod .`
-  - `docker build -f Dockerfile --target frontend-production -t wiki-fe-prod .`
+  - Prefer root: `docker compose -f docker-compose.yml config`
+  - From repo root: `docker build -f be/Dockerfile --target backend-development -t wiki-be-dev .`
+  - From repo root: `docker build -f be/Dockerfile --target backend-production -t wiki-be-prod .`
+  - Or root Dockerfile: `docker build -f Dockerfile --target backend-development -t wiki-be-dev .`
 
 If a validation cannot be executed locally (missing permissions/services), report that clearly with the exact blocker.
 
 ## Docker and infra notes
 
 - Prefer the **root** `Dockerfile` + `docker-compose.yml` (Yarn workspace-aware; shared `deps` stage).
+- `be/Dockerfile` stage names match root: `backend-development`, `backend-production` (build from repo root with `-f be/Dockerfile`).
 - Compose service names are network hostnames (`postgres`, `redis`, `backend-prod`).
 - `DATABASE_URL` / `REDIS_URL` must resolve to those services in containerized runs.
+- From the host, use `REDIS_URL=redis://127.0.0.1:6379` (see `.env.example`).
 - Same-server prod: only `frontend-prod` (nginx) is published; it proxies `/auth` and `/user` to `backend-prod`. Postgres/Redis bind to `127.0.0.1` only.
-- Session middleware reads `REDIS_URL` (default `redis://redis:6379`).
+- Session middleware requires Redis; connection failure aborts startup.

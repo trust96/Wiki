@@ -1,32 +1,57 @@
-# Compatibility shim. Prefer the root compose file from the monorepo root:
+# Compatibility shim for the monorepo root compose file.
+# Prefer running from the repo root:
 #   yarn docker:dev
 #   yarn docker:prod
 #
 #   docker compose --profile dev -f docker-compose.yml up --build
 #   docker compose --profile prod -f docker-compose.yml up --build
+#
+# From be/: docker compose --profile dev -f docker-compose.yml up postgres redis
+
+name: wiki
 
 services:
   frontend-dev:
     extends:
       file: ../docker-compose.yml
       service: frontend-dev
+    networks:
+      - wiki_net
   backend-dev:
     extends:
       file: ../docker-compose.yml
       service: backend-dev
+    networks:
+      - wiki_net
   frontend-prod:
     extends:
       file: ../docker-compose.yml
       service: frontend-prod
+    networks:
+      - wiki_net
   backend-prod:
     extends:
       file: ../docker-compose.yml
       service: backend-prod
+    networks:
+      - wiki_net
   postgres:
     extends:
       file: ../docker-compose.yml
       service: postgres
+    networks:
+      - wiki_net
   redis:
     extends:
       file: ../docker-compose.yml
       service: redis
+    networks:
+      - wiki_net
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  wiki_net:
+    driver: bridge

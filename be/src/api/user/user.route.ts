@@ -16,6 +16,6 @@ userRouter.get("/user/:id", auth(), getUserController);
 userRouter.post("/user", auth(), createUserController);
 userRouter.put("/user/:id", auth(), updateUserController);
 userRouter.put("/user/password/:id", auth(), changePasswordController);
-userRouter.delete("/user/:id", deleteUserController);
+userRouter.delete("/user/:id", auth(), deleteUserController);
 
 export default userRouter;
