@@ -1,19 +1,21 @@
 import { NextFunction, Response, Request } from "express";
 import logger from "../helper/logger";
-import type { ZodType } from "zod";
-import { EApiCode } from "@wiki/api-contracts";
+import { ObjectSchema } from "yup";
 
 const validate =
-  (schema: ZodType) =>
+  <T>(schema: ObjectSchema<T>) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = schema.safeParse(req.body);
-    if (!result.success) {
-      logger.error(result.error.message);
-      res.status(400).json({ code: EApiCode.ValidationError });
-      return;
+    try {
+      await schema.validate({
+        body: req.body,
+        query: req.query,
+        params: req.params,
+      });
+      next();
+    } catch (error) {
+      logger.error(error.message);
+      res.status(400).json({ message: error.message });
     }
-    req.body = result.data;
-    next();
   };
 
 export default validate;

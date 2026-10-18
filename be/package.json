@@ -2,14 +2,15 @@
   "name": "wiki_server",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "private": true,
   "scripts": {
-    "dev": "yarn workspace @wiki/api-contracts build && tsx watch src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "email:dev": "email dev --dir=./src/emails --port=3005",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate",
-    "build": "yarn workspace @wiki/api-contracts build && prisma generate && esbuild src/server.ts --bundle --platform=node --packages=external --format=cjs --outdir=dist --sourcemap",
+    "build": "prisma generate && esbuild src/server.ts --bundle --platform=node --packages=external --format=esm --outdir=dist --sourcemap",
     "serve": "prisma migrate deploy && node ./dist/server.js"
   },
   "keywords": [],
@@ -40,7 +41,6 @@
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "7.10.0",
     "@react-email/components": "0.0.21",
-    "@wiki/api-contracts": "workspace:*",
     "bcryptjs": "^2.4.3",
     "connect-redis": "^7.1.1",
     "cookie-parser": "^1.4.6",
@@ -56,6 +56,6 @@
     "react-email": "^3.0.2",
     "redis": "^4.6.15",
     "winston": "^3.11.0",
-    "zod": "^4.6.2"
+    "yup": "^1.6.1"
   }
 }
