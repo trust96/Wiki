@@ -1,24 +1,11 @@
 import { Response, Request } from "express";
-import {
-  createUser,
-  getAllUsers,
-  getUserByEmail,
-  getUserById,
-  sendCredentialsEmail,
-  updateUser,
-} from "./user.service";
+import { createUser, getAllUsers, getUserByEmail, getUserById, sendCredentialsEmail, updateUser } from "./user.service";
 import { hash, compare } from "bcryptjs";
 import logger from "../../helper/logger";
-import { PASSWORD_SALT } from "../../helper/constants";
+import { EApiCode, PASSWORD_SALT } from "../../helper/constants";
 import { getUserResponseMapper, getUserRequestMapper } from "./user.mapper";
 import { getUuid } from "../../helper/uuid";
 import type { Prisma } from "../../generated/prisma/client.js";
-import {
-  EApiCode,
-  type TChangePasswordRequest,
-  type TCreateUserRequest,
-  type TUpdateUserRequest,
-} from "@wiki/api-contracts";
 
 export const getUserController = async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
@@ -44,7 +31,7 @@ export const getAllUsersController = async (req: Request, res: Response) => {
 };
 
 export const createUserController = async (req: Request, res: Response) => {
-  const body = req.body as TCreateUserRequest;
+  const body = req.body;
 
   const isEmailAlreadyUsed = await getUserByEmail(body.email);
   if (isEmailAlreadyUsed) {
@@ -74,7 +61,7 @@ export const createUserController = async (req: Request, res: Response) => {
 
 export const updateUserController = async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
-  const body = req.body as TUpdateUserRequest;
+  const body = req.body;
   const userData = getUserRequestMapper(body);
   const user = await updateUser(id, userData);
 
@@ -96,7 +83,7 @@ export const deleteUserController = async (req: Request<{ id: string }>, res: Re
 };
 
 export const changePasswordController = async (req: Request<{ id: string }>, res: Response) => {
-  const { newPassword, currentPassword } = req.body as TChangePasswordRequest;
+  const { newPassword, currentPassword } = req.body;
   const user = await getUserById(req.params.id);
   if (!user) {
     res.status(404).json({ code: EApiCode.UserNotFound });

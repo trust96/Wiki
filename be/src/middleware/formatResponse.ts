@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from "express";
-import { EApiCode } from "@wiki/api-contracts";
+import { EApiCode } from "../helper/constants";
 
 type ResponseBody = {
   code?: number | null;

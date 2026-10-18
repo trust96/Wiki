@@ -1,10 +1,9 @@
 import { compare, hash } from "bcryptjs";
 import { createUser, getUserByEmail } from "../user/user.service";
-import { PASSWORD_SALT, USER_ROLE } from "../../helper/constants";
+import { EApiCode, PASSWORD_SALT, USER_ROLE } from "../../helper/constants";
 import { Response, Request } from "express";
 import logger from "../../helper/logger";
 import { getUserResponseMapper } from "../user/user.mapper";
-import { EApiCode } from "@wiki/api-contracts";
 
 export const registerController = async (req: Request, res: Response) => {
   const { email, password } = req.body;

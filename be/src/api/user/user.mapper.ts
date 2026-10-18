@@ -1,8 +1,7 @@
-import type { TCreateUserRequest, TPublicUser, TUpdateUserRequest } from "@wiki/api-contracts";
 import { USER_ROLE } from "../../helper/constants";
 import { User } from "../../generated/prisma/client";
 
-export const getUserResponseMapper = (user: User): TPublicUser => {
+export const getUserResponseMapper = (user: User): any => {
   return {
     id: user?.id,
     email: user?.email,
@@ -13,7 +12,7 @@ export const getUserResponseMapper = (user: User): TPublicUser => {
   };
 };
 
-export const getUserRequestMapper = (user: TCreateUserRequest | TUpdateUserRequest) => {
+export const getUserRequestMapper = (user: any) => {
   return {
     surname: user.surname,
     name: user.name,

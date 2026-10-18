@@ -1,6 +1,5 @@
 import { NextFunction, Response, Request } from "express";
-import { USER_ROLE } from "../helper/constants";
-import { EApiCode } from "@wiki/api-contracts";
+import { EApiCode, USER_ROLE } from "../helper/constants";
 
 const auth = (...roles: Array<USER_ROLE>) => {
   return async (req: Request, res: Response, next: NextFunction) => {

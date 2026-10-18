@@ -13,7 +13,6 @@ export const {
   CORS_ORIGIN = "http://localhost:3000",
 } = process.env;
 
-// bcrypt rounds must be a number; env values are always strings.
 export const PASSWORD_SALT = Number(process.env.PASSWORD_SALT ?? 10);
 
 export const MAX_AGE = 1000 * 60 * 60 * 24 * 60; // 2 months
@@ -23,3 +22,15 @@ export enum USER_ROLE {
   MODERATOR = 250,
   USER = 500,
 }
+
+export const EApiCode = {
+  Ok: null,
+  WrongCredentials: 100,
+  EmailInUse: 101,
+  UserNotFound: 102,
+  Unauthorized: 103,
+  Forbidden: 104,
+  ValidationError: 105,
+  AccountNotVerified: 106,
+  ServerError: 500,
+} as const;
