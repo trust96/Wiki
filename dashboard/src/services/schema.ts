@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { loginRequestSchema } from "@wiki/api-contracts";
 
 export const contributionStatusSchema = z.enum([
   "approved",
@@ -61,7 +60,10 @@ export const notificationSchema = z.object({
   updatedAt: z.string(),
 });
 
-export const loginParamsSchema = loginRequestSchema;
+export const loginParamsSchema = z.object({
+  identifier: z.string().min(1),
+  password: z.string().min(1),
+});
 
 export const onboardingParamsSchema = z.object({
   artistName: z.string().min(1),

@@ -18,11 +18,14 @@ export const useSignup = () => {
 
   const handleSubmit = onSubmit(async (values) => {
     const data = await registerUser({
+      username: values.username,
       email: values.email,
       password: values.password,
+      confirmPassword: values.confirmPassword,
+      terms: values.terms,
     });
 
-    if (!data.ok) {
+    if (!data.isSuccess) {
       return;
     }
 
@@ -38,7 +41,10 @@ export const useSignupValidationSchema = () => {
 
   return z
     .object({
-      email: z.email().min(1, required(t("signup:email"))),
+      email: z
+        .string()
+        .min(1, required(t("signup:email")))
+        .email(),
       username: z.string().min(1, required(t("signup:username"))),
       password: z
         .string()
@@ -50,7 +56,9 @@ export const useSignupValidationSchema = () => {
       confirmPassword: z
         .string()
         .min(1, required(t("signup:confirm_password"))),
-      terms: z.boolean().refine((value) => value, t("signup:validation.terms")),
+      terms: z
+        .boolean()
+        .refine((value) => value, t("signup:validation.terms")),
     })
     .refine((values) => values.password === values.confirmPassword, {
       path: ["confirmPassword"],

@@ -60,7 +60,7 @@ export const UserForm = ({ nextPath = "/home" }: TUserFormProps) => {
       ...(avatar ? { avatar } : {}),
       isOnboarded: true,
     });
-    if (result.ok) {
+    if (result.isSuccess) {
       navigate(nextPath);
     }
   });

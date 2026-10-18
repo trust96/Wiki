@@ -1,7 +1,7 @@
 import { loginParamsSchema } from "@/services/schema";
 
 export const loginInitialValues = {
-  email: "",
+  identifier: "",
   password: "",
 } as const;
 

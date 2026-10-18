@@ -47,7 +47,7 @@ export const SectionForm = () => {
       sectionId: section.id,
       content: values.content,
     });
-    if (result.ok) {
+    if (result.isSuccess) {
       navigate(`/page/${pageId}`);
     }
   });
