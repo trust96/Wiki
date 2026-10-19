@@ -5,7 +5,7 @@
   },
   "title": "Bentornato/a",
   "subtitle": "Inserisci le tue credenziali",
-  "email": "Email or nome utente",
+  "email": "Email",
   "password": "Password",
   "forgotten_password": "Password dimenticata?",
   "login_button": "Accedi",

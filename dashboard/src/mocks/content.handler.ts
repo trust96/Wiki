@@ -4,7 +4,6 @@ import pagesJson from "./pages.json";
 import contributionsJson from "./contributions.json";
 import notificationsJson from "./notifications.json";
 import translationsJson from "./translations.json";
-import { mockUser } from "./auth.handler";
 import {
   contributionSchema,
   notificationSchema,
@@ -21,12 +20,6 @@ export const mockContributions: TContribution[] = contributionSchema
 export const mockNotifications: TNotification[] = notificationSchema
   .array()
   .parse(notificationsJson);
-
-export const updateProfile = http.put("/api/users/me", async ({ request }) => {
-  const body = (await request.json()) as object;
-  Object.assign(mockUser, body, { isOnboarded: true });
-  return ok({ user: mockUser });
-});
 
 export const pages = http.get("/api/pages", () => ok(mockWikis));
 

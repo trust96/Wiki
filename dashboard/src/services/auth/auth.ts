@@ -1,46 +1,100 @@
+import { tokenKey } from "@/helper/constants";
 import { normalizeBaseQuery } from "@/helper/normalizeBaseQuery";
+import type { TUser } from "@/services/schema";
+import { useUiStore } from "@/state/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
+  TApiUser,
   TLoginParams,
   TLoginResponseData,
-  TSignupParams,
   TSignupResponseData,
   TUpdateUserParams,
-  TUpdateUserResponseData,
   TUserResponseData,
 } from "./types";
 
 export const currentUserKey = ["me"] as const;
 
-export const useCurrentUserQuery = (enabled = true) =>
-  useQuery({
+const roleName = (role: number | null) => {
+  if (role === 100) return "admin";
+  if (role === 250) return "moderator";
+  return "user";
+};
+
+export const toAppUser = (user: TApiUser): TUser => ({
+  id: user.id,
+  email: user.email,
+  username: user.email,
+  artistName: user.name ?? "",
+  firstName: user.name ?? "",
+  lastName: user.surname ?? "",
+  bio: user.bio ?? "",
+  avatar: user.avatar ?? "",
+  isOnboarded: Boolean(user.name),
+  role: roleName(user.role),
+  emailVerifiedAt: user.verifiedAt,
+});
+
+const userFromApi = (
+  response: TWikiResponse<TApiUser>,
+): TUserResponseData => {
+  if (!response.isSuccess || !response.data) {
+    return { isSuccess: response.isSuccess, code: response.code, data: null };
+  }
+  return {
+    isSuccess: true,
+    code: null,
+    data: { user: toAppUser(response.data) },
+  };
+};
+
+type TWikiResponse<T> = {
+  isSuccess: boolean;
+  code: number | null;
+  data: T | null;
+};
+
+export const useCurrentUserQuery = (enabled = true) => {
+  const id = useUiStore((state) => state.token);
+  return useQuery({
     queryKey: currentUserKey,
-    queryFn: () =>
-      normalizeBaseQuery<TUserResponseData["data"]>({
-        url: "/auth/me",
+    queryFn: async () => {
+      const response = await normalizeBaseQuery<TApiUser>({
+        url: `/user/${id}`,
         method: "GET",
-      }),
-    enabled,
+      });
+      return userFromApi(response);
+    },
+    enabled: enabled && Boolean(id),
   });
+};
 
 export const useUpdateUserMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload: TUpdateUserParams) =>
-      normalizeBaseQuery<TUpdateUserResponseData["data"]>({
-        url: "/users/me",
+    mutationFn: (payload: TUpdateUserParams) => {
+      const id = localStorage.getItem(tokenKey);
+      const cached = queryClient.getQueryData<TUserResponseData>(currentUserKey);
+      return normalizeBaseQuery<TApiUser>({
+        url: `/user/${id}`,
         method: "PUT",
-        payload,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: currentUserKey });
+        payload: {
+          name: payload.artistName || payload.firstName || "",
+          surname: payload.lastName ?? "",
+          email: cached?.data?.user?.email,
+          bio: payload.bio,
+        },
+      }).then(userFromApi);
+    },
+    onSuccess: (result) => {
+      if (!result.isSuccess || !result.data) return;
+      queryClient.setQueryData(currentUserKey, result);
     },
   });
 };
 
 export const useRegisterMutation = () =>
   useMutation({
-    mutationFn: (payload: TSignupParams) =>
+    mutationFn: (payload: { email: string; password: string }) =>
       normalizeBaseQuery<TSignupResponseData["data"]>({
         url: "/auth/register",
         method: "POST",
@@ -50,31 +104,22 @@ export const useRegisterMutation = () =>
 
 export const useLoginMutation = () =>
   useMutation({
-    mutationFn: (payload: TLoginParams) =>
-      normalizeBaseQuery<TLoginResponseData["data"]>({
+    mutationFn: async (payload: TLoginParams): Promise<TLoginResponseData> => {
+      const response = await normalizeBaseQuery<TApiUser>({
         url: "/auth/login",
         method: "POST",
-        payload,
-      }),
+        payload: { email: payload.email, password: payload.password },
+      });
+      return userFromApi(response);
+    },
   });
 
-export const useVerifyEmailMutation = () =>
+export const useLogoutMutation = () =>
   useMutation({
-    mutationFn: (payload: { token: string }) =>
-      normalizeBaseQuery<TLoginResponseData["data"]>({
-        url: "/auth/verify-email",
-        method: "POST",
-        payload,
-      }),
-  });
-
-export const useResendVerificationMutation = () =>
-  useMutation({
-    mutationFn: (payload: { email: string }) =>
+    mutationFn: () =>
       normalizeBaseQuery<null>({
-        url: "/auth/resend-verification",
+        url: "/auth/logout",
         method: "POST",
-        payload,
       }),
   });
 
@@ -82,7 +127,7 @@ export const useForgotPasswordMutation = () =>
   useMutation({
     mutationFn: (payload: { email: string }) =>
       normalizeBaseQuery<null>({
-        url: "/auth/forgot-password",
+        url: "/auth/forgotten_password",
         method: "POST",
         payload,
       }),
@@ -90,14 +135,10 @@ export const useForgotPasswordMutation = () =>
 
 export const useResetPasswordMutation = () =>
   useMutation({
-    mutationFn: (payload: {
-      token: string;
-      password: string;
-      confirmPassword: string;
-    }) =>
+    mutationFn: (payload: { code: string; password: string }) =>
       normalizeBaseQuery<null>({
-        url: "/auth/reset-password",
+        url: `/auth/change_forgotten_password/${payload.code}`,
         method: "POST",
-        payload,
+        payload: { password: payload.password },
       }),
   });

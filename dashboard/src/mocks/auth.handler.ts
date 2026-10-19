@@ -2,77 +2,82 @@ import { http } from "msw";
 import { fail, ok } from "./envelope";
 import mayaJson from "./user.json";
 import newUserJson from "./newUser.json";
-import { userSchema, type TUser } from "@/services/schema";
+import type { TApiUser } from "@/services/auth/types";
 
-export const mayaUser: TUser = userSchema.parse(mayaJson);
-export const newUser: TUser = userSchema.parse(newUserJson);
+const clone = (user: TApiUser): TApiUser => ({ ...user });
 
-export let mockUser: TUser = { ...mayaUser };
+const maya = mayaJson as TApiUser;
+const newbie = newUserJson as TApiUser;
 
-export const resetMockUser = () => {
-  mockUser = { ...mayaUser };
-};
+let users: TApiUser[] = [clone(maya), clone(newbie)];
 
-const users: TUser[] = [mayaUser, newUser];
+const findByEmail = (email: string) =>
+  users.find((user) => user.email === email);
 
-const findUser = (identifier: string) =>
-  users.find(
-    (user) => user.username === identifier || user.email === identifier,
-  );
+const findById = (id: string) => users.find((user) => user.id === id);
 
 export const loginUser = http.post("/api/auth/login", async ({ request }) => {
-  const { identifier } = (await request.json()) as { identifier?: string };
+  const { email } = (await request.json()) as { email?: string };
+  const loginEmail =
+    email === "user@example.com" ? maya.email : email;
 
-  if (identifier === "unverified@example.com") return fail(101, 401);
+  if (loginEmail === "unverified@example.com") return fail(106, 401);
 
-  const loginId =
-    identifier === "admin" || identifier === "user@example.com"
-      ? "maya"
-      : identifier;
-  const user = loginId ? findUser(loginId) : undefined;
-  if (!user) return fail(100, 401);
-
-  mockUser = { ...user };
-  return ok({ token: "mock-token", user: mockUser });
+  const user = loginEmail ? findByEmail(loginEmail) : undefined;
+  if (!user) return fail(102, 403);
+  return ok(user);
 });
 
 export const registerUser = http.post(
   "/api/auth/register",
   async ({ request }) => {
-    const { email, username } = (await request.json()) as {
-      email?: string;
-      username?: string;
-    };
-
-    mockUser = {
-      ...newUser,
-      email: email ?? newUser.email,
-      username: username ?? newUser.username,
-    };
-    return ok({ user: mockUser });
+    const { email } = (await request.json()) as { email?: string };
+    if (!email || findByEmail(email)) return fail(101, 409);
+    users.push({
+      id: crypto.randomUUID(),
+      email,
+      name: null,
+      surname: null,
+      role: 500,
+      verifiedAt: null,
+    });
+    return ok(null, 201);
   },
 );
 
-export const currentUser = http.get("/api/auth/me", () =>
-  ok({ user: mockUser }),
+export const currentUser = http.get("/api/user/:id", ({ params }) => {
+  const user = findById(String(params.id));
+  return user ? ok(user) : fail(102, 404);
+});
+
+export const updateUser = http.put("/api/user/:id", async ({ params, request }) => {
+  const user = findById(String(params.id));
+  if (!user) return fail(102, 404);
+  const body = (await request.json()) as {
+    name?: string;
+    surname?: string;
+    email?: string;
+    bio?: string;
+  };
+  user.name = body.name ?? user.name;
+  user.surname = body.surname ?? user.surname;
+  if (body.email) user.email = body.email;
+  if (typeof body.bio === "string") user.bio = body.bio;
+  return ok(user, 201);
+});
+
+export const logoutUser = http.post("/api/auth/logout", () => ok(null));
+
+export const forgottenPassword = http.post(
+  "/api/auth/forgotten_password",
+  async ({ request }) => {
+    const { email } = (await request.json()) as { email?: string };
+    if (!email || !findByEmail(email)) return fail(102, 403);
+    return ok(null);
+  },
 );
 
-export const logoutUser = http.post("/api/auth/logout", () => {
-  resetMockUser();
-  return ok();
-});
-
-export const verifyEmail = http.post("/api/auth/verify-email", async () => {
-  mockUser = {
-    ...newUser,
-    emailVerifiedAt: "2026-09-14T00:00:00Z",
-    isOnboarded: false,
-  };
-  return ok({ token: "mock-token", user: mockUser });
-});
-
-export const authStubHandlers = [
-  "resend-verification",
-  "forgot-password",
-  "reset-password",
-].map((route) => http.post(`/api/auth/${route}`, () => ok()));
+export const resetPassword = http.post(
+  "/api/auth/change_forgotten_password/:code",
+  () => ok(null),
+);

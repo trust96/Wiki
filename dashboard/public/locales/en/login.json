@@ -5,7 +5,7 @@
   },
   "title": "Welcome back",
   "subtitle": "Insert your credentials",
-  "email": "Email or username",
+  "email": "Email",
   "password": "Password",
   "forgotten_password": "Forgotten password?",
   "login_button": "Login",

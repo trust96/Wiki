@@ -1,10 +1,11 @@
 import {
-  authStubHandlers,
   currentUser,
+  forgottenPassword,
   loginUser,
   logoutUser,
   registerUser,
-  verifyEmail,
+  resetPassword,
+  updateUser,
 } from "./auth.handler";
 import {
   contributions,
@@ -12,7 +13,6 @@ import {
   pages,
   singlePage,
   translations,
-  updateProfile,
   updateSection,
   upload,
 } from "./content.handler";
@@ -21,10 +21,10 @@ export const handlers = [
   loginUser,
   registerUser,
   currentUser,
+  updateUser,
   logoutUser,
-  verifyEmail,
-  ...authStubHandlers,
-  updateProfile,
+  forgottenPassword,
+  resetPassword,
   pages,
   singlePage,
   contributions,

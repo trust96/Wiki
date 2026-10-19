@@ -11,7 +11,7 @@ import { resetPasswordInitialValues } from "./helper";
 export const ResetPassword = () => {
   const { t } = useTranslation(["new_password", "common"]);
   const params = useParams<{ code?: string }>();
-  const token = params.code ?? "";
+  const code = params.code ?? "";
   const [, navigate] = useLocation();
   const { mutateAsync: reset } = useResetPasswordMutation();
   const schema = z
@@ -42,9 +42,8 @@ export const ResetPassword = () => {
 
   const handleSubmit = onSubmit(async (values) => {
     const data = await reset({
-      token,
+      code,
       password: values.password,
-      confirmPassword: values.confirmPassword,
     });
     if (!data.isSuccess) return;
     navigate("~/auth/login");

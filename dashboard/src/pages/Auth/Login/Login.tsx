@@ -26,7 +26,9 @@ export const Login = () => {
       <form onSubmit={handleSubmit} id="login">
         <Stack>
           <TextInput
-            {...getInputProps("identifier")}
+            {...getInputProps("email")}
+            type="email"
+            autoComplete="email"
             label={t("email")}
             id="email"
           />

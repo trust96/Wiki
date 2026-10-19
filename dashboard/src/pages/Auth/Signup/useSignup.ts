@@ -18,18 +18,15 @@ export const useSignup = () => {
 
   const handleSubmit = onSubmit(async (values) => {
     const data = await registerUser({
-      username: values.username,
       email: values.email,
       password: values.password,
-      confirmPassword: values.confirmPassword,
-      terms: values.terms,
     });
 
     if (!data.isSuccess) {
       return;
     }
 
-    navigate("~/auth/email_verification", { state: { email: values.email } });
+    navigate("~/auth/login");
   });
   return { getInputProps, handleSubmit };
 };

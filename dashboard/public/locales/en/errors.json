@@ -1,4 +1,6 @@
 {
-  "wrong_credentials": "The username or password you entered doesn’t match our records. Please try again or reset your password if needed.",
+  "wrong_credentials": "The email or password you entered doesn’t match our records. Please try again or reset your password if needed.",
+  "email_in_use": "This email is already registered. Log in or use another email.",
+  "account_not_verified": "Confirm your email before logging in.",
   "generic_api_error": "Something went wrong while processing your request. Please try again, or come back later."
 }

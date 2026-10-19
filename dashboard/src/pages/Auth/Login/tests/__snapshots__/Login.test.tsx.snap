@@ -65,10 +65,12 @@ exports[`renders login when specified 1`] = `
           >
             <input
               aria-invalid="false"
+              autocomplete="email"
               class="m_8fb7ebe7 mantine-Input-input mantine-TextInput-input"
-              data-path="identifier"
+              data-path="email"
               data-variant="default"
               id="email"
+              type="email"
               value=""
             />
           </div>

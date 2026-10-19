@@ -1,13 +1,10 @@
 {
-  "id": 1,
+  "id": "11111111-1111-4111-8111-111111111111",
   "email": "maya@example.com",
-  "username": "maya",
-  "artistName": "Maya",
-  "firstName": "Maya",
-  "lastName": "Rossi",
+  "name": "Maya",
+  "surname": "Rossi",
+  "role": 500,
+  "verifiedAt": "2026-01-01T00:00:00Z",
   "bio": "House dancer in Milan. I write about groove, timing, and the steps that keep a floor moving.",
-  "avatar": "https://picsum.photos/id/64/400",
-  "isOnboarded": true,
-  "role": "user",
-  "emailVerifiedAt": "2026-01-01T00:00:00Z"
+  "avatar": "https://picsum.photos/id/64/400"
 }

@@ -2,7 +2,6 @@ import { AvatarField } from "../AvatarField";
 import { WikiTextarea } from "@/components/input";
 import { useUser } from "@/hooks/useUser";
 import { useUpdateUserMutation } from "@/services/auth/auth";
-import { useUploadMutation } from "@/services/file";
 import { Stack, Text, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
@@ -22,7 +21,6 @@ export const UserForm = ({ nextPath = "/home" }: TUserFormProps) => {
   const user = useUser();
   const [, navigate] = useLocation();
   const { mutateAsync: updateUser } = useUpdateUserMutation();
-  const { mutateAsync: uploadFile } = useUploadMutation();
   const { setValues, getInputProps, onSubmit, values } = useForm<
     typeof userFormInitialValues
   >({
@@ -46,18 +44,12 @@ export const UserForm = ({ nextPath = "/home" }: TUserFormProps) => {
       ? URL.createObjectURL(values.avatar)
       : user?.avatar;
 
-  const handleSubmit = onSubmit(async () => {
-    let avatar = user?.avatar;
-    if (values.avatar instanceof File) {
-      const upload = await uploadFile({ files: values.avatar });
-      avatar = upload.data?.url ?? avatar;
-    }
+  const handleSubmit = onSubmit(async (submitted) => {
     const result = await updateUser({
-      artistName: values.artistName,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      bio: values.bio,
-      ...(avatar ? { avatar } : {}),
+      artistName: submitted.artistName,
+      firstName: submitted.firstName,
+      lastName: submitted.lastName,
+      bio: submitted.bio,
       isOnboarded: true,
     });
     if (result.isSuccess) {
