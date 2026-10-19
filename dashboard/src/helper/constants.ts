@@ -3,9 +3,7 @@ export enum EAppMode {
   Production = "production",
 }
 
-export const baseUrl = "http://localhost:3000/api";
-// "https://api.dancediction.com/api";
-//"https://incredible-purpose-39ec375761.strapiapp.com/api";
+export const baseUrl = "/api";
 export const appName = "Wiki dance";
 export enum AppModals {
   Login,
@@ -29,5 +27,3 @@ export const imageCompressionOptions = {
   maxWidthOrHeight: 1920,
   useWebWorker: true,
 };
-
-export const RESEND_EMAIL_DELAY = 2;

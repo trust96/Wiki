@@ -1,13 +1,15 @@
 import type { TRequest, TWikiResponseData } from "@/helper/request";
 import { useUiStore } from "@/state/ui";
-import {
-  baseUrl,
-  HttpType,
-  imageCompressionOptions,
-  tokenKey,
-} from "./constants";
+import { baseUrl, HttpType, imageCompressionOptions } from "./constants";
 import { toFormData } from "./toFormData";
 import imageCompression from "browser-image-compression";
+
+type TWireResponse<T> = {
+  ok?: boolean;
+  isSuccess?: boolean;
+  code?: number | null;
+  data?: T;
+};
 
 const failed = <T>(): TWikiResponseData<T> => ({
   isSuccess: false,
@@ -40,12 +42,7 @@ export const normalizeBaseQuery = async <T>(
       body = JSON.stringify(payload);
     }
 
-    const auth = localStorage.getItem(tokenKey);
     const headers = new Headers();
-
-    if (auth) {
-      headers.append("Authorization", `Bearer ${auth}`);
-    }
 
     if (!type) {
       headers.append("Content-type", "application/json; charset=UTF-8");
@@ -55,9 +52,15 @@ export const normalizeBaseQuery = async <T>(
       body,
       method,
       headers,
+      credentials: "include",
     });
 
-    const responseData = (await response.json()) as TWikiResponseData<T>;
+    const wire = (await response.json()) as TWireResponse<T>;
+    const responseData: TWikiResponseData<T> = {
+      isSuccess: wire.ok ?? wire.isSuccess ?? false,
+      code: wire.code ?? null,
+      data: (wire.data ?? null) as T,
+    };
 
     if (!responseData.isSuccess) {
       addApiError({

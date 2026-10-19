@@ -10,7 +10,7 @@ export const contributionStatusSchema = z.enum([
 export const genreSchema = z.enum(["House", "Salsa", "Breaking", "Hip Hop"]);
 
 export const userSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   email: z.string(),
   username: z.string(),
   artistName: z.string(),
@@ -61,7 +61,7 @@ export const notificationSchema = z.object({
 });
 
 export const loginParamsSchema = z.object({
-  identifier: z.string().min(1),
+  email: z.string().min(1).email(),
   password: z.string().min(1),
 });
 

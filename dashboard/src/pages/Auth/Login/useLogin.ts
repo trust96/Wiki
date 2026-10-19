@@ -20,19 +20,19 @@ export const useLogin = () => {
   const { mutateAsync: login } = useLoginMutation();
   const handleSubmit = onSubmit(async (values) => {
     const data = await login(values);
-    if (data.code === 101) {
+    if (data.code === 106) {
       clearApiErrors();
       navigate("~/auth/email_verification", {
         replace: true,
-        state: { email: values.identifier },
+        state: { email: values.email },
       });
       return;
     }
     if (!data.isSuccess || !data.data) {
       return;
     }
-    localStorage.setItem(tokenKey, data.data.token);
-    addToken(data.data.token);
+    localStorage.setItem(tokenKey, data.data.user.id);
+    addToken(data.data.user.id);
     queryClient.setQueryData(currentUserKey, {
       isSuccess: true,
       code: null,

@@ -1,7 +1,7 @@
 import { Button, Menu } from "@mantine/core";
 import { WikiIcon } from "@/components/primitive";
 import { tokenKey } from "@/helper/constants";
-import { currentUserKey } from "@/services/auth/auth";
+import { currentUserKey, useLogoutMutation } from "@/services/auth/auth";
 import { useUiStore } from "@/state/ui";
 import { semanticColor } from "@/foundations";
 import { useQueryClient } from "@tanstack/react-query";
@@ -11,8 +11,10 @@ const NavigationMenu = () => {
   const [, navigate] = useLocation();
   const queryClient = useQueryClient();
   const removeToken = useUiStore((state) => state.removeToken);
+  const { mutateAsync: logout } = useLogoutMutation();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout();
     localStorage.removeItem(tokenKey);
     removeToken();
     queryClient.removeQueries({ queryKey: currentUserKey });

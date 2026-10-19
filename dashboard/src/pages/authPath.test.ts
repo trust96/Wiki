@@ -3,7 +3,7 @@ import { entryRedirect, guestRedirect, sessionRedirect } from "./authPath";
 import type { TUser } from "@/services/schema";
 
 const maya: TUser = {
-  id: 1,
+  id: "1",
   email: "maya@example.com",
   username: "maya",
   artistName: "Maya",

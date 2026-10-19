@@ -4,6 +4,6 @@
     "description": "La registrazione è avvenuta con successo. Accedi al tuo nuovo account, esplora la dashboard e inizia a usare tutte le funzionalità."
   },
   "title": "Account creato con successo",
-  "content": "Controlla la tua email per verificare il tuo account. \nSe non hai ricevuto l’email, controlla la cartella spam oppure clicca il pulsante qui sotto per inviare nuovamente l’email di verifica.",
+  "content": "Conferma l'email prima di accedere. Se non l'hai ricevuta, controlla la cartella spam.",
   "resend_button": "Invia di nuovo"
 }
