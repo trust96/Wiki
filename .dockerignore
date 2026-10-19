@@ -9,7 +9,6 @@
 .claude
 .agents
 .devin
-backend
 **/src/generated
 **/.env
 **/.env.*

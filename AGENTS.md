@@ -5,10 +5,10 @@ Monorepo. Each space has its own agent and `guidelines/` folder. Nested `AGENTS.
 | Space | Path | Stack |
 | --- | --- | --- |
 | Dashboard | `dashboard/` | React 19 + Vite + Mantine |
-| Backend | `backend/` | Laravel — [`backend/AGENTS.md`](backend/AGENTS.md) |
+| Backend | `be/` | Node + Prisma — [`be/AGENTS.md`](be/AGENTS.md) |
 | Site | `site/` | Pug + Vite |
 
-Product intent lives in `specs/`. Do not apply dashboard React conventions to backend PHP, or the reverse.
+Product intent lives in `specs/`. Do not apply dashboard React conventions to the Node backend, or the reverse.
 
 Canonical GitHub repo is [trust96/Wiki](https://github.com/trust96/Wiki). Push feature branches to `origin` (`trust96/Wiki`) and open PRs there against `main`. Do not open PRs on `GrilliA/Wiki` (`personal` remote).
 

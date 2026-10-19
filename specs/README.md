@@ -17,7 +17,7 @@ moderating the content and providing new content.
 ## Stack
 
 - Frontend - React
-- Api - Laravel
+- Api - Node (`be/`)
 
 ## Features
 

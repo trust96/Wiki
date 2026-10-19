@@ -1,55 +1,57 @@
-# Backend plan — Wiki Dance
+# Backend domain — Wiki Dance
 
-Laravel API for a community wiki for dancers. UI lives in `dashboard/`. Product pages live in `specs/`. This file is the backend build order and the locked domain rules.
+Domain plan for the Node API in `be/`. UI lives in `dashboard/`. Product pages live in `specs/`.
 
-Work one slice at a time, in order. Do not start slice N+1 until slice N is merged and tested. Do not invent extra tables, packages, or roles unless this file says so.
+Work one slice at a time, in order. Do not start slice N+1 until slice N is done. Do not invent extra tables, packages, or roles unless this file says so.
 
 Shipped HTTP lives in [`endpoints.md`](endpoints.md). The dashboard follows that file, not this one.
 
 ## How to use this file
 
 1. Read **Locked decisions** before writing code.
-2. Implement the next unchecked slice. Leave later slices untouched.
+2. Implement the next unchecked slice in `be/`, matching the existing Express + Prisma code.
 3. Tick the slice checklist in this file when that slice is done.
 4. Add every new `/api` route to [`endpoints.md`](endpoints.md) in the same change (index + detail). The frontend reads only that catalog.
 5. If a spec and this file disagree on backend behaviour, this file wins until we update both together.
 
 ## Current state
 
-Almost empty Laravel 13 app (PHP 8.3, Pest).
+Service is `be/` (Express, Prisma, Postgres, Redis sessions).
 
-Already there:
+Already shipped (see [`endpoints.md`](endpoints.md)):
 
-- `User` skeleton (`name`, `email`, `password`)
-- Mailables: `VerificationMail`, `ForgottenPasswordMail`, `CredentialsMail`
-- No `routes/api.php`, no Sanctum, no roles, no wiki models
+- Register, login, logout
+- Forgotten-password routes (handlers do not send mail or change the password yet)
+- User read, update, soft delete, change password
+- User columns: `email`, `password`, `name`, `surname`, `status`, `role`, `verifiedAt`, `bannedAt`, `deletedAt`
 
-Dashboard already sends `Authorization: Bearer` and expects `{ isSuccess, code, data }`. Laravel owns the contract. Do not copy leftover Strapi paths (`?populate=*`, `/event-pages`).
+Not built yet: wiki articles, revisions, moderation, public profiles, onboarding, verification mail.
+
+Do not copy leftover Strapi paths (`?populate=*`, `/event-pages`).
 
 ## Locked decisions
 
 | Topic | Decision |
 | --- | --- |
-| Auth | Sanctum personal access tokens. “Session” = token + `GET /api/me`. Not Laravel cookie sessions. |
+| Auth | Redis session cookie already used by `be`. Do not add a second auth stack. |
 | After publish | Author is public (article + profile contributions). |
 | Who can edit | Anyone can propose an edit. Same draft → review → publish flow as a new article. |
-| Versioning | Git-lite we own (`articles` + `revisions`). No Git binary, no auto-version trait. |
+| Versioning | Git-lite we own (`articles` + `revisions`). No Git binary, no library that versions every save. |
 | Draft saves | Autosave updates the same draft row. Public history = published revisions only. |
 | Wrong approve | Rollback = move `published_revision_id` to `parent_id`. First publish rollback = unpublish. Revert-as-new-revision is later. |
 | Moderator identity | Queue payloads never include author. `block-author` resolves `author_id` only on the server. |
 | Settings | Grouped endpoints (`profile`, `account`, `preferences`, `notifications`). `role` is not a user setting. |
-| Permissions | Three roles, Laravel policies. No Spatie Permission. |
-| Google login | Out of v1 slices. Same user + same token when we add it. |
+| Permissions | Three roles, checked in application code. No permission package. |
+| Google login | Out of v1 slices. Same user + same session when we add it. |
 
 ## Non-negotiables
 
-- Stack stays Laravel. No new framework.
-- JSON envelope on every API response: `{ "isSuccess": bool, "code": number|null, "data": ... }`.
+- Stack stays the Node service in `be/`. No second framework.
+- Keep the JSON envelope `be` already sends: `{ "ok": bool, "code": number|null, "data": ... }`.
 - Write actions require **verified email**, **finished onboarding**, and **not banned**.
 - Moderators never receive `author_id`, `username`, `user_id`, or avatar on queue payloads. Tests must assert this.
 - `first_name` / `last_name` / `email` are never on public profile payloads.
 - Published history is append-only. Never delete or rewrite a published revision. Rollback only moves the live pointer.
-- Pest for new behaviour. Pint for style.
 
 ---
 
@@ -65,20 +67,22 @@ Dashboard already sends `Authorization: Bearer` and expects `{ isSuccess, code, 
 
 Moderator has **no** user directory. If they can search users, anonymity is gone.
 
+`be` stores `role` as a number today (`ADMIN = 100`, `MODERATOR = 250`, `USER = 500`). Keep that encoding unless a later slice changes it on purpose.
+
 ### Users
 
-Extend `users`. Drop the generic `name` column when we add real profile fields.
+Extend `User`. The generic `name` column is already there; add the real profile fields below when the slice needs them.
 
 | Column | Notes |
 | --- | --- |
 | `username` | Unique, public |
-| `first_name`, `last_name` | Private |
+| `first_name`, `last_name` | Private. Today the row has `name` and `surname`. |
 | `bio`, `avatar_path` | Public |
-| `role` | `user` \| `moderator` \| `admin` |
-| `email_verified_at` | Already exists |
+| `role` | `user` \| `moderator` \| `admin` (stored as the numbers above) |
+| `verifiedAt` | Already exists |
 | `onboarding_completed_at` | Null until onboarding is done |
-| `banned_at`, `ban_reason` | Internal |
-| `deleted_at` | Soft delete |
+| `bannedAt`, `ban_reason` | `bannedAt` exists. `ban_reason` does not yet. |
+| `deletedAt` | Soft delete. Already exists. |
 | `theme`, `locale` | Preferences. Or a `preferences` JSON — pick one and keep it. |
 
 Settings groups (not one mega-form):
@@ -93,6 +97,8 @@ Settings groups (not one mega-form):
 `GET /api/me` → self (profile + settings + role).  
 `GET /api/users/{username}` → public only.  
 `GET /api/users/{username}/contributions` → published revisions only.
+
+These settings routes are the goal. Shipped user routes are in [`endpoints.md`](endpoints.md).
 
 ### Articles (Git-lite)
 
@@ -179,23 +185,20 @@ Internal audit (admin only): who approved / rejected / blocked / rolled back, wh
 
 ## API (target)
 
-Prefix `/api`. Auth: `Authorization: Bearer {token}`.
-
-This list is the **goal**. What the frontend may call is only what is in [`endpoints.md`](endpoints.md).
+Prefix `/api`. Shipped auth is the session in [`endpoints.md`](endpoints.md). The list below is the goal for slices that are not shipped yet.
 
 ### Auth
 
+Already shipped: register, login, logout, forgotten-password stubs. Still to build:
+
 ```
-POST /api/auth/register
-POST /api/auth/login              -- identifier = email or username
-POST /api/auth/logout
-POST /api/auth/verify/{code}      -- issues token, then onboarding
+POST /api/auth/verify/{code}      -- then onboarding
 POST /api/auth/resend-verification
-POST /api/auth/forgot-password
-POST /api/auth/reset-password
 ```
 
-Register does **not** return a token. Verify and login return `{ token, user }`.  
+Forgot / reset password stay on the routes already in [`endpoints.md`](endpoints.md). Finish the handlers there; do not add a parallel pair.
+
+Register does **not** return a session by itself. Login opens the session.  
 Unverified login → dedicated error code, not a generic 401.  
 Banned login → 403.
 
@@ -249,19 +252,17 @@ POST   /api/admin/users/{id}/ban
 
 ## Slices
 
-Do these in order. Each slice is a vertical: migration + models + policy + routes + Pest.
+Do these in order. Each slice is a vertical: Prisma schema + routes + checks.
 
 ### Slice 1 — Auth + me
 
-- [ ] Add Laravel Sanctum.
-- [ ] Register `routes/api.php` in `bootstrap/app.php`.
-- [ ] Shared JSON envelope for `/api/*`.
-- [ ] Extend `users` (username, names, bio, avatar, role, onboarding, ban, soft delete). Keep `role` default `user`.
-- [ ] Register, login (`identifier`), logout, verify, resend, forgot, reset.
-- [ ] Reuse existing mailables. Verification link stays 1 month; verify issues a token.
+- [x] Register, login, logout (session). See [`endpoints.md`](endpoints.md).
+- [x] Shared JSON envelope for `/api/*`: `{ ok, code, data }`. Keep it.
+- [ ] Extend `User` (username, names, bio, avatar, onboarding, ban reason). Keep the existing role numbers.
+- [ ] Verify and resend verification. Forgotten-password handlers must actually send mail and change the password.
 - [ ] `GET /api/me`, `PATCH /api/me/profile` (this is onboarding when `onboarding_completed_at` is null).
 - [ ] Seed one admin.
-- [ ] Pest: happy paths, bad password, unverified, banned, token revoke, private fields absent from public shapes.
+- [ ] Tests: happy paths, bad password, unverified, banned, session revoke, private fields absent from public shapes.
 - [ ] Add every shipped route from this slice to `endpoints.md`.
 
 **Out of this slice:** articles, settings groups beyond profile, Google.
@@ -269,10 +270,10 @@ Do these in order. Each slice is a vertical: migration + models + policy + route
 ### Slice 2 — Settings + policies
 
 - [ ] Settings group endpoints (password, email, preferences, notifications, delete).
-- [ ] Change password revokes tokens; user logs in again.
-- [ ] Delete account = soft delete + revoke tokens.
-- [ ] Role enum + policies. Admin user search / role / ban routes.
-- [ ] Pest: user cannot change own role; moderator cannot list users; admin can.
+- [ ] Change password ends the session; user logs in again.
+- [ ] Delete account = soft delete + end session.
+- [ ] Role checks. Admin user search / role / ban routes.
+- [ ] Tests: user cannot change own role; moderator cannot list users; admin can.
 - [ ] Add every shipped route from this slice to `endpoints.md`.
 
 **Out of this slice:** wiki.
@@ -286,7 +287,7 @@ Do these in order. Each slice is a vertical: migration + models + policy + route
 - [ ] Conflict when `parent_id !== published_revision_id`.
 - [ ] Public revision list + diff between two snapshots.
 - [ ] First `type`: `person`. Snapshot shape matches `specs/wiki/person/*` + sections.
-- [ ] Pest: owner-only draft write; stranger cannot read others’ drafts; published GET hides nothing required and does show author; conflict on stale parent.
+- [ ] Tests: owner-only draft write; stranger cannot read others’ drafts; published GET hides nothing required and does show author; conflict on stale parent.
 - [ ] Add every shipped route from this slice to `endpoints.md`.
 
 **Out of this slice:** moderator queue (admin may publish to unblock tests).
@@ -298,7 +299,7 @@ Do these in order. Each slice is a vertical: migration + models + policy + route
 - [ ] Rollback rules (parent pointer, first-publish unpublish, 24h moderator window).
 - [ ] Ban side effects (login + write).
 - [ ] Admin-only audit of moderation actions.
-- [ ] Pest: moderator JSON has no identity fields; approve fast-forward; stale approve = conflict; rollback restores parent; block-author response has no username; banned user cannot login.
+- [ ] Tests: moderator JSON has no identity fields; approve fast-forward; stale approve = conflict; rollback restores parent; block-author response has no username; banned user cannot login.
 - [ ] Add every shipped route from this slice to `endpoints.md`.
 
 **Out of this slice:** user reports, search, Google, revert-as-new-revision.
@@ -314,29 +315,10 @@ Do these in order. Each slice is a vertical: migration + models + policy + route
 - Extra article `type`s
 - Stored diffs / hybrid snapshot packing
 - Notifications delivery beyond the settings flags
-- Cookie/SPA Sanctum session
 
-## Packages we will not use for wiki history
+## Versioning we will not use
 
-| Package | Why not |
-| --- | --- |
-| `overtrue/laravel-versionable` | Versions on every `save()`. No parent, no draft vs published, no queue. |
-| `avocet-shores/laravel-rewind` | Same save-driven model. Too young. |
-| Real Git | Breaks search, blind queue, and hosting. |
-| Spatie Permission | Three roles. Policies are enough. |
-
-`owen-it/laravel-auditing` is optional for admin audit. A small `moderation_events` table is enough if we skip the package.
-
-`jfcherng/php-diff` is fine later for readable diffs. v1 can diff two JSON snapshots in application code.
-
-## Test command
-
-From `backend/`:
-
-```bash
-php artisan test
-vendor/bin/pint --test
-```
+Own `articles` + `revisions`. Do not add a package that writes a version on every save, a real Git repo, or a permission package. Three roles are enough. A small `moderation_events` table covers admin audit. v1 can diff two JSON snapshots in application code.
 
 ## Mapping to specs
 

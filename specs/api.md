@@ -1,9 +1,14 @@
 # API Contract
 
-Backend: **Laravel** (`backend/`), API prefix `/api`, auth **Sanctum** (personal access token, header `Authorization: Bearer <token>`).
+Service: **`be/`** (Node, Prisma, Postgres). Agent guide: [`../be/AGENTS.md`](../be/AGENTS.md).
 
-Dev: `php artisan serve --port=3000` (frontend `baseUrl` is `http://localhost:3000/api`).
+- Shipped routes: [`../be/endpoints.md`](../be/endpoints.md). The dashboard may call only those.
+- Wiki domain and later slices: [`../be/domain.md`](../be/domain.md). If this file and `be/domain.md` disagree on backend behaviour, `be/domain.md` wins until both are updated.
+
+Dev: `yarn workspace wiki_server dev` (API port 5000). Dashboard dev is port 3000.
 Prod: `https://api.dancediction.com/api`.
+
+The route tables below are the earlier written contract. They are not the live catalog.
 
 ## Envelope
 

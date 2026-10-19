@@ -66,9 +66,9 @@ Shared UI goes in the matching `components/` type folder (`button/`, `input/`, â
 
 - Simple, human names. If you hesitate on a name, ask.
 - Do not over-engineer: no new helper/hook/folder until a second caller needs it.
-- Import from layer barrels (`@/components/primitive`), not from another space (`backend/`, `site/`).
+- Import from layer barrels (`@/components/primitive`), not from another space (`be/`, `site/`).
 - User-visible strings for new or touched UI go through i18next (`public/locales/{en,it}`).
 - HTTP goes through `services/` + `normalizeBaseQuery`. Do not `fetch` from components.
-- Call only paths listed as shipped in [`../backend/endpoints.md`](../backend/endpoints.md). That file is the live API contract. Do not follow leftover Strapi URLs.
+- Call only paths listed as shipped in [`../be/endpoints.md`](../be/endpoints.md). That file is the live API contract. Do not follow leftover Strapi URLs.
 - Style with Mantine props and `src/foundations` first. CSS modules are the exception.
 - Browser-verify UI changes (real interaction, not only a screenshot).
