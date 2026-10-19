@@ -6,7 +6,12 @@ This guide applies only to files under `be/`.
 
 ## Before changing code
 
-Read the nearest related code first, then match existing patterns:
+Read, in this order:
+
+- [`domain.md`](domain.md) — locked decisions, wiki domain, slice order
+- [`endpoints.md`](endpoints.md) — **live** API contract for the dashboard
+
+Then match the nearest related code:
 
 - `be/package.json` for real scripts/entrypoints
 - `be/tsconfig.json` for compile boundaries and output
@@ -18,6 +23,10 @@ Prefer extending current structure over introducing new architecture.
 
 ## Conventions
 
+- One slice at a time, in the order in [`domain.md`](domain.md). Tick the slice checklist when it is done.
+- Shipped `/api` routes are only those listed in [`endpoints.md`](endpoints.md). Update that file in the same change that adds, changes, or removes a route.
+- If a spec and [`domain.md`](domain.md) disagree on backend behaviour, `domain.md` wins until both are updated.
+- No extra tables, packages, or roles unless [`domain.md`](domain.md) says so.
 - Keep changes small and scoped to the requested behavior.
 - Prefer environment-driven configuration; avoid hardcoded credentials and hosts.
 - Keep Prisma schema and app usage in sync when changing DB behavior.
