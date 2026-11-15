@@ -4056,13 +4056,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bcryptjs@npm:^2.4.6":
-  version: 2.4.6
-  resolution: "@types/bcryptjs@npm:2.4.6"
-  checksum: 10c0/1182663f0c081c5c58760019459cd309335e9b5fc6552780b0fd21b6c5f25661a844709e46218796f4bdbebe6736e11cfc5af0729bc2cdb0160943650aceb3da
-  languageName: node
-  linkType: hard
-
 "@types/body-parser@npm:*":
   version: 1.19.6
   resolution: "@types/body-parser@npm:1.19.6"
@@ -5320,10 +5313,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bcryptjs@npm:^2.4.3":
-  version: 2.4.3
-  resolution: "bcryptjs@npm:2.4.3"
-  checksum: 10c0/b969467087ed7a01ff905a1c6a0c45014ec586248a448ea08370c8ed8bb314bda16a870ca23e0961d7d23bdce1a04c76fa70a9d680be814fa9ac7d8fc61870a3
+"bcryptjs@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "bcryptjs@npm:3.0.3"
+  bin:
+    bcrypt: bin/bcrypt
+  checksum: 10c0/127c94699f07eab5fbbb89d600c3f0e36ae6fd001e028139740b41fffb62a23a2743523fb88f442ae3308a27d4843b97ccb9e436d78f5c5899be187d0972c6d5
   languageName: node
   linkType: hard
 
@@ -12789,15 +12784,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"wiki_server@workspace:be":
+"wiki_server@workspace:backend":
   version: 0.0.0-use.local
-  resolution: "wiki_server@workspace:be"
+  resolution: "wiki_server@workspace:backend"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.481.0"
     "@prisma/adapter-pg": "npm:^7.10.0"
     "@prisma/client": "npm:7.10.0"
     "@react-email/components": "npm:0.0.21"
-    "@types/bcryptjs": "npm:^2.4.6"
     "@types/cookie-parser": "npm:^1.4.3"
     "@types/cors": "npm:^2.8.13"
     "@types/express-session": "npm:^1.18.0"
@@ -12807,7 +12801,7 @@ __metadata:
     "@types/node": "npm:^20.11.7"
     "@types/nodemailer": "npm:^6.4.14"
     "@types/pg": "npm:^8.23.1"
-    bcryptjs: "npm:^2.4.3"
+    bcryptjs: "npm:^3.0.3"
     connect-redis: "npm:^7.1.1"
     cookie-parser: "npm:^1.4.6"
     cors: "npm:^2.8.5"

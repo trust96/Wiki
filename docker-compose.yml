@@ -45,7 +45,7 @@ services:
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
     # Mount workspace packages; keep image node_modules (Yarn install layer)
     volumes:
-      - ./be:/workspace/be
+      - ./backend:/workspace/backend
       - ./package.json:/workspace/package.json:ro
       - ./yarn.lock:/workspace/yarn.lock:ro
       - ./.yarnrc.yml:/workspace/.yarnrc.yml:ro

@@ -1,11 +1,11 @@
-# Monorepo image for the Yarn workspace (dashboard + be + site).
+# Monorepo image for the Yarn workspace (dashboard + backend + site).
 # Shared `deps` stage is reused by frontend and backend targets via BuildKit cache.
 
 FROM node:20-bookworm-slim AS base
 
 WORKDIR /workspace
 
-RUN apt-get update \
+RUN apt update \
   && apt-get install -y --no-install-recommends openssl ca-certificates \
   && rm -rf /var/lib/apt/lists/* \
   && corepack enable
@@ -18,7 +18,7 @@ FROM base AS deps
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
 COPY dashboard/package.json ./dashboard/package.json
-COPY be/package.json ./be/package.json
+COPY backend/package.json ./backend/package.json
 COPY site/package.json ./site/package.json
 
 RUN yarn install --immutable
@@ -31,7 +31,7 @@ FROM deps AS backend-development
 ENV NODE_ENV=development
 WORKDIR /workspace
 
-COPY be ./be
+COPY backend ./backend
 
 RUN yarn workspace wiki_server prisma generate
 
@@ -57,7 +57,7 @@ CMD ["yarn", "workspace", "wiki_client", "dev", "--host", "0.0.0.0", "--port", "
 FROM deps AS backend-build
 
 WORKDIR /workspace
-COPY be ./be
+COPY backend ./backend
 
 RUN yarn workspace wiki_server prisma generate \
   && yarn workspace wiki_server build
@@ -82,15 +82,15 @@ COPY --from=backend-prod-deps /workspace/yarn.lock ./yarn.lock
 COPY --from=backend-prod-deps /workspace/.yarnrc.yml ./.yarnrc.yml
 COPY --from=backend-prod-deps /workspace/.yarn ./.yarn
 COPY --from=backend-prod-deps /workspace/node_modules ./node_modules
-COPY --from=backend-prod-deps /workspace/be/package.json ./be/package.json
+COPY --from=backend-prod-deps /workspace/backend/package.json ./backend/package.json
 
-COPY --from=backend-build /workspace/be/dist ./be/dist
-COPY --from=backend-build /workspace/be/prisma ./be/prisma
-COPY --from=backend-build /workspace/be/prisma.config.ts ./be/prisma.config.ts
+COPY --from=backend-build /workspace/backend/dist ./backend/dist
+COPY --from=backend-build /workspace/backend/prisma ./backend/prisma
+COPY --from=backend-build /workspace/backend/prisma.config.ts ./backend/prisma.config.ts
 
 WORKDIR /workspace
 EXPOSE 5000
-CMD ["sh", "-c", "yarn workspace wiki_server prisma migrate deploy && node ./be/dist/server.js"]
+CMD ["sh", "-c", "yarn workspace wiki_server prisma migrate deploy && node ./backend/dist/server.js"]
 
 # ---------------------------------------------------------------------------
 # Frontend build + nginx production (same-server public entrypoint)
