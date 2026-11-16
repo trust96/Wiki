@@ -5,17 +5,17 @@ export const getUserResponseMapper = (user: User): any => {
   return {
     id: user?.id,
     email: user?.email,
-    name: user?.name ?? null,
+    name: user?.firstName ?? null,
     role: user?.role,
-    surname: user?.surname ?? null,
-    verifiedAt: user?.verifiedAt ?? null,
+    surname: user?.lastName ?? null,
+    verifiedAt: user?.emailVerifiedAt ?? null,
   };
 };
 
 export const getUserRequestMapper = (user: any) => {
   return {
-    surname: user.surname,
-    name: user.name,
+    lastName: user.surname,
+    firstName: user.name,
     email: user.email,
     role: USER_ROLE.USER,
   };

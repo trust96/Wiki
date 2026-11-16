@@ -4,7 +4,7 @@ const startUp = async () => {
   globalThis.gemmaState = {};
 
   const users = await prisma.user.findMany({
-    select: { id: true, email: true, name: true },
+    select: { id: true, email: true, firstName: true },
     take: 5,
   });
   console.log("Prisma users:", users);

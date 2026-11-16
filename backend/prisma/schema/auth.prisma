@@ -1,0 +1,48 @@
+enum AuthTokenPurpose {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+enum AuthMailStatus {
+  PENDING
+  PROCESSING
+  SENT
+  CANCELLED
+  FAILED
+}
+
+model AuthToken {
+  id         String           @id @default(uuid())
+  userId     String
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose    AuthTokenPurpose
+  email      String
+  tokenHash  String           @unique
+  issuedAt   DateTime         @default(now())
+  expiresAt  DateTime
+  consumedAt DateTime?
+  revokedAt  DateTime?
+  mail       AuthMailOutbox?
+
+  @@index([userId, purpose])
+  @@index([expiresAt])
+}
+
+model AuthMailOutbox {
+  id                String         @id @default(uuid())
+  tokenId           String         @unique
+  token             AuthToken      @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  status            AuthMailStatus @default(PENDING)
+  payloadCiphertext Bytes?
+  encryptionKeyId   String?
+  availableAt       DateTime       @default(now())
+  attempts          Int            @default(0)
+  lastAttemptAt     DateTime?
+  lockId            String?
+  lockedUntil       DateTime?
+  sentAt            DateTime?
+
+  @@index([status, availableAt, lockedUntil])
+}
