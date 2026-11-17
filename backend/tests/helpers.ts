@@ -37,14 +37,18 @@ export const login = async (user: { email: string }, loginPassword = password) =
   const cookies = response.headers["set-cookie"];
   const cookie = (Array.isArray(cookies) ? cookies[0] : cookies).split(";")[0];
   const value = decodeURIComponent(cookie.slice(cookie.indexOf("=") + 1));
-  if (!value.startsWith("s:") || !value.includes(".")) throw new Error("Expected a signed session cookie");
+  if (!value.startsWith("s:") || !value.includes(".")) {
+    throw new Error("Expected a signed session cookie");
+  }
   const sessionKey = `eventus:${value.slice(2, value.lastIndexOf("."))}`;
   sessionKeys.add(sessionKey);
   return { agent, response, cookie, sessionKey };
 };
 
 export const cleanupFixtures = async () => {
-  if (sessionKeys.size) await redis.del([...sessionKeys]);
+  if (sessionKeys.size) {
+    await redis.del([...sessionKeys]);
+  }
   await prisma.user.deleteMany({
     where: { OR: [{ id: { in: [...fixtureIds] } }, { email: { in: [...fixtureEmails] } }] },
   });

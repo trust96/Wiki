@@ -10,6 +10,7 @@ conventions here.
   HTTP contracts, authentication, and persistence.
 - [Development](guidelines/development.md): environment, commands, style,
   migrations, and verification.
+- [Style guide](guidelines/styleguide.md): braces and readable statement layout.
 
 Read the relevant guidance before editing. Stack: Node.js, TypeScript ESM,
 Express, Prisma with PostgreSQL, and Redis-backed sessions.

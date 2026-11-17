@@ -38,7 +38,9 @@ afterAll(async () => {
   try {
     const results = await Promise.allSettled([prisma.$disconnect(), disconnectRedis(), redis.isOpen ? redis.quit() : undefined]);
     const failures = results.filter((result) => result.status === "rejected");
-    if (failures.length) throw new AggregateError(failures.map((result) => result.reason), "Test connection cleanup failed");
+    if (failures.length) {
+      throw new AggregateError(failures.map((result) => result.reason), "Test connection cleanup failed");
+    }
   } finally {
     logger.close();
   }
