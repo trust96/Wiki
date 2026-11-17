@@ -1,21 +1,19 @@
 import express from "express";
-import cookieParser from "cookie-parser";
+import formatResponse from "./middleware/formatResponse";
 import { authRouter } from "./api/auth/auth.route";
+import userRouter from "./api/user/user.route";
 import morganMiddleware from "./middleware/logMiddleware";
+import errorHandlingMiddleware from "./middleware/errorHandlingMiddleware";
 import { corsMiddleware } from "./middleware/corsMiddleware";
-import { apiErrorHandler, apiNotFound, noStore, parseApiJson, requireJson } from "./middleware/apiMiddleware";
-import { rateLimit } from "./middleware/rateLimit";
-import { apiConfig } from "./helper/config";
+import { sessionMiddleware } from "./middleware/sessionMiddleware";
 
 export const app = express();
-app.set("trust proxy", apiConfig.trustedProxies);
+const jsonMiddleware = express.json({ limit: "50mb" });
+
+app.use(jsonMiddleware);
+app.use(sessionMiddleware);
+app.use(corsMiddleware);
 app.use(morganMiddleware);
-app.use("/api", noStore, corsMiddleware, rateLimit, (req, res, next) => {
-  if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
-  }
-  next();
-});
-app.use("/api/v1", requireJson, parseApiJson, cookieParser(), authRouter);
-app.use("/api", apiNotFound, apiErrorHandler);
+app.use(formatResponse);
+app.use("/api", authRouter, userRouter);
+app.use(errorHandlingMiddleware);

@@ -1,9 +1,13 @@
 import prisma from "./helper/prisma";
-import { initializeAuth } from "./api/auth/auth.service";
 
 const startUp = async () => {
-  await prisma.$connect();
-  await initializeAuth();
+  globalThis.gemmaState = {};
+
+  const users = await prisma.user.findMany({
+    select: { id: true, email: true, name: true },
+    take: 5,
+  });
+  console.log("Prisma users:", users);
 };
 
 export default startUp;
