@@ -15,6 +15,10 @@ export const connectRedis = async () => {
   }
 };
 
+export const disconnectRedis = async () => {
+  if (redisClient.isOpen) await redisClient.quit();
+};
+
 const redisStore = new RedisStore({ client: redisClient, prefix: "eventus:" });
 export const sessionMiddleware = session({
   store: redisStore,

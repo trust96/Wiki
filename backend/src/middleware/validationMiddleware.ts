@@ -1,20 +1,22 @@
 import { NextFunction, Response, Request } from "express";
 import logger from "../helper/logger";
 import { ObjectSchema } from "yup";
+import { EApiCode } from "../helper/constants";
 
 const validate =
-  <T>(schema: ObjectSchema<T>) =>
+  <T extends { body?: unknown }>(schema: ObjectSchema<T>) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await schema.validate({
+      const validated = await schema.validate({
         body: req.body,
         query: req.query,
         params: req.params,
       });
+      req.body = validated.body;
       next();
     } catch (error) {
       logger.error(error.message);
-      res.status(400).json({ message: error.message });
+      res.status(400).json({ code: EApiCode.ValidationError });
     }
   };
 
