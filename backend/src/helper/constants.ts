@@ -1,17 +1,16 @@
-import { config } from "dotenv";
-
-config();
+import { apiConfig } from "./config";
 
 export const {
   PORT = 5000,
   HOST = "localhost",
-  NODE_ENV = "development",
-  TOKEN_SECRET = "default_secret",
   TOKEN_NAME = "wiki-admin-token",
   APP_NAME = "WikiDance",
   REDIS_URL = "redis://redis:6379",
-  CORS_ORIGIN = "http://localhost:3000",
 } = process.env;
+
+export const NODE_ENV = apiConfig.nodeEnv;
+export const TOKEN_SECRET = apiConfig.sessionSecret;
+export const CORS_ORIGIN = apiConfig.origins.join(",");
 
 export const PASSWORD_SALT = Number(process.env.PASSWORD_SALT ?? 10);
 

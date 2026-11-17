@@ -1,9 +1,11 @@
 import cors from "cors";
-import { CORS_ORIGIN } from "../helper/constants";
-
-const origins = CORS_ORIGIN.split(",").map((origin) => origin.trim());
+import { apiConfig } from "../helper/config";
 
 export const corsMiddleware = cors({
-  origin: origins,
+  origin: [...apiConfig.origins],
   credentials: true,
+  exposedHeaders: ["Retry-After"],
+  allowedHeaders: ["Content-Type", "X-CSRF-Token"],
+  optionsSuccessStatus: 200,
+  preflightContinue: true,
 });

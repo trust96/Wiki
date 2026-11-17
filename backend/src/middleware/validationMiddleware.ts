@@ -13,7 +13,7 @@ const validate =
       });
       next();
     } catch (error) {
-      logger.error(error.message);
+      logger.warn("Legacy request validation failed.");
       res.status(400).json({ message: error.message });
     }
   };

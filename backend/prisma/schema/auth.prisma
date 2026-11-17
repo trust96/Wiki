@@ -30,8 +30,8 @@ model AuthToken {
 
 model AuthMailOutbox {
   id                String         @id @default(uuid())
-  tokenId           String         @unique
-  token             AuthToken      @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId           String?        @unique
+  token             AuthToken?     @relation(fields: [tokenId], references: [id], onDelete: Cascade)
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
   status            AuthMailStatus @default(PENDING)

@@ -1,104 +1,48 @@
-import { compare, hash } from "bcryptjs";
-import { createUser, getUserByEmail } from "../user/user.service";
-import { EApiCode, PASSWORD_SALT, USER_ROLE } from "../../helper/constants";
-import { Response, Request } from "express";
-import logger from "../../helper/logger";
-import { getUserResponseMapper } from "../user/user.mapper";
+import type { Request, Response } from "express";
+import { apiSuccess } from "../../helper/api";
+import { authenticate, consumeToken, register, requestTokenMail, sessionUser } from "./auth.service";
+import { createSession, destroySession, touchSession } from "./auth.session";
 
 export const registerController = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const isEmailAlreadyUsed = await getUserByEmail(email);
-  if (isEmailAlreadyUsed) {
-    logger.warn(`This Email (${email}) has already being used`);
-    res.status(409).json({ code: EApiCode.EmailInUse });
-    return;
-  }
-
-  const hashedPassword = await hash(password, PASSWORD_SALT);
-  const user = await createUser({
-    email,
-    password: hashedPassword,
-  });
-
-  logger.info(`User created with email: ${user.email}`);
-  res.status(201).json({
-    data: null,
-  });
+  await register(req.body);
+  apiSuccess(res);
 };
 
 export const loginController = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  const user = await getUserByEmail(email);
-  if (!user) {
-    logger.error("User not found");
-    res.status(403).json({ code: EApiCode.UserNotFound });
-
-    return;
-  }
-
-  const isSamePassword = await compare(password, user?.password);
-  if (!isSamePassword) {
-    logger.error("Wrong password");
-    res.status(403).json({ code: EApiCode.WrongCredentials });
-    return;
-  }
-
-  //TODO: add ver
-  const isVerified = true;
-  const isAdmin = user.role <= USER_ROLE.ADMIN;
-  if (!isAdmin && !isVerified) {
-    logger.error("Account not verified");
-    res.status(401).json({ code: EApiCode.AccountNotVerified });
-
-    return;
-  }
-
-  const payload = {
-    id: user.id,
-    role: user.role,
-    status: user.status,
-  };
-  req.session.user = payload;
-
-  logger.info("User logged in successfully");
-  res.status(200).json({
-    data: getUserResponseMapper(user as any),
-  });
+  const user = await authenticate(req.body.identifier, req.body.password);
+  // Validate the projection before accepting any new session.
+  sessionUser(user);
+  const result = await createSession(req, res, user);
+  apiSuccess(res, { user: sessionUser(result.user), csrfToken: result.csrfToken });
 };
 
-export const logoutController = (req: Request, res: Response) => {
-  req.session.destroy(() => {});
-
-  logger.info("User logged out successfully");
-  res.status(200).json({ data: null });
+export const sessionController = async (req: Request, res: Response) => {
+  sessionUser(req.auth!.user);
+  const user = await touchSession(req, res);
+  apiSuccess(res, { user: sessionUser(user), csrfToken: req.auth!.session.csrfToken });
 };
 
-export const triggerForgottenPasswordController = async (req: Request, res: Response) => {
-  const { email } = req.body;
-
-  const user = await getUserByEmail(email);
-  if (!user) {
-    res.status(403).json({ code: EApiCode.UserNotFound });
-    return;
-  }
-
-  logger.info("triggered forgotten password");
-  res.status(200).json({
-    data: null,
-  });
+export const logoutController = async (req: Request, res: Response) => {
+  await destroySession(req, res);
+  apiSuccess(res);
 };
 
-export const changeForgottenPasswordController = async (_req: Request, res: Response) => {
-  //TODO: add logic for change forgotten password
-  logger.info("Password changed successfully");
-  res.status(200).json({ data: null });
+export const verificationController = async (req: Request, res: Response) => {
+  await consumeToken(req.body.token, "EMAIL_VERIFICATION");
+  apiSuccess(res);
 };
 
-export const resendForgottenPasswordEmailController = async (_req: Request, res: Response) => {
-  //TODO: add the implementation of the resend email
-  logger.info("Forgotten password email sent successfully");
-  res.status(200).json({
-    data: null,
-  });
+export const resendController = async (req: Request, res: Response) => {
+  await requestTokenMail(req.body.email, "EMAIL_VERIFICATION");
+  apiSuccess(res);
+};
+
+export const resetRequestController = async (req: Request, res: Response) => {
+  await requestTokenMail(req.body.email, "PASSWORD_RESET");
+  apiSuccess(res);
+};
+
+export const resetController = async (req: Request, res: Response) => {
+  await consumeToken(req.body.token, "PASSWORD_RESET", req.body.password);
+  apiSuccess(res);
 };

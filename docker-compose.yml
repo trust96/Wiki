@@ -16,6 +16,18 @@ x-backend-env: &backend-env
   DATABASE_URL: postgresql://${POSTGRES_USER:-wiki}:${POSTGRES_PASSWORD:-wiki}@postgres:5432/${POSTGRES_DB:-wiki}?schema=public
   REDIS_URL: redis://redis:6379
   CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+  TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}
+  TERMS_VERSION: ${TERMS_VERSION:-}
+  MAIL_ENCRYPTION_KEY: ${MAIL_ENCRYPTION_KEY:-}
+  MAIL_ENCRYPTION_KEY_ID: ${MAIL_ENCRYPTION_KEY_ID:-v1}
+  MAIL_FROM: ${MAIL_FROM:-}
+  SMTP_HOST: ${SMTP_HOST:-}
+  SMTP_PORT: ${SMTP_PORT:-587}
+  SMTP_SECURE: ${SMTP_SECURE:-false}
+  SMTP_USER: ${SMTP_USER:-}
+  SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+  FRONTEND_VERIFICATION_URL: ${FRONTEND_VERIFICATION_URL:-}
+  FRONTEND_RESET_URL: ${FRONTEND_RESET_URL:-}
 
 x-backend-build: &backend-build
   context: .
@@ -94,7 +106,7 @@ services:
     environment:
       <<: *backend-env
       NODE_ENV: production
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+      CORS_ORIGIN: ${CORS_ORIGIN:-}
     networks:
       - wiki_net
     restart: unless-stopped
