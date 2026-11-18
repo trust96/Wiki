@@ -16,7 +16,7 @@ const validate =
       next();
     } catch (error) {
       logger.error(error.message);
-      res.status(400).json({ code: EApiCode.ValidationError });
+      res.fail({ status: 400, code: EApiCode.ValidationError });
     }
   };
 

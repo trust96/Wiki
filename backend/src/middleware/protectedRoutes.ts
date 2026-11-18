@@ -5,14 +5,14 @@ const auth = (...roles: Array<USER_ROLE>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const session = req.session;
     if (!session.user) {
-      res.status(401).json({ code: EApiCode.Unauthorized });
+      res.fail({ status: 401, code: EApiCode.Unauthorized });
       return;
     }
 
     const user = req.session.user;
     const isAuth = roles?.every((role) => role >= user.role);
     if (roles.length && !isAuth) {
-      res.status(401).json({ code: EApiCode.Forbidden });
+      res.fail({ status: 401, code: EApiCode.Forbidden });
       return;
     }
 

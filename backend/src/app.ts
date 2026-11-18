@@ -1,5 +1,5 @@
 import express from "express";
-import formatResponse from "./middleware/formatResponse";
+import { responseMiddleware } from "./middleware/responseMiddleware";
 import { authRouter } from "./api/auth/auth.route";
 import { userRouter } from "./api/user/user.route";
 import morganMiddleware from "./middleware/logMiddleware";
@@ -10,10 +10,10 @@ import { sessionMiddleware } from "./middleware/sessionMiddleware";
 export const app = express();
 const jsonMiddleware = express.json({ limit: "50mb" });
 
+app.use(responseMiddleware);
 app.use(jsonMiddleware);
 app.use(sessionMiddleware);
 app.use(corsMiddleware);
 app.use(morganMiddleware);
-app.use(formatResponse);
 app.use("/api", authRouter, userRouter);
 app.use(errorHandlingMiddleware);

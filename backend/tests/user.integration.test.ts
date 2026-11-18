@@ -1,9 +1,51 @@
 import { randomUUID } from "node:crypto";
 import { compare } from "bcryptjs";
+import express from "express";
 import request from "supertest";
 import { describe, expect, it } from "vitest";
 import { EApiCode, USER_ROLE } from "../src/helper/constants";
+import { createUserController } from "../src/api/user/user.controller";
+import errorHandlingMiddleware from "../src/middleware/errorHandlingMiddleware";
+import { responseMiddleware } from "../src/middleware/responseMiddleware";
 import { app, createUser, login, password, prisma, testEmail } from "./helpers";
+
+describe("unrouted user creation controller", () => {
+  const creationApp = express();
+  creationApp.use(responseMiddleware);
+  creationApp.use(express.json());
+  creationApp.post("/user", createUserController);
+  creationApp.use(errorHandlingMiddleware);
+
+  it("creates a user with usable temporary credentials and mapped fields", async () => {
+    const email = testEmail();
+    const response = await request(creationApp).post("/user").send({ email, name: "Created", surname: "User" }).expect(201);
+    const user = await prisma.user.findUniqueOrThrow({ where: { email } });
+    expect(response.body).toEqual({
+      ok: true,
+      code: null,
+      data: {
+        id: user.id,
+        email,
+        name: "Created",
+        surname: "User",
+        role: USER_ROLE.USER,
+        verifiedAt: null,
+        temporaryPassword: expect.any(String),
+      },
+    });
+    expect(response.body.data.temporaryPassword).not.toBe("");
+    expect(await compare(response.body.data.temporaryPassword, user.password)).toBe(true);
+    expect(response.body.data).not.toHaveProperty("password");
+  });
+
+  it("rejects a duplicate without changing the existing user", async () => {
+    const user = await createUser();
+    const response = await request(creationApp).post("/user").send({ email: user.email, name: "Replacement" }).expect(409);
+    expect(response.body).toEqual({ ok: false, code: EApiCode.EmailInUse, data: null });
+    expect(await prisma.user.count({ where: { email: user.email } })).toBe(1);
+    expect(await prisma.user.findUniqueOrThrow({ where: { id: user.id } })).toEqual(user);
+  });
+});
 
 describe("user route protection", () => {
   it.each([
@@ -109,6 +151,14 @@ describe("user reads and profile updates", () => {
 });
 
 describe("password changes", () => {
+  it("rejects a missing target without changing existing credentials", async () => {
+    const user = await createUser();
+    const { agent } = await login(user);
+    const response = await agent.put(`/api/user/password/${randomUUID()}`).send({ currentPassword: password, newPassword: "replacement" }).expect(404);
+    expect(response.body).toEqual({ ok: false, code: EApiCode.UserNotFound, data: null });
+    expect(await prisma.user.findUniqueOrThrow({ where: { id: user.id } })).toEqual(user);
+  });
+
   it("changes the stored hash and accepts only the new password on subsequent login", async () => {
     const user = await createUser();
     const { agent } = await login(user);

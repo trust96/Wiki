@@ -14,9 +14,3 @@ export type TChangePasswordInput = {
   currentPassword: string;
   newPassword: string;
 };
-
-export type TCreateUserResult = { kind: "created"; user: User; temporaryPassword: string } | { kind: "emailInUse" };
-
-export type TGetUserResult = { kind: "found"; user: User } | { kind: "userNotFound" };
-
-export type TChangePasswordResult = { kind: "changed" } | { kind: "userNotFound" } | { kind: "wrongCredentials" };

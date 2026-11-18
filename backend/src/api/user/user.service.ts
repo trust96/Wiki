@@ -5,7 +5,7 @@ import prisma from "../../helper/prisma";
 import { getUuid } from "../../helper/uuid";
 import { getUserRequestMapper } from "./user.mapper";
 import type { Prisma, User } from "../../generated/prisma/client.js";
-import type { TChangePasswordInput, TChangePasswordResult, TCreateUserInput, TCreateUserResult, TGetUserResult, TUserProfileInput } from "./user.model";
+import type { TCreateUserInput, TUserProfileInput } from "./user.model";
 
 export const createUser = async (data: Prisma.UserCreateInput) => {
   const user = await prisma.user.create({
@@ -62,21 +62,7 @@ export const getOtherUsers = async (currentUserId?: string) => {
   return users.filter((user) => user.id !== currentUserId);
 };
 
-export const getUser = async (id: string): Promise<TGetUserResult> => {
-  const user = await getUserById(id);
-  if (!user) {
-    return { kind: "userNotFound" };
-  }
-  return { kind: "found", user };
-};
-
-export const createUserWithCredentials = async (body: TCreateUserInput): Promise<TCreateUserResult> => {
-  const isEmailAlreadyUsed = await getUserByEmail(body.email);
-  if (isEmailAlreadyUsed) {
-    logger.warn(`This Email (${body.email}) has already being used`);
-    return { kind: "emailInUse" };
-  }
-
+export const createUserWithCredentials = async (body: TCreateUserInput) => {
   const temporaryPassword = getUuid(8);
   const hashedPassword = await hash(temporaryPassword, PASSWORD_SALT);
   const user = await createUser({
@@ -84,10 +70,8 @@ export const createUserWithCredentials = async (body: TCreateUserInput): Promise
     email: body.email,
     password: hashedPassword,
   });
-  await sendCredentialsEmail(user, temporaryPassword);
-
   logger.info(`User created with email: ${user.email}`);
-  return { kind: "created", user, temporaryPassword };
+  return { user, temporaryPassword };
 };
 
 export const updateUserProfile = async (id: string, body: TUserProfileInput) => {
@@ -96,25 +80,17 @@ export const updateUserProfile = async (id: string, body: TUserProfileInput) => 
   return user;
 };
 
-export const deleteUser = async (id: string, currentUserId?: string) => {
+export const deleteUser = async (id: string) => {
   await updateUser(id, { deletedAt: new Date().toISOString() });
-  return getOtherUsers(currentUserId);
 };
 
-export const changeUserPassword = async (id: string, { currentPassword, newPassword }: TChangePasswordInput): Promise<TChangePasswordResult> => {
-  const user = await getUserById(id);
-  if (!user) {
-    return { kind: "userNotFound" };
-  }
+export const verifyUserPassword = async (user: Pick<User, "password">, password: string) => {
+  return compare(password, user.password);
+};
 
-  const isCurrentPasswordCorrect = await compare(currentPassword, user.password);
-  if (!isCurrentPasswordCorrect) {
-    return { kind: "wrongCredentials" };
-  }
-
+export const changeUserPassword = async (id: string, newPassword: string) => {
   const password = await hash(newPassword, PASSWORD_SALT);
   await updateUser(id, { password });
-  return { kind: "changed" };
 };
 
 export const sendCredentialsEmail = async (user: User, plainPassword: string) => {
