@@ -63,6 +63,37 @@ describe("user reads and profile updates", () => {
     expect(stored).toMatchObject({ email, name: "Updated", surname: "Profile", password: user.password });
   });
 
+  it("preserves mapper defaults and ignores unsupported profile fields", async () => {
+    const user = await createUser({ role: USER_ROLE.ADMIN });
+    const { agent } = await login(user);
+    const response = await agent.put(`/api/user/${user.id}`).send({
+      name: null,
+      surname: null,
+      role: USER_ROLE.ADMIN,
+      password: "ignored-password",
+      verifiedAt: new Date().toISOString(),
+    }).expect(201);
+    expect(response.body).toEqual({
+      ok: true,
+      code: null,
+      data: { id: user.id, email: user.email, name: null, surname: null, role: USER_ROLE.USER, verifiedAt: null },
+    });
+    const stored = await prisma.user.findUniqueOrThrow({ where: { id: user.id } });
+    expect(stored).toMatchObject({ role: USER_ROLE.USER, password: user.password, verifiedAt: null });
+  });
+
+  it("preserves nullable roles and serializes verification dates", async () => {
+    const verifiedAt = new Date("2025-01-02T03:04:05.000Z");
+    const user = await createUser({ role: null, verifiedAt });
+    const { agent } = await login(user);
+    const response = await agent.get(`/api/user/${user.id}`).expect(200);
+    expect(response.body).toEqual({
+      ok: true,
+      code: null,
+      data: { id: user.id, email: user.email, name: null, surname: null, role: null, verifiedAt: verifiedAt.toISOString() },
+    });
+  });
+
   it("soft-deletes a user, excluding the account from listing and login", async () => {
     const admin = await createUser({ role: USER_ROLE.ADMIN });
     const target = await createUser();

@@ -13,15 +13,8 @@ export const forgottenPasswordValidation = object({
   }),
 });
 
-export const changeforgottenPasswordValidation = object({
+export const changeForgottenPasswordValidation = object({
   body: object({
     password: string().required("Password is mandatory"),
-  }),
-});
-
-export const changePasswordValidation = object({
-  body: object({
-    currentPassword: string().required("Current password is mandatory"),
-    newPassword: string().required("New password is mandatory"),
   }),
 });

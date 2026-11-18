@@ -22,7 +22,8 @@ backend/
 ```
 
 - `src/server.ts`: connect Redis, run startup, listen. `src/app.ts`: middleware and `/api` routers; preserve middleware order.
-- Keep features in `src/api/<feature>/`: routes wire middleware, controllers handle HTTP, services handle persistence, mappers select fields.
+- Keep features in `src/api/<feature>/`: routes wire middleware, controllers handle HTTP, services own business logic and persistence, mappers select fields.
+- Follow the [API pattern](api-pattern.md) for business-service boundaries, feature files, types, and recorded decisions.
 - Reuse `src/middleware/` and `src/helper/`, especially the shared Prisma client and logger.
 - Preserve `{ ok, code, data }` responses; use `EApiCode` and centralized error handling.
 - Yup validation applies body transforms; failures return 400/`ValidationError`. Password changes use `currentPassword`/`newPassword`.

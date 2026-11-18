@@ -1,59 +1,40 @@
-import { compare, hash } from "bcryptjs";
-import { createUser, getUserByEmail } from "../user/user.service";
-import { EApiCode, PASSWORD_SALT, USER_ROLE } from "../../helper/constants";
-import { Response, Request } from "express";
+import { EApiCode } from "../../helper/constants";
+import type { Response, Request } from "express";
 import logger from "../../helper/logger";
 import { getUserResponseMapper } from "../user/user.mapper";
+import { authenticateUser, registerUser, triggerForgottenPassword } from "./auth.service";
+import type { TAuthInput } from "./auth.model";
 
-export const registerController = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const isEmailAlreadyUsed = await getUserByEmail(email);
-  if (isEmailAlreadyUsed) {
-    logger.warn(`This Email (${email}) has already being used`);
+export const registerController = async (req: Request<Record<string, never>, unknown, TAuthInput>, res: Response) => {
+  const result = await registerUser(req.body);
+  if (result.kind === "emailInUse") {
     res.status(409).json({ code: EApiCode.EmailInUse });
     return;
   }
 
-  const hashedPassword = await hash(password, PASSWORD_SALT);
-  const user = await createUser({
-    email,
-    password: hashedPassword,
-  });
-
-  logger.info(`User created with email: ${user.email}`);
   res.status(201).json({
     data: null,
   });
 };
 
-export const loginController = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  const user = await getUserByEmail(email);
-  if (!user) {
-    logger.error("User not found");
+export const loginController = async (req: Request<Record<string, never>, unknown, TAuthInput>, res: Response) => {
+  const result = await authenticateUser(req.body);
+  if (result.kind === "userNotFound") {
     res.status(403).json({ code: EApiCode.UserNotFound });
-
     return;
   }
 
-  const isSamePassword = await compare(password, user?.password);
-  if (!isSamePassword) {
-    logger.error("Wrong password");
+  if (result.kind === "wrongCredentials") {
     res.status(403).json({ code: EApiCode.WrongCredentials });
     return;
   }
 
-  //TODO: add ver
-  const isVerified = true;
-  const isAdmin = user.role <= USER_ROLE.ADMIN;
-  if (!isAdmin && !isVerified) {
-    logger.error("Account not verified");
+  if (result.kind === "accountNotVerified") {
     res.status(401).json({ code: EApiCode.AccountNotVerified });
-
     return;
   }
 
+  const { user } = result;
   const payload = {
     id: user.id,
     role: user.role,
@@ -63,7 +44,7 @@ export const loginController = async (req: Request, res: Response) => {
 
   logger.info("User logged in successfully");
   res.status(200).json({
-    data: getUserResponseMapper(user as any),
+    data: getUserResponseMapper(user),
   });
 };
 
@@ -74,16 +55,13 @@ export const logoutController = (req: Request, res: Response) => {
   res.status(200).json({ data: null });
 };
 
-export const triggerForgottenPasswordController = async (req: Request, res: Response) => {
-  const { email } = req.body;
-
-  const user = await getUserByEmail(email);
-  if (!user) {
+export const triggerForgottenPasswordController = async (req: Request<Record<string, never>, unknown, Pick<TAuthInput, "email">>, res: Response) => {
+  const result = await triggerForgottenPassword(req.body.email);
+  if (result.kind === "userNotFound") {
     res.status(403).json({ code: EApiCode.UserNotFound });
     return;
   }
 
-  logger.info("triggered forgotten password");
   res.status(200).json({
     data: null,
   });

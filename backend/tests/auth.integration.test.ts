@@ -106,3 +106,31 @@ describe("login and sessions", () => {
     expect(replay.body).toEqual({ ok: false, code: EApiCode.Unauthorized, data: null });
   });
 });
+
+describe("existing forgotten-password behavior", () => {
+  it("normalizes the lookup email without changing the user or creating a session", async () => {
+    const user = await createUser();
+    const response = await request(app)
+      .post("/api/auth/forgotten_password")
+      .send({ email: ` ${user.email.toUpperCase()} ` })
+      .expect(200);
+    expect(response.body).toEqual({ ok: true, code: null, data: null });
+    expect(await prisma.user.findUniqueOrThrow({ where: { id: user.id } })).toEqual(user);
+    expect(await redis.dbSize()).toBe(0);
+  });
+
+  it("retains the missing-user response", async () => {
+    const response = await request(app).post("/api/auth/forgotten_password").send({ email: testEmail() }).expect(403);
+    expect(response.body).toEqual({ ok: false, code: EApiCode.UserNotFound, data: null });
+  });
+
+  it("keeps reset and resend as no-op placeholders", async () => {
+    const user = await createUser();
+    const reset = await request(app).post("/api/auth/change_forgotten_password/unused-code").send({ password: "replacement" }).expect(200);
+    const resend = await request(app).post(`/api/auth/resend/forgotten_password/${user.email}/en`).expect(200);
+    expect(reset.body).toEqual({ ok: true, code: null, data: null });
+    expect(resend.body).toEqual(reset.body);
+    expect(await prisma.user.findUniqueOrThrow({ where: { id: user.id } })).toEqual(user);
+    expect(await redis.dbSize()).toBe(0);
+  });
+});

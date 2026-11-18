@@ -1,7 +1,7 @@
 import express from "express";
 import formatResponse from "./middleware/formatResponse";
 import { authRouter } from "./api/auth/auth.route";
-import userRouter from "./api/user/user.route";
+import { userRouter } from "./api/user/user.route";
 import morganMiddleware from "./middleware/logMiddleware";
 import errorHandlingMiddleware from "./middleware/errorHandlingMiddleware";
 import { corsMiddleware } from "./middleware/corsMiddleware";

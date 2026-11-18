@@ -11,6 +11,8 @@ conventions here.
 - [Development](guidelines/development.md): environment, commands, style,
   migrations, and verification.
 - [Style guide](guidelines/styleguide.md): braces and readable statement layout.
+- [API pattern](guidelines/api-pattern.md): feature structure, responsibilities,
+  types, and the decision record. Update it with every agreed API-pattern change.
 
 Read the relevant guidance before editing. Stack: Node.js, TypeScript ESM,
 Express, Prisma with PostgreSQL, and Redis-backed sessions.
